@@ -33,7 +33,7 @@ class CourseController extends Controller
             $findTeacher = Teacher::where('teacherId',Auth::id())->get()->first();
             $course= new Course;
 
-        $course->teacher_id = $findTeacher->teacher_id;
+        $course->teacher_id = $findTeacher->teacherId;
         $course->course_title = $request->course_title;
         $course->course_description = $request->course_description;
         
@@ -41,7 +41,7 @@ class CourseController extends Controller
         $course->save();
 
         // return redirect()->to(url('students/all'));
-        return redirect()->to(route(''));
+        return redirect()->to(route('home'));
         }
     }
 }
