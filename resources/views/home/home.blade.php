@@ -1,5 +1,5 @@
 @extends('main')
-@extends('courses/createCourse_modal')
+@extends('dashboard/courses/createCourse_modal')
 <!--//for outer navbar//-->
 @section('right-side-nav')
     <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
@@ -28,8 +28,7 @@
 
 @section('main-content')
     @include('navbar.navbar_inside')
+    @include('dashboard.courses.create_course')
     
-    @include('dashboard.create_course')
-    
-    
+    @include('dashboard.courses.display_course')
 @stop
