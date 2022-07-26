@@ -9,13 +9,7 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     //
-    public function showCurrentUser(){
-        $userData = Auth::user();
-        $ownedCourses = Course::where('teacher_id', Auth::id())->get()->toArray();
-        
-        return view('home.home')->with(compact('ownedCourses'));
-        
-    }
+    
     public function showAllUsers(){
         $userModel = new User();
         $userCollection = $userModel->getAllUsers();
