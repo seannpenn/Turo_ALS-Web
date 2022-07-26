@@ -7,7 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <script src= "{{ asset('js/bootstrap.js') }}" ></script>
-
+    @yield('import-scripts')
     <script>
         @yield('script-area')
     </script>

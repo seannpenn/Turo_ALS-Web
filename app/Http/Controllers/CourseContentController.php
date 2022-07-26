@@ -41,5 +41,11 @@ class CourseContentController extends Controller
             return redirect()->to(route('course.showInfo',$request->course_id));
         }
     }
+    public function delete($id){
+        $selectedCourseContent = CourseContent::findOrFail($id);
+        
+        $selectedCourseContent->delete();
+        return redirect()->to(route('course.showInfo', $selectedCourseContent['course_id']));
+    }
 
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseContentController;
+use App\Http\Controllers\TopicController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,23 +28,32 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
 Route::view('/register', 'login.registration')->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('user.register');
 
+
+
 Route::middleware(['auth'])->group(function(){
     // For student routes
-
+    Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
     // For user routes
     Route::view('/home', 'home.home')->name('home');
-    Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
+    
     Route::get('user/{id}/delete',[UserController::class,'delete'])->name('user.delete');
 
     // For create courses
     Route::post('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/course/all', [CourseController::class, 'showOwnedCourses'])->name('course.all');
-    Route::get('course/{id}/info', [CourseController::class,'showCourse'])->name('course.showInfo');
+    Route::get('course/{id}', [CourseController::class,'showCourse'])->name('course.showInfo');
     Route::get('course/{id}/delete', [CourseController::class,'delete'])->name('course.delete');
 
     // for create course content
     Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.create');
+    Route::get('/course/content/{id}/delete', [CourseContentController::class, 'delete'])->name('content.delete');
 
+    // for create content topic
+
+    Route::post('/course/content/topic/create', [TopicController::class, 'create'])->name('topic.create');
+
+
+    // Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.delete');
 });
 
 

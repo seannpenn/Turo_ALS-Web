@@ -29,7 +29,7 @@ class RegisterController extends Controller
         ]);
         Teacher::create([
             'user_id' => $userId,
-            'teacher_fname' => $request['teacher_fname'],
+            'teacher_fname' => $request->teacher_fname,
             'teacher_mname' => $request['teacher_mname'],
             'teacher_lname' => $request['teacher_lname'],
             'teacher_number' => $request['teacher_number'],

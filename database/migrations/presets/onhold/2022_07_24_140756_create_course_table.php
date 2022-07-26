@@ -14,13 +14,24 @@ return new class extends Migration
     public function up()
     {
         Schema::create('courses', function (Blueprint $table) {
-            $table->increments('course_id');
+            $table->id('course_id');
             $table->unsignedInteger('teacher_id');
             $table->string('course_title', 45);
             $table->string('course_description', 45);
 
             $table->foreign('teacher_id')->references('teacherId')->on('teachers')->onDelete('cascade');
         });
+
+        Schema::create('coursecontent', function (Blueprint $table) {
+            $table->id('content_id');
+            $table->unsignedInteger('course_id');
+            $table->string('content_title');
+            $table->string('content_description');
+            
+            $table->foreign('course_id')->references('course_id')->on('courses')->onDelete('cascade');
+        });
+
+        
     }
 
     /**
@@ -31,5 +42,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('courses');
+        Schema::dropIfExists('coursecontent');
     }
 };
