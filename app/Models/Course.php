@@ -16,8 +16,13 @@ class Course extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'teacherId',
+        'teacher_id',
         'course_title',
         'course_description',
     ];
+
+    public static function getAllCourses(){
+        
+        return self::get()->toArray();
+    }
 }

@@ -30,18 +30,22 @@ class CourseController extends Controller
         }
         else{
             // $college = new College;
-            $findTeacher = Teacher::where('teacherId',Auth::id())->get()->first();
-            $course= new Course;
+            // $findTeacher = Teacher::where('teacherId',Auth::id())->get()->toArray();
+            $course = new Course();
 
-        $course->teacher_id = $findTeacher->teacherId;
+        $course->teacher_id = Auth::id();
         $course->course_title = $request->course_title;
         $course->course_description = $request->course_description;
         
-        
         $course->save();
 
-        // return redirect()->to(url('students/all'));
+
         return redirect()->to(route('home'));
         }
+    }
+    public function show(){
+        $courseModel = new Course();
+        $courseCollection = Course::where('teacher_id',Auth::id())->get()->toArray();
+        return view('dashboard.courses.display_course')->with(compact('courseCollection'));
     }
 }

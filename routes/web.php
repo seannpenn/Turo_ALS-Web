@@ -41,5 +41,6 @@ Route::middleware(['auth'])->group(function(){
 
     // For create courses
     Route::post('/course/create', [CourseController::class, 'create'])->name('course.create');
+    Route::get('/course/all', [CourseController::class, 'show'])->name('course.all');
 });
 
