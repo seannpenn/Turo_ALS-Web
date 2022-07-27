@@ -7,6 +7,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <script src= "{{ asset('js/bootstrap.js') }}" ></script>
+
+    <script>
+        @yield('script-area')
+    </script>
 </head>
     <style>
         @yield('css-style');
@@ -18,6 +22,7 @@
     @endguest
 
     @auth
+        @include('navbar.navbar_inside')
         @yield('main-content')
     @endauth
         

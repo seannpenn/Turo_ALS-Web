@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->increments('course_id');
-            $table->foreignId('teacher_id');
+            $table->unsignedInteger('teacher_id');
             $table->string('course_title', 45);
             $table->string('course_description', 45);
 
-            $table->foreign('teacher_id')->references('teacherId')->on('teachers');
+            $table->foreign('teacher_id')->references('teacherId')->on('teachers')->onDelete('cascade');
         });
     }
 

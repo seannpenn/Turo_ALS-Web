@@ -25,4 +25,7 @@ class Course extends Model
         
         return self::get()->toArray();
     }
+    public function getCourseContents(){
+        return $this->hasMany(CourseContent::class);
+    }
 }
