@@ -7,20 +7,23 @@
       </div>
       <div class="modal-body">
         <form action="@yield('form-action')" method="post">
+        {{ csrf_field() }}
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">@yield('first-label')</label>
-            <input type="text" name="@yield('first-input')" class="form-control" id="recipient-name">
+            <input type="text" name="course_title" class="form-control" id="recipient-name">
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">@yield('second-label')</label>
-            <textarea class="form-control" name="@yield('second-input')" id="message-text"></textarea>
+            <textarea class="form-control" name="course_description" id="message-text"></textarea>
           </div>
+
+          <div class="modal-footer">
+        
+        <button type="submit" class="btn btn-primary">Create</button>
+      </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-        <button type="button" class="btn btn-primary">Create</button>
-      </div>
+      
     </div>
   </div>
 </div>
