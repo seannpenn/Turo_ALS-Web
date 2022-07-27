@@ -1,7 +1,7 @@
 @extends('main')
 
 @section('right-side-nav')
-     <a class="nav-link" style="color: white;" href="{{route('register')}}">Register</a>
+     <a class="nav-link" style="color: white;" href="{{route('teacher.registration')}}">Register</a>
 @stop
 
 @section('css-style')
@@ -38,7 +38,7 @@
         <br>
         <h2>Teacher Login</h2>
         <br>
-        <form action="{{ route('user.login') }}" method="post">
+        <form action="{{ route('teacher.login') }}" method="post">
         {{ csrf_field() }}
             <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-2 col-form-label">Username</label>
@@ -67,7 +67,6 @@
             <div class="d-grid gap-2 col-6 mx-auto">
                 <button type="submit" class="btn btn-primary" type="button">Sign in</button>
             </div>
-            
         </form>
     </section>
 @stop

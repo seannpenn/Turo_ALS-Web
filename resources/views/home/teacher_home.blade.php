@@ -8,6 +8,9 @@
 
 @section('left-side-nav')
     <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{route('teacher.home')}}">Home</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Manage Users</a>
     </li>
     <li class="nav-item">
@@ -29,7 +32,7 @@
 <!--//for inner navbar//-->
 
 @section('main-content')
-    
+    @include('navbar.navbar_inside')
     @include('dashboard.courses.create_course')
     This is home
 

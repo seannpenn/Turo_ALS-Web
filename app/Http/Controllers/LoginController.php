@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class LoginController extends Controller
 {
     //
-    public function login(Request $request){
+    public function teacherLogin(Request $request){
         $loginCredentials = $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -18,7 +18,7 @@ class LoginController extends Controller
         if(Auth::attempt($loginCredentials)){
             $request->session()->regenerate();
             
-            return redirect()->intended('home');
+            return redirect()->to(route('teacher.home'));
         }
 
         return back()->withErrors([
@@ -27,8 +27,34 @@ class LoginController extends Controller
         ])->onlyInput('username');
     }
 
+    public function studentLogin(Request $request){
+        $loginCredentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        if(Auth::attempt($loginCredentials)){
+            $request->session()->regenerate();
+            
+            return redirect()->to(route('student.home'));
+        }
+
+        return back()->withErrors([
+            'username.required' => 'This username entry cannot be blank.',
+            'password.required' => 'Empty passwords are not accepted'
+        ])->onlyInput('username');
+    }
+
+
     public function logout(){
-        Auth::logout();
-        return redirect()->to('login');
+        if(Auth::user()->userType == '1'){
+            Auth::logout();
+            return redirect()->to('/admin');
+        }
+        else{
+            Auth::logout();
+            return redirect()->to('/student/login');
+        }
+        
     }
 }

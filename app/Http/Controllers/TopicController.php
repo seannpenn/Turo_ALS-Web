@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Topic;
+use App\Models\CourseContent;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
@@ -41,5 +42,11 @@ class TopicController extends Controller
 
             return redirect()->back();
         }
+    }
+    public function viewModule($id){
+
+        $courseContentTopic = Topic::where('content_id',$id)->get()->toArray();
+
+        return view('dashboard.courses.view_module')->with(compact('courseContentTopic'));  
     }
 }
