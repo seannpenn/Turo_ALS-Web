@@ -11,12 +11,6 @@
 
 @section('css-style')
     .layout{
-    
-    }
-    .course-content-area{
-        
-        flex-grow: 1;
-        flex-direction: column;
     }
     img{
         height: 20px;
@@ -27,7 +21,7 @@
         cursor:pointer;
     }
     .card{
-        width: 500px;
+        width: 50%;
     }
     .card:hover{
         cursor:pointer;
@@ -38,17 +32,18 @@
         overflow-y: auto;  
         padding: 5px; 
     }
-    .form-area{
-        width:500px;
-    }
-    .created-course{
+
+    .created-module{
+        display: flex;
         height: 50%; 
         overflow-y: auto;  
-        width: 100%;
         padding: 5px; 
     }
     .course-header{
-        display:flex;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     .module-content-area{
         left:0;
@@ -66,9 +61,22 @@
         bottom: 0px;
         right: 30px;
     }
-    .layout-botton{
-        width:100%;
+    .layout-bottom{
+        height:500px;
         display:flex;
+        <!-- align-items: center; -->
+        
+    }
+    .modules{
+        width:50%;
+    }
+    #topic-form{
+        border: 2px solid black;
+        padding: 20px;
+        
+        width:50%;
+        height: auto;
+        
     }
     
 @stop
@@ -77,7 +85,7 @@
     <li class="nav-item">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Course</button>
         <button type="button" class="btn btn-primary"><a class="nav-link active" aria-current="page" href="{{route('course.all')}}">View Courses</a></button>
-
+        <button type="button" class="btn btn-primary"><a class="nav-link active" aria-current="page" href="">Student's list</a></button>
     </li>
 @stop
 
@@ -88,12 +96,14 @@
 
 @section('main-content')
     @include('dashboard.courses.create_course')
-    
+    @include('navbar/navbar_inside')
+
     <td class="icons"><a href="{{route('course.all')}}" title="View Course">back</a></td>
 
     <div class="layout">
         <div class="course-header">
             @foreach($chosenCourse as $course)
+            
                 <div class="card" id="card" style="width: 18rem; height: 180px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
                     <div class="card-body">
                         <h1>{{$course['course_id']}}</h1>
@@ -105,14 +115,16 @@
                     <div class="action" style="margin:2px;">
                     <td class="icons"><a title="Delete Course"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
 
-                        <!-- <a class="btn btn-primary" href="#" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/delete.png') }}" alt=""></a> -->
                     </div>
                     
                 </div>
                 <p>
                 <br>
     
-                <div class="form-area">
+                
+            @endforeach
+
+            <div class="form-area">
                     <h2>Add Course Modules</h2>
                         <form class="row gy-2 gx-3 align-items-center" action="{{route('content.create')}}" method="post">
                         {{ csrf_field() }}
@@ -135,133 +147,86 @@
                                 </div>
                             </form>
                 </div>
-                
-            @endforeach
         </div>
         <h1>Modules</h1>
-        <div class="layout-botton">
+            
+        <div class="layout-bottom">
 
-        
-            <div class="created-course">
-                
-                @foreach($courseContent as $content)
-                    <div class="card" role="button" href="#multiCollapseExample1" style="margin:5px;">
-                        <div class="card-body">
-                            <h5>{{$content['content_title']}}</h5>
-                            <h9>{{$content['content_description']}}</h9>
-                                                
-                        </div>
-
-                        <div class="action-delete" style="margin:2px;">
-                            <td class="icons"><a href="{{ route('content.delete',$content['content_id']) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
-                        </div>
-                        <div class="action" style="margin:2px;">
-                            <div class="icons" onclick="showTopicInput( {{$content['content_id']}}); getModuleId({{$content['content_id']}});"><a  title="Add topic"><img src="{{ asset('images/add.png') }}" alt="" ></a></div>
-                        </div>
-                        
-                    </div>
+                <div class="modules">
+                    @foreach($courseContent as $content)
                     
-                @endforeach
+                        <div class="card" role="button" style="margin:5px;" id="moduleCard" >
 
-            </div>
-
-            <div class="module-content-area">
-
-                
-                <div class="d-none" id="topic-form">
-                    <div class="icons" onclick="showTopicInput()"><a  title="Close form"><img src="{{ asset('images/close.png') }}" alt="" ></a></div>
-                    <h4>Add Topic for Module</h4>
-                    <form action="{{route('topic.create')}}" method="post">
-                    {{ csrf_field() }}
-                            <input type="text" id="ModuleId" name="content_id" class="form-control" placeholder="Title" aria-label="Title" value="" hidden>
-                            <div class="col">
-                                <input type="text" name="topic_title" class="form-control" placeholder="Title" aria-label="Title" value="">
+                            <div class="card-body">
+                                <h5>{{$content['content_title']}}</h5>
+                                <h9>{{$content['content_description']}}</h9>
+                                                    
                             </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <textarea class="form-control" name="topic_description" id="exampleFormControlTextarea1" rows="3" columns="8"></textarea>
+
+                            <div class="action-delete" style="margin:2px;">
+                                <td class="icons"><a href="{{ route('content.delete',$content['content_id']) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
+                            </div>
+                            <div class="action" style="margin:2px;">
+                                <div class="icons" onclick="showTopicInput( {{$content['content_id']}}); getModuleId({{$content['content_id']}});"><a  title="Add topic"><img src="{{ asset('images/add.png') }}" alt="" ></a></div>
+                            </div>
+                            
+                        </div>
+                    
+                        
+                    @endforeach
+                </div>
+                <div id="topic-form" class="d-none">
+                        <div class="icons" onclick="showTopicInput()"><a  title="Close form"><img src="{{ asset('images/close.png') }}" alt="" ></a></div>
+                        <h4>Add Topic for Module</h4>
+                        <form action="{{route('topic.create')}}" method="post">
+                        {{ csrf_field() }}
+                                <input type="text" id="ModuleId" name="content_id" class="form-control" placeholder="Title" aria-label="Title" value="" hidden>
+                                <div class="col">
+                                    <input type="text" name="topic_title" class="form-control" placeholder="Title" aria-label="Title" value="">
                                 </div>
-                            </div>
-
-                            <div class="col-sm-4" id="selectType">
-                                <label class="visually-hidden" for="specificSizeSelect">Preference</label>
-                                <select class="form-select" id="specificSizeSelect" name="topic_type" onchange="showInput(this)">
-                                <option selected>Type</option>
-                                <option value="text">Text</option>
-                                <option value="file">File</option>
-                                <option value="media">Media</option>
-                                </select>
-                            </div>
-
-                            <div class="content-type">
-                                <div id="text" class="d-none">
-                                    <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                                        <label for="floatingTextarea2">Topic details</label>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <textarea class="form-control" name="topic_description" id="exampleFormControlTextarea1" rows="3" columns="8"></textarea>
                                     </div>
                                 </div>
-                                <div id="file" class="d-none">
-                                    <div class="input-group">
-                                        <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                                        <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
-                                    </div>
+
+                                <div class="col-sm-4" id="selectType">
+                                    <label class="visually-hidden" for="specificSizeSelect">Preference</label>
+                                    <select class="form-select" id="specificSizeSelect" name="topic_type" onchange="showInput(this)">
+                                    <option selected>Type</option>
+                                    <option value="text">Text</option>
+                                    <option value="file">File</option>
+                                    <option value="media">Media</option>
+                                    </select>
                                 </div>
-                                <div id="media" class="d-none">
-                                    <div class="input-group">
-                                        <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+
+                                <div class="content-type">
+                                    <div id="text" class="d-none">
+                                        <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                            <label for="floatingTextarea2">Topic details</label>
+                                        </div>
+                                    </div>
+                                    <div id="file" class="d-none">
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
                                             <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
+                                        </div>
+                                    </div>
+                                    <div id="media" class="d-none">
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                                <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mx-auto">
-                                    <button type="submit" class="btn btn-primary btn-lg" type="button">add</button>
-                            </div>
-                    </form>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mx-auto">
+                                        <button type="submit" class="btn btn-primary btn-lg" type="button">add</button>
+                                </div>
+                        </form>
                 </div>
 
-            </div>
         </div>
-        <!-- <div class="module-content-area">
-        <div class="col">
-                <input type="text" class="form-control" placeholder="Title" aria-label="Title">
-                </div>
-                <div class="col">
-                    <div class="mb-3">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" columns="8"></textarea>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <label class="visually-hidden" for="specificSizeSelect">Preference</label>
-                    <select class="form-select" id="specificSizeSelect" onchange="showInput(this)">
-                    <option selected>Type</option>
-                    <option value="text">Text</option>
-                    <option value="file">File</option>
-                    <option value="media">Media</option>
-                    </select>
-                </div>
-
-                <div class="content-type">
-                    <div id="text" class="d-none">
-                        <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                            <label for="floatingTextarea2">Comments</label>
-                        </div>
-                    </div>
-                    <div id="file" class="d-none">
-                        <div class="input-group">
-                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
-                        </div>
-                    </div>
-                    <div id="media" class="d-none">
-                        <div class="input-group">
-                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                                <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
-                        </div>
-                    </div>
-                </div>
-        </div> -->
-        
     </div>
         
 @stop
@@ -271,8 +236,8 @@
 
         let confirmTask = document.getElementById('confirmTask');
         confirmTask.addEventListener('click',()=>{
-            window.location.href = "{{ route('course.delete', $chosenCourse[0]['course_id']) }}";
-        }); 
+            window.location.href = "{{ route('course.delete', $courseId) }}";
+        });  
 
     function showTopicInput(id){
         if(document.getElementById('topic-form').classList.contains('d-none')){

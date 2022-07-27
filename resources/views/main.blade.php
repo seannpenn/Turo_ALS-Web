@@ -22,9 +22,9 @@
     @endguest
 
     @auth
-        @include('navbar.navbar_inside')
         @yield('main-content')
     @endauth
+    
         
     
 </body>

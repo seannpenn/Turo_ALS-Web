@@ -46,8 +46,8 @@ class CourseController extends Controller
         
         $chosenCourse = Course::where('course_id',$id)->get()->toArray();
         $courseContent = CourseContent::where('course_id',$id)->get()->toArray();
-        
-        return view('dashboard.courses.view_course')->with(compact('chosenCourse', 'courseContent'));  
+        $courseId = $id;
+        return view('dashboard.courses.view_course')->with(compact('chosenCourse', 'courseContent', 'courseId'));  
     }
 
     public function showOwnedCourses(){
