@@ -44,7 +44,7 @@
             <div class="row mb-3">
                 <label for="user_Type" class="col-sm-2 col-form-label">User type:</label>
                 <div class="col-sm-10">
-                    <select class="form-select" name="user_Type"  aria-label="Default select example" id=>
+                    <select class="form-select" name="userType"  aria-label="Default select example" id=>
                         
                         <option selected value="0">Student</option>
                         <option value="1">Teacher</option>

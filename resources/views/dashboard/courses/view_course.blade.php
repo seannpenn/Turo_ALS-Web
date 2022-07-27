@@ -1,22 +1,34 @@
 @extends('main')
 @extends('dashboard/courses/createCourse_modal')
-@extends('dashboard/courses/createCourseContent_modal')
+@extends('modalslug')
+@section('modal-content')
+    <span id="modalContent"> Deleting this course would also remove all of its contents. Are you sure you want to proceed?</span>
+@stop
+
+@section('modal-title')
+    Delete Course
+@stop
 
 @section('css-style')
     .layout{
-        display: flex;
-        flex-grow: 1;
-        flex-direction: row;
+    
     }
     .course-content-area{
-        display: flex;
+        
         flex-grow: 1;
         flex-direction: column;
     }
     img{
-        height: 30px;
-        width: 30px; 
+        height: 20px;
+        width: 20px; 
+        
     } 
+    img:hover{
+        cursor:pointer;
+    }
+    .card{
+        width: 500px;
+    }
     .card:hover{
         cursor:pointer;
     }
@@ -26,12 +38,39 @@
         overflow-y: auto;  
         padding: 5px; 
     }
-    .title{
-        display:flex;
-    }
     .form-area{
         width:500px;
     }
+    .created-course{
+        height: 50%; 
+        overflow-y: auto;  
+        width: 100%;
+        padding: 5px; 
+    }
+    .course-header{
+        display:flex;
+    }
+    .module-content-area{
+        left:0;
+        margin: 5px;
+        width:100%;
+        
+    }
+    .action{
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+    }
+    .action-delete{
+        position: absolute;
+        bottom: 0px;
+        right: 30px;
+    }
+    .layout-botton{
+        width:100%;
+        display:flex;
+    }
+    
 @stop
 
 @section('left-side-nav-inside')
@@ -42,11 +81,17 @@
     </li>
 @stop
 
+@section('right-side-nav')
+    <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
+     <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">Logout</a>
+@stop
+
 @section('main-content')
     @include('dashboard.courses.create_course')
-
+    
     <td class="icons"><a href="{{route('course.all')}}" title="View Course">back</a></td>
 
+    <div class="layout">
         <div class="course-header">
             @foreach($chosenCourse as $course)
                 <div class="card" id="card" style="width: 18rem; height: 180px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
@@ -54,22 +99,21 @@
                         <h1>{{$course['course_id']}}</h1>
                         <h5 class="card-title">{{$course['course_title']}}</h5>
                         <p class="card-text">{{$course['course_description']}}</p>
+                    
                     </div>
+
+                    <div class="action" style="margin:2px;">
+                    <td class="icons"><a title="Delete Course"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
+
+                        <!-- <a class="btn btn-primary" href="#" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/delete.png') }}" alt=""></a> -->
+                    </div>
+                    
                 </div>
-
-                <!-- <div class="title">
-                    <div class="header">
-                        <h1>{{$course['course_title']}}</h1>
-                        <h5>{{$course['course_description']}}</h5>
-                    </div>
-                    <div class="action">
-                        <td class="icons"><a href="{{ route('course.delete',$course['course_id']) }}" title="Delete Student Entry"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
-                    </div>
-                </div> -->
+                <p>
                 <br>
-                <h2>Add Course Modules</h2>
-
-                    <div class="form-area">
+    
+                <div class="form-area">
+                    <h2>Add Course Modules</h2>
                         <form class="row gy-2 gx-3 align-items-center" action="{{route('content.create')}}" method="post">
                         {{ csrf_field() }}
                             <input type="course_id" name="course_id" value="{{$course['course_id']}}" hidden>
@@ -82,44 +126,9 @@
 
                                         <textarea class="form-control" name="content_description" id="exampleFormControlTextarea1" rows="3" placeholder="Module Description"></textarea>
                                     </div>
-                                    <!-- <div class="col">
-                                        <input type="text" class="form-control" placeholder="Title" aria-label="Title">
-                                    </div>
-                                    <div class="col">
-                                        <div class="mb-3">
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" columns="8"></textarea>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div class="col-sm-4">
-                                        <label class="visually-hidden" for="specificSizeSelect">Preference</label>
-                                        <select class="form-select" id="specificSizeSelect" onchange="showInput(this)">
-                                        <option selected>Type</option>
-                                        <option value="text">Text</option>
-                                        <option value="file">File</option>
-                                        <option value="media">Media</option>
-                                        </select>
-                                    </div> -->
+                                    
                                 </div>
-                                <!-- <div class="content-type">
-                                    <div id="text" class="d-none">
-                                        <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                                            <label for="floatingTextarea2">Comments</label>
-                                        </div>
-                                    </div>
-                                    <div id="file" class="d-none">
-                                        <div class="input-group">
-                                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                                            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
-                                        </div>
-                                    </div>
-                                    <div id="media" class="d-none">
-                                        <div class="input-group">
-                                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                                            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
-                                        </div>
-                                    </div>
-                                </div> -->
+                                
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mx-auto">
                                     <button type="submit" class="btn btn-primary btn-lg" type="button">add</button>
@@ -129,22 +138,157 @@
                 
             @endforeach
         </div>
-        <div class="created-course">
-            @foreach($courseContent as $content)
-                <div class="card w-75">
-                    <div class="card-body">
-                        <h5 class="card-title">{{$content['content_title']}}</h5>
-                        <p class="card-text">{{$content['content_description']}}</p>
-                        <a href="#" class="btn btn-primary">Button</a>
+        <h1>Modules</h1>
+        <div class="layout-botton">
+
+        
+            <div class="created-course">
+                
+                @foreach($courseContent as $content)
+                    <div class="card" role="button" href="#multiCollapseExample1" style="margin:5px;">
+                        <div class="card-body">
+                            <h5>{{$content['content_title']}}</h5>
+                            <h9>{{$content['content_description']}}</h9>
+                                                
+                        </div>
+
+                        <div class="action-delete" style="margin:2px;">
+                            <td class="icons"><a href="{{ route('content.delete',$content['content_id']) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
+                        </div>
+                        <div class="action" style="margin:2px;">
+                            <div class="icons" onclick="showTopicInput( {{$content['content_id']}}); getModuleId({{$content['content_id']}});"><a  title="Add topic"><img src="{{ asset('images/add.png') }}" alt="" ></a></div>
+                        </div>
+                        
+                    </div>
+                    
+                @endforeach
+
+            </div>
+
+            <div class="module-content-area">
+
+                
+                <div class="d-none" id="topic-form">
+                    <div class="icons" onclick="showTopicInput()"><a  title="Close form"><img src="{{ asset('images/close.png') }}" alt="" ></a></div>
+                    <h4>Add Topic for Module</h4>
+                    <form action="{{route('topic.create')}}" method="post">
+                    {{ csrf_field() }}
+                            <input type="text" id="ModuleId" name="content_id" class="form-control" placeholder="Title" aria-label="Title" value="" hidden>
+                            <div class="col">
+                                <input type="text" name="topic_title" class="form-control" placeholder="Title" aria-label="Title" value="">
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <textarea class="form-control" name="topic_description" id="exampleFormControlTextarea1" rows="3" columns="8"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4" id="selectType">
+                                <label class="visually-hidden" for="specificSizeSelect">Preference</label>
+                                <select class="form-select" id="specificSizeSelect" name="topic_type" onchange="showInput(this)">
+                                <option selected>Type</option>
+                                <option value="text">Text</option>
+                                <option value="file">File</option>
+                                <option value="media">Media</option>
+                                </select>
+                            </div>
+
+                            <div class="content-type">
+                                <div id="text" class="d-none">
+                                    <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                        <label for="floatingTextarea2">Topic details</label>
+                                    </div>
+                                </div>
+                                <div id="file" class="d-none">
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                        <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
+                                    </div>
+                                </div>
+                                <div id="media" class="d-none">
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mx-auto">
+                                    <button type="submit" class="btn btn-primary btn-lg" type="button">add</button>
+                            </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <!-- <div class="module-content-area">
+        <div class="col">
+                <input type="text" class="form-control" placeholder="Title" aria-label="Title">
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" columns="8"></textarea>
                     </div>
                 </div>
-            @endforeach
-        </div>
-    
+                <div class="col-sm-4">
+                    <label class="visually-hidden" for="specificSizeSelect">Preference</label>
+                    <select class="form-select" id="specificSizeSelect" onchange="showInput(this)">
+                    <option selected>Type</option>
+                    <option value="text">Text</option>
+                    <option value="file">File</option>
+                    <option value="media">Media</option>
+                    </select>
+                </div>
 
+                <div class="content-type">
+                    <div id="text" class="d-none">
+                        <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                            <label for="floatingTextarea2">Comments</label>
+                        </div>
+                    </div>
+                    <div id="file" class="d-none">
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
+                        </div>
+                    </div>
+                    <div id="media" class="d-none">
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>
+                        </div>
+                    </div>
+                </div>
+        </div> -->
+        
+    </div>
+        
 @stop
 
+
 @section('script-area')
+
+        let confirmTask = document.getElementById('confirmTask');
+        confirmTask.addEventListener('click',()=>{
+            window.location.href = "{{ route('course.delete', $chosenCourse[0]['course_id']) }}";
+        }); 
+
+    function showTopicInput(id){
+        if(document.getElementById('topic-form').classList.contains('d-none')){
+            document.getElementById('topic-form').classList.remove('d-none');
+        }
+        else{
+            document.getElementById('topic-form').classList.add('d-none');
+        }
+        document.getElementById('ModuleId').value = id;
+        console.log(id);
+    }
+
+   function getModuleId(id){
+        return id;
+   }
+
     function showInput(answer){
         console.log(answer.value)
 
@@ -158,11 +302,22 @@
             document.getElementById('text').classList.add('d-none');
             document.getElementById('media').classList.add('d-none');
         }
-        else{
+        else if(answer.value == 'media'){
             document.getElementById('media').classList.remove('d-none');
+            document.getElementById('text').classList.add('d-none');
+            document.getElementById('file').classList.add('d-none');
+        }
+        else{
+            document.getElementById('media').classList.add('d-none');
             document.getElementById('text').classList.add('d-none');
             document.getElementById('file').classList.add('d-none');
         }
 
     }
+
+    
 @stop
+
+<script>
+    
+</script>
