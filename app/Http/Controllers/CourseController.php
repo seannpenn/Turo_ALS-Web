@@ -20,7 +20,6 @@ class CourseController extends Controller
         $messages = [
             'course_title.required' => 'Please input a course title',
             'course_description.required' => 'Please input a course description',
-
         ];
 
         $validation = Validator::make($request->input(), $rules, $messages);
@@ -33,6 +32,7 @@ class CourseController extends Controller
             $course = new Course();
 
             $course->teacher_id = Auth::id();
+            $course->course_category = $request->course_category;
             $course->course_title = $request->course_title;
             $course->course_description = $request->course_description;
             

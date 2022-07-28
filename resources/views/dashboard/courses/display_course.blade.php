@@ -1,5 +1,4 @@
 @extends('main')
-
 @extends('dashboard/courses/createCourse_modal')
 @extends('modalslug')
 
@@ -45,6 +44,16 @@
     bottom: 0px;
     right: 30px;
     }
+    .header{
+        margin: 30 auto;
+        width: 500px;
+        border: 1 solid;
+    }
+    .empty-course{
+        margin: 300 auto;
+        width: 700px;
+        border: 1 solid;
+    }
 @stop
 
 @section('left-side-nav')
@@ -77,29 +86,39 @@
 @section('main-content')
 @include('dashboard.courses.create_course')
 @include('navbar/navbar_inside')
+    <div class="header">
+        <select class="form-select" aria-label="Default select example" name="courseCategory" id="courseCategory" >
+        <option selected>Choose education level</option>
+        <option value="GS">Grade School</option>
+        <option value="HS">High School</option>
+        </select>
+    </div>
+    @if(count($ownedCourses) != 0)
         <div class="course-area">
-            @if(count($ownedCourses) != 0)
+            
             @foreach($ownedCourses as $course)
-                <div class="card" id="card" style="width: 18rem; height: 180px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
-                    <div class="card-body" style="display: flex;">
-                        <div class="card-content">
-                            <!-- <h1>{{$course['course_id']}}</h1> -->
-                            <h5 class="card-title">{{$course['course_title']}}</h5>
-                            <p class="card-text">{{$course['course_description']}}</p>
-                        </div>
-                        
-                        <div class="action">
-                            <td class="icons"><a href="{{route('course.showInfo', $course['course_id'])}}" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
-                        </div>
-                        <div class="action-delete" style="margin:2px;">
-                            <td class="icons"><a title="Delete Course"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
+                    <div class="card" id="card" style="width: 18rem; height: 180px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
+                        <div class="card-body" style="display: flex;">
+                            <div class="card-content">
+                                <!-- <h1>{{$course['course_id']}}</h1> -->
+                                <h5 class="card-title">{{$course['course_title']}}</h5>
+                                <p class="card-text">{{$course['course_description']}}</p>
+                            </div>
+                            
+                            <div class="action">
+                                <td class="icons"><a href="{{route('course.showInfo', $course['course_id'])}}" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
+                            </div>
+                            <div class="action-delete" style="margin:2px;">
+                                <td class="icons"><a title="Delete Course"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
 
-                            <!-- <td class="icons"><a href="{{ route('course.delete',$course['course_id']) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td> -->
+                                <!-- <td class="icons"><a href="{{ route('course.delete',$course['course_id']) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td> -->
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                
                 @section('script-area')
+                    
+
                     let confirmTask = document.getElementById('confirmTask');
                     confirmTask.addEventListener('click',()=>{
                         window.location.href = "{{ route('course.delete', $course['course_id']) }}";
@@ -107,12 +126,43 @@
                 @stop
 
             @endforeach
-            
-            @else
-                <h1>You dont have any courses posted.</h1>
-            @endif
+             
         </div>
+    @else
+        <div class="empty-course">
+            <h1>You dont have any courses posted.</h1>
+        </div>
+    @endif
 
+@stop
+
+@section('script-area')
+
+    function displayCourses(answer){
+        console.log(answer.value)
+
+        if(answer.value == 'text'){
+            document.getElementById('text').classList.remove('d-none');
+            document.getElementById('file').classList.add('d-none');
+            document.getElementById('media').classList.add('d-none');
+        }
+        else if(answer.value == 'file'){
+            document.getElementById('file').classList.remove('d-none');
+            document.getElementById('text').classList.add('d-none');
+            document.getElementById('media').classList.add('d-none');
+        }
+        else if(answer.value == 'media'){
+            document.getElementById('media').classList.remove('d-none');
+            document.getElementById('text').classList.add('d-none');
+            document.getElementById('file').classList.add('d-none');
+        }
+        else{
+            document.getElementById('media').classList.add('d-none');
+            document.getElementById('text').classList.add('d-none');
+            document.getElementById('file').classList.add('d-none');
+        }
+
+    }
 @stop
 
 

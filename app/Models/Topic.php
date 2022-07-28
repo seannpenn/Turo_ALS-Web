@@ -18,4 +18,8 @@ class Topic extends Model
         'topic_description',
         'topic_type',
     ];
+
+    public static function getAllTopic(){
+        return self::get()->toArray();
+    }
 }
