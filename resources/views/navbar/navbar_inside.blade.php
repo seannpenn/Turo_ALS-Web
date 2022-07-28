@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <script src= "{{ asset('js/bootstrap.js') }}" ></script>
     <title>Document</title>
+    <script>
+      
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">

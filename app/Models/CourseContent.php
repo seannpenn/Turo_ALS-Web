@@ -22,4 +22,9 @@ class CourseContent extends Model
     public function course(){
         return $this->belongsTo(Course::class);
     }
+
+    public static function getAllModule(){
+        
+        return self::get()->toArray();
+    }
 }

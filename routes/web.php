@@ -23,7 +23,7 @@ Route::view('/', 'landing')->name('landing');
 
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
 
-    Route::view('/admin/home', 'home.teacher_home')->name('teacher.home');
+    Route::view('/home', 'home.teacher_home')->name('teacher.home');
     // For create courses
     Route::post('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/course/all', [CourseController::class, 'showOwnedCourses'])->name('course.all');

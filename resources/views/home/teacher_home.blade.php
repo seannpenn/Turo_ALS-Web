@@ -34,7 +34,7 @@
 @section('main-content')
     @include('navbar.navbar_inside')
     @include('dashboard.courses.create_course')
-    This is home
+    Announcements from Deped....
 
 @stop
 

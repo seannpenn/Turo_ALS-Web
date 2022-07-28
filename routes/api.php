@@ -3,13 +3,11 @@ use App\Http\Controllers\Api\PostController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\CourseContentController;
-use App\Http\Controllers\TopicController;
+
+use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\CourseContentController;
+use App\Http\Controllers\Api\TopicController;
+use App\Http\Controllers\Api\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,4 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('posts', PostController::class);
 
-
+Route::post('/register', [AuthController::class, 'teacherRegister']);
+Route::post('/login', [AuthController::class, 'StudentLogin']); //ok
+Route::get('/course', [CourseController::class, 'show']); //ok
+Route::get('/module', [CourseContentController::class, 'show']); //ok
+Route::get('/topic', [TopicController::class, 'show']); //ok

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +17,7 @@ class Course extends Model
 
     protected $fillable = [
         'teacher_id',
+        'course_category',
         'course_title',
         'course_description',
     ];
@@ -27,5 +28,10 @@ class Course extends Model
     }
     public function getCourseContents(){
         return $this->hasMany(CourseContent::class);
+    }
+
+    public function scopeFilter(Builder $builder, $request)
+    {
+        return (new CourseFilter($request))->filter($builder);
     }
 }
