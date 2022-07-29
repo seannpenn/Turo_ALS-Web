@@ -16,9 +16,9 @@ class UserController extends Controller
         // $studentCollection = Student::get();
 
         // dd($studentCollection);
-        // return view('dashboard.allusers')->with(compact('userCollection'));
-        $response = ['users' => $userCollection];
-        return response()->json($response, 200);
+        return view('dashboard.allusers')->with(compact('userCollection'));
+        // $response = ['users' => $userCollection];
+        // return response()->json($response, 200);
     }
 
     public function delete($id){

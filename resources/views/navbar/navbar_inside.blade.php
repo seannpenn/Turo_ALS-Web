@@ -10,9 +10,22 @@
     <script>
       
     </script>
+    <style>
+      .inner-nav-link{
+        font-size: 18px;
+        color:white;
+        line-height: 40px;
+        text-decoration:none;
+        font-weight: bold;
+      }
+      .inner-nav-link:hover {
+          font-size: 22px;
+          color:orange;
+      }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: grey;">
   <div class="container-fluid">
     <!-- <a class="navbar-brand" href="#">Create Course</a> -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +33,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
         @yield('left-side-nav-inside')
       </ul>
       

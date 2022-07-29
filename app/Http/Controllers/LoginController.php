@@ -35,7 +35,10 @@ class LoginController extends Controller
 
         if(Auth::attempt($loginCredentials)){
             $request->session()->regenerate();
-            
+            if(Auth::user()->userType == 1){
+                Auth::logout();
+                return redirect()->to('/student/login');
+            }
             return redirect()->to(route('student.home'));
         }
 
@@ -47,7 +50,7 @@ class LoginController extends Controller
 
 
     public function logout(){
-        if(Auth::user()->userType == '1'){
+        if(Auth::user()->userType == 1){
             Auth::logout();
             return redirect()->to('/admin');
         }
