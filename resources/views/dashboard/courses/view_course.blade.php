@@ -88,10 +88,23 @@
     </li>
 @stop
 
-@section('right-side-nav')
-    <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
-     <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">Logout</a>
+@section('left-side-nav')
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{route('teacher.home')}}">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Manage Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Profile</a>
+    </li>
 @stop
+
+@section('right-side-nav')
+    <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
+     <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">Logout</a>
+@stop
+
 
 @section('main-content')
     @include('dashboard.courses.create_course')
@@ -103,6 +116,7 @@
             
                 <div class="card" id="card" style="width: 18rem; height: 180px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
                     <div class="card-body">
+                        
                         <h5 class="card-title">{{$course['course_title']}}</h5>
                         <p class="card-text">{{$course['course_description']}}</p>
                     
@@ -146,10 +160,13 @@
 
                 <div class="modules">
                     @foreach($courseContent as $content)
+                    <a href="{{route('topic.view', $content['content_id'])}}" style="text-decoration:none; color:black;" id="module">
+                        
                     
                         <div class="card" role="button" style="margin:5px;" id="moduleCard" >
 
                             <div class="card-body">
+                            <h5>{{$content['content_id']}}</h5>
                                 <h5>{{$content['content_title']}}</h5>
                                 <h9>{{$content['content_description']}}</h9>
                                                     
@@ -163,8 +180,9 @@
                             </div>
                             
                         </div>
-                    
-                        
+
+                    </a>
+
                     @endforeach
                 </div>
                 <div id="topic-form" class="d-none">
@@ -218,6 +236,7 @@
                         </form>
                 </div>
 
+
         </div>
     </div>
         
@@ -225,6 +244,7 @@
 
 
 @section('script-area')
+
 
         let confirmTask = document.getElementById('confirmTask');
         confirmTask.addEventListener('click',()=>{

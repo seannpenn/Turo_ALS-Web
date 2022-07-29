@@ -46,7 +46,7 @@ class TopicController extends Controller
     public function viewModule($id){
 
         $courseContentTopic = Topic::where('content_id',$id)->get()->toArray();
-
+        
         return view('dashboard.courses.view_module')->with(compact('courseContentTopic'));  
     }
 }
