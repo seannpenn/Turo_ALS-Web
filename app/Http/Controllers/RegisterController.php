@@ -44,7 +44,7 @@ class RegisterController extends Controller
         if(Auth::attempt($loginCredentials)){
             
             $request->session()->regenerate();
-            return redirect()->intended('/home');
+            return redirect()->intended('/admin/home');
         }
 
         return redirect()->to('t-login');
