@@ -98,7 +98,7 @@ class RegisterController extends Controller
         if(Auth::attempt($loginCredentials)){
             
             $request->session()->regenerate();
-            return redirect()->intended('/home');
+            return redirect()->intended('/student/home');
         }
 
         return redirect()->to('student.login');
