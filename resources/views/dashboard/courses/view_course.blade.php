@@ -31,6 +31,7 @@
         width:325px; 
         overflow-y: auto;  
         padding: 5px; 
+        
     }
 
     .created-module{
@@ -40,7 +41,7 @@
         padding: 5px; 
     }
     .course-header{
-        width: 50%;
+        width: 700px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -83,9 +84,7 @@
 
 @section('left-side-nav-inside')
     <li class="nav-item">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Course</button>
-        <button type="button" class="btn btn-primary"><a class="nav-link active" aria-current="page" href="{{route('course.all')}}">View Courses</a></button>
-        <button type="button" class="btn btn-primary"><a class="nav-link active" aria-current="page" href="">Student's list</a></button>
+        
     </li>
 @stop
 
@@ -98,15 +97,12 @@
     @include('dashboard.courses.create_course')
     @include('navbar/navbar_inside')
 
-    <td class="icons"><a href="{{route('course.all')}}" title="View Course">back</a></td>
-
     <div class="layout">
         <div class="course-header">
             @foreach($chosenCourse as $course)
             
                 <div class="card" id="card" style="width: 18rem; height: 180px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
                     <div class="card-body">
-                        <h1>{{$course['course_id']}}</h1>
                         <h5 class="card-title">{{$course['course_title']}}</h5>
                         <p class="card-text">{{$course['course_description']}}</p>
                     
@@ -114,7 +110,6 @@
 
                     <div class="action" style="margin:2px;">
                     <td class="icons"><a title="Delete Course"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
-
                     </div>
                     
                 </div>
@@ -124,29 +119,26 @@
                 
             @endforeach
 
-            <div class="form-area">
-                    <h2>Add Course Modules</h2>
-                        <form class="row gy-2 gx-3 align-items-center" action="{{route('content.create')}}" method="post">
-                        {{ csrf_field() }}
-                            <input type="course_id" name="course_id" value="{{$course['course_id']}}" hidden>
-                                <div class="row">
-                                    <div class="mb-3">
-                                        <input type="text" name="content_title" class="form-control" id="exampleFormControlInput1" placeholder="Module title">
-                                    </div>
+            <div class="form-area" style="width: 18rem; height: 250px; margin: 5px; text-align:right;">
+                <h5>Add Course Modules</h5>
+                <form class="row gy-2 gx-3 align-items-center" action="{{route('content.create')}}" method="post">
+                    {{ csrf_field() }}
+                        <input type="course_id" name="course_id" value="{{$course['course_id']}}" hidden>
+                        <div >
+                            <div class="mb-3">
+                                <input type="text" name="content_title" class="form-control" id="exampleFormControlInput1" placeholder="Module title">
+                            </div>
 
-                                    <div class="mb-3">
+                            <div class="mb-3">
+                                <textarea class="form-control" name="content_description" id="exampleFormControlTextarea1" rows="3" placeholder="Module Description"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-lg" type="button">add</button>
 
-                                        <textarea class="form-control" name="content_description" id="exampleFormControlTextarea1" rows="3" placeholder="Module Description"></textarea>
-                                    </div>
-                                    
-                                </div>
-                                
+                        </div>     
 
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mx-auto">
-                                    <button type="submit" class="btn btn-primary btn-lg" type="button">add</button>
-                                </div>
-                            </form>
-                </div>
+                        
+                </form>
+            </div>
         </div>
         <h1>Modules</h1>
             

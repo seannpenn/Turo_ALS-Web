@@ -1,7 +1,7 @@
 @extends('main')
 
 @section('right-side-nav')
-     <a class="nav-link" style="color: white;" href="{{route('teacher.registration')}}">Register</a>
+     <a class="nav-link" style="color: black;" href="{{route('student.registration')}}">Enroll</a>
 @stop
 
 @section('css-style')

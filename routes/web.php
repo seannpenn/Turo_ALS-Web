@@ -55,19 +55,14 @@ Route::post('/teacher/register', [RegisterController::class, 'teacherRegister'])
 Route::post('/student/register', [RegisterController::class, 'studentRegister'])->name('student.register');
 
 
+
 Route::middleware(['auth'])->group(function(){
     // For student routes
     Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
     // For user routes
     
     Route::view('/student/home', 'home.student_home')->name('student.home');
-
+    Route::view('/student/profile', 'profile.student_profile')->name('student.profile');
     Route::get('user/{id}/delete',[UserController::class,'delete'])->name('user.delete');
-
-    
-
-
     // Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.delete');
 });
-
-

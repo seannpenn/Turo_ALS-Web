@@ -29,10 +29,14 @@
         cursor:pointer;
     }
     .course-area{
-        height: 86%; 
-        width:325px; 
-        overflow-y: auto;  
-        padding: 5px; 
+        justify-content:center;
+        height: auto; 
+        display: grid;
+        grid-template-columns: 300px 300px 300px 300px 300px 300px;
+        gap: 10px;
+        <!-- background-color: #2196F3; -->
+        padding: 10px; 
+        
     }
     .action{
         position: absolute;
@@ -53,6 +57,34 @@
         margin: 300 auto;
         width: 700px;
         border: 1 solid;
+    }
+    .upper-left-header{
+        position:absolute;
+        margin-left: 30px;
+        margin-top: 30px;
+        
+    }
+    nav{
+        box-shadow: 0px 0px 0px 0px;
+    }
+    .create-button{
+        width: 150px;
+        line-height:50px;
+        background-color:orange;
+        color: white;
+        border: 0;
+        border-radius: 10px;
+        
+    }
+    .create-button:hover{
+        width: 155px;
+        line-height:55px;
+        background-color:orange;
+        color: white;
+        border: 0;
+        border-radius: 10px;
+        font-size: 18px;
+        
     }
 @stop
 
@@ -76,9 +108,7 @@
 @section('left-side-nav-inside')
     <li class="nav-item">
         <!-- <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Create Course</a> -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Course</button>
-        <button type="button" class="btn btn-primary"><a class="nav-link active" aria-current="page" href="{{route('course.all')}}">View Courses</a></button>
-        <button type="button" class="btn btn-primary"><a class="nav-link active" aria-current="page" href="">Student's list</a></button>
+        <!-- <button type="button" class="btn btn-primary"><a class="nav-link active" aria-current="page" href="">Student's list</a></button> -->
 
     </li>
 @stop
@@ -86,6 +116,11 @@
 @section('main-content')
 @include('dashboard.courses.create_course')
 @include('navbar/navbar_inside')
+
+
+    <div class="upper-left-header">
+        <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Course</button>
+    </div>
     <div class="header">
         <select class="form-select" aria-label="Default select example" name="courseCategory" id="courseCategory" >
         <option selected>Choose education level</option>
@@ -97,8 +132,8 @@
         <div class="course-area">
             
             @foreach($ownedCourses as $course)
-                    <div class="card" id="card" style="width: 18rem; height: 180px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
-                        <div class="card-body" style="display: flex;">
+                    <div class="card" id="card" style="width: 300px; height: 200;" class="btn btn-primary" data-bs-toggle="modal">
+                        <div class="card-body">
                             <div class="card-content">
                                 <!-- <h1>{{$course['course_id']}}</h1> -->
                                 <h5 class="card-title">{{$course['course_title']}}</h5>

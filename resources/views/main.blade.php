@@ -14,6 +14,9 @@
     </script>
     <style>
         @yield('css-style');
+        *{
+            font-family: 'Montserrat';
+        }
     </style>
 </head>
     
@@ -26,6 +29,7 @@
     @auth
         @yield('main-content')
     @endauth
+
     
         
     

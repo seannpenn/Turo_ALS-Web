@@ -23,8 +23,7 @@
 @section('left-side-nav-inside')
     <li class="nav-item">
         <!-- <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Create Course</a> -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Course</button>
-        <button type="button" class="btn btn-primary"><a class="nav-link active" aria-current="page" href="{{route('course.all')}}">View Courses</a></button>
+        <!-- <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a> -->
 
     </li>
 @stop

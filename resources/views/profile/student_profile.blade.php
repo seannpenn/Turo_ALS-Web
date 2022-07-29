@@ -1,5 +1,5 @@
 @extends('main')
-<!--//for outer navbar//-->
+
 @section('right-side-nav')
     <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
      <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">Logout</a>
@@ -14,34 +14,10 @@
     </li>
 @stop
 
-
-
 @section('main-content')
-    
-    
+
     <div class="layout">
-        <div class="message">
-            <h2>Your enrollment is pending for approval.</h2>
-            <h4>Please wait for a confimation.</h4>
-            <img src="{{ asset('images/loading.gif') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        </div>
+        This is student profile page.
     </div>
-    
 
-@stop
-
-@section('css-style')
-    .layout{
-        
-        border: 1 solid;
-        height:94vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .message{
-        text-align:center;
-    }
-    h2{
-    }
 @stop
