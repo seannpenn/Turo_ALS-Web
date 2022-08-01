@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseContentController;
 use App\Http\Controllers\TopicController;
+use App\Http\Controllers\QuizController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,7 +20,7 @@ use App\Http\Controllers\TopicController;
 |
 */
 Route::view('/', 'landing')->name('landing');
-
+Route::view('/test', 'test')->name('test');
 
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
 
@@ -33,11 +34,18 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     // for create course content
     Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.create');
     Route::get('/course/content/{id}/delete', [CourseContentController::class, 'delete'])->name('content.delete');
+    Route::get('/course/content/{id}', [CourseContentController::class, 'viewModule'])->name('content.view');
 
     // for create content topic
 
     Route::post('/course/content/topic/create', [TopicController::class, 'create'])->name('topic.create');
-    Route::get('/topic/{id}', [TopicController::class, 'viewModule'])->name('topic.view');
+    Route::get('/course/content/{contentid}/topic/{topicid}', [TopicController::class, 'viewModuleTopics'])->name('topic.view');
+    Route::get('/course/content/{contentid}/topic/{topicid}/delete', [TopicController::class, 'delete'])->name('topic.delete');
+
+    // for quiz make
+    Route::view('/quiz/create', 'dashboard.quiz.create')->name('quiz.create');
+    Route::post('/quiz/create/{id}', [QuizController::class, 'create'])->name('quiz.store');
+    Route::get('/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
 });
 
 
@@ -65,4 +73,5 @@ Route::middleware(['auth'])->group(function(){
     Route::view('/student/profile', 'profile.student_profile')->name('student.profile');
     Route::get('user/{id}/delete',[UserController::class,'delete'])->name('user.delete');
     // Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.delete');
+    
 });

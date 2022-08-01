@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Topic;
-use App\Models\CourseContent;
+use App\Models\Quiz;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
@@ -29,24 +29,43 @@ class TopicController extends Controller
         }
 
         else{
-    
+        
             $contentTopic = new Topic();
-            
+            $topicId = Topic::insertGetId([
+                "content_id" => $request->content_id,
+                "topic_title" => $request->topic_title,
+                "topic_description" => $request->topic_description,
+                "topic_type" => $request->topic_type,
+            ]);
+            Quiz::create([
+                "topic_id" => $topicId,
+                "quiz_title" => $request->quiz_title,
+            ]);
 
-            $contentTopic->content_id = $request->content_id;
-            $contentTopic->topic_title = $request->topic_title;
-            $contentTopic->topic_description = $request->topic_description;
-            $contentTopic->topic_type = $request->topic_type;
+
+            // $contentTopic->content_id = $request->content_id;
+            // $contentTopic->topic_title = $request->topic_title;
+            // $contentTopic->topic_description = $request->topic_description;
+            // $contentTopic->topic_type = $request->topic_type;
             
-            $contentTopic->save();
+            // $contentTopic->save();
 
             return redirect()->back();
         }
     }
-    public function viewModule($id){
 
-        $courseContentTopic = Topic::where('content_id',$id)->get()->toArray();
+    public function delete($contentId, $topicId){
+        $selectedTopic = Topic::findOrFail($topicId);
         
-        return view('dashboard.courses.view_module')->with(compact('courseContentTopic'));  
+        $selectedTopic->delete();
+        return redirect()->back();
     }
+
+    public function viewModuleTopics($contentId, $topicId){
+
+        $selectedTopic = Topic::where('topic_id',$topicId)->get()->toArray();
+        
+        return view('dashboard.courses.view_topic')->with(compact('selectedTopic'));
+    }
+    
 }

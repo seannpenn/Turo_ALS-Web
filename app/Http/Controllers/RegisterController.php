@@ -17,7 +17,6 @@ class RegisterController extends Controller
     public function teacherRegister(Request $request){
 
         $loginCredentials = $request->validate([
-            'userType' => 'required',
             'username' => 'required',
             'email' => 'required',
             'password' => 'required',
@@ -52,19 +51,29 @@ class RegisterController extends Controller
 
     public function studentRegister(Request $request){
 
-        $loginCredentials = $request->validate([
-            'userType' => 'required',
-            'username' => 'required',
-            'email' => 'required',
+        $credentials = $request->validate([
+            'username' => 'required | unique: username',
+            'email' => 'required | unique: email',
             'password' => 'required',
         ]);
 
+        $backgroundCredentials = $request->validate([
+            'student_fname' => 'required',
+            'student_lname' => 'required',
+            'street' => 'required',
+            'barangay' => 'required',
+            'city' => 'required',
+            'province' => 'required',
+            'student_motherfname' => 'required',
+            'student_motherlname' => 'required',
+            'last_level' => 'required',
+        ]);
 
         $userId = User::insertGetId([
-            'userType' =>$loginCredentials['userType'],
-            'username' => $loginCredentials['username'],
-            'email' => $loginCredentials['email'],
-            'password' => bcrypt($loginCredentials['password']),
+            'userType' =>$credentials['userType'],
+            'username' => $credentials['username'],
+            'email' => $credentials['email'],
+            'password' => bcrypt($credentials['password']),
         ]);
         $studentId = Student::insertGetId([
             'user_id' => $userId,
@@ -101,6 +110,6 @@ class RegisterController extends Controller
             return redirect()->intended('/student/home');
         }
 
-        return redirect()->to('student.login');
+        return redirect()->to('student.registration');
     }
 }
