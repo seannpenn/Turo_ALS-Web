@@ -37,6 +37,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.create');
     Route::get('/course/content/{id}/delete', [CourseContentController::class, 'delete'])->name('content.delete');
     Route::get('/course/content/{id}', [CourseContentController::class, 'viewModule'])->name('content.view');
+    Route::post('/course/content/{id}/update', [CourseContentController::class, 'update'])->name('content.update');
 
     // for create content topic
 
@@ -54,6 +55,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     //for question
     Route::post('/quiz/question/create', [QuizController::class, 'createQuestion'])->name('question.create');
     Route::get('/quiz/question/delete/{id}', [QuestionController::class, 'delete'])->name('question.delete');
+    Route::get('/quiz/question/update/{id}', [QuestionController::class, 'update'])->name('question.update');
 
     // for pdf upload
     Route::get('file/upload',[TopicController::class, 'uploadFiles'])->name('topic.upload');

@@ -1,6 +1,7 @@
 @extends('main')
 @extends('dashboard/modals/createquiz_modal')
 @extends('dashboard/modals/createtext_modal')
+@extends('dashboard/courses/update_module_modal')
 @extends('modalslug')
 
 @section('modal-content')
@@ -110,10 +111,16 @@
                                                                     
                     </div>
                     <div class="action" style="margin:2px;">
+                        <td class="icons"><a title="Update Module"><img src="{{ asset('images/edit.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#moduleUpdateModal"></a></td>
                         <td class="icons"><a title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
                     </div>
                 </div>
             
+                @section('module-action-update')
+                    {{route('content.update', $module['course_id'])}}
+                @stop
+                @section('content-title'){{$module['content_title']}}@stop
+                @section('content-description'){{$module['content_description']}}@stop
             <div class="module-header-form">
                 <div class="upper-left-header">
                     <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#quizModal" data-bs-whatever="@fat">Create Quiz</button>
