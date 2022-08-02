@@ -41,6 +41,33 @@ class CourseContentController extends Controller
             return redirect()->to(route('course.showInfo',$request->course_id));
         }
     }
+    public function update(Request $request, $id){
+        $rules = [
+            'content_title' => 'required',
+            'content_description' => 'required',
+        ];
+
+        $messages = [
+            'content_title.required' => 'Please input course title.',
+            'content_description.required' => 'Please input course description.',
+        ];
+
+        $validation = Validator::make($request->input(), $rules, $messages);
+
+
+        if($validation->fails()){
+            return redirect()->back()->withInput()->withErrors($validation);
+        }
+        else{
+            $updateCourse = CourseContent::where('course_id',$id);
+            $updateCourse->update([
+                'content_title' => $request->content_title,
+                'content_description' => $request->content_description,
+            ]);
+            
+            return back();
+        }
+    }
     public function delete($id){
         $selectedCourseContent = CourseContent::findOrFail($id);
         
