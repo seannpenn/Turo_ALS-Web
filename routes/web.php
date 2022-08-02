@@ -9,6 +9,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseContentController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\QuestionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +30,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::post('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/course/all', [CourseController::class, 'showOwnedCourses'])->name('course.all');
     Route::get('/course/{id}', [CourseController::class,'showCourse'])->name('course.showInfo');
+    Route::post('/course/{id}/update', [CourseController::class, 'update'])->name('course.update');
     Route::get('/course/{id}/delete', [CourseController::class,'delete'])->name('course.delete');
 
     // for create course content
@@ -39,13 +41,23 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     // for create content topic
 
     Route::post('/course/content/topic/create', [TopicController::class, 'create'])->name('topic.create');
-    Route::get('/course/content/{contentid}/topic/{topicid}', [TopicController::class, 'viewModuleTopics'])->name('topic.view');
-    Route::get('/course/content/{contentid}/topic/{topicid}/delete', [TopicController::class, 'delete'])->name('topic.delete');
+    Route::get('/course/content/topic/{topicid}', [TopicController::class, 'viewModuleTopics'])->name('topic.view');
+    Route::get('/course/content/topic/{topicid}/delete', [TopicController::class, 'delete'])->name('topic.delete');
 
     // for quiz make
     Route::view('/quiz/create', 'dashboard.quiz.create')->name('quiz.create');
+    Route::get('/quiz/edit/{id}', [QuizController::class, 'edit'])->name('quiz.edit');
+    Route::post('/quiz/update/{id}', [QuizController::class, 'update'])->name('quiz.update');
     Route::post('/quiz/create/{id}', [QuizController::class, 'create'])->name('quiz.store');
     Route::get('/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
+    // ^
+    //for question
+    Route::post('/quiz/question/create', [QuizController::class, 'createQuestion'])->name('question.create');
+    Route::get('/quiz/question/delete/{id}', [QuestionController::class, 'delete'])->name('question.delete');
+
+    // for pdf upload
+    Route::get('file/upload',[TopicController::class, 'uploadFiles'])->name('topic.upload');
+    Route::post('file/upload', [TopicController::class, 'storeUploadedFiles'])->name('topic.store');
 });
 
 

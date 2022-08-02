@@ -12,14 +12,11 @@ class TopicController extends Controller
 {
     public function create(Request $request){
         $rules = [
-            'topic_title' => 'required',
-            'topic_description' => 'required',
+            'quiz_title' => 'required',
         ];
 
         $messages = [
-            'topic_title.required' => 'Please input a topic title',
-            'topic_description.required' => 'Please input a topic description',
-
+            'quiz_title.required' => 'Please input a topic title',
         ];
 
         $validation = Validator::make($request->input(), $rules, $messages);
@@ -33,7 +30,7 @@ class TopicController extends Controller
             $contentTopic = new Topic();
             $topicId = Topic::insertGetId([
                 "content_id" => $request->content_id,
-                "topic_title" => $request->topic_title,
+                "topic_title" => $request->quiz_title,
                 "topic_description" => $request->topic_description,
                 "topic_type" => $request->topic_type,
             ]);
@@ -54,14 +51,14 @@ class TopicController extends Controller
         }
     }
 
-    public function delete($contentId, $topicId){
+    public function delete($topicId){
         $selectedTopic = Topic::findOrFail($topicId);
         
         $selectedTopic->delete();
         return redirect()->back();
     }
 
-    public function viewModuleTopics($contentId, $topicId){
+    public function viewModuleTopics($topicId){
 
         $selectedTopic = Topic::where('topic_id',$topicId)->get()->toArray();
         

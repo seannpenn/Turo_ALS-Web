@@ -8,24 +8,7 @@
       <div class="modal-body">
         <form action="@yield('form-action')" method="post">
         {{ csrf_field() }}
-          <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Create for:</label>
-            <br>
-            <div class="form-check-inline">
-              <input class="form-check-input" type="radio" name="course_category" id="exampleRadios1" value="GS" checked>
-              <label class="form-check-label" for="course_category">
-                Grade School
-              </label>
-            </div>
-            <div class="form-check-inline">
-              <input class="form-check-input" type="radio" name="course_category" id="exampleRadios2" value="HS">
-              <label class="form-check-label" for="course_category">
-                High School
-              </label>
-            </div>
-          </div>
 
-          
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">@yield('first-label')</label>
             <input type="text" name="course_title" class="form-control" id="recipient-name">

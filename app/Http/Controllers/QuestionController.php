@@ -40,4 +40,12 @@ class QuestionController extends Controller
 
         return redirect()->to('t-login');
     }
+
+    public function delete($id){
+        
+        $selectedQuestion = Question::findOrFail($id);
+            
+        $selectedQuestion->delete();
+        return redirect()->back();
+    }
 }

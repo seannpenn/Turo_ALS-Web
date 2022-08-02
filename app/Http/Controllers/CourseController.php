@@ -32,7 +32,6 @@ class CourseController extends Controller
             $course = new Course();
 
             $course->teacher_id = Auth::id();
-            $course->course_category = $request->course_category;
             $course->course_title = $request->course_title;
             $course->course_description = $request->course_description;
             
@@ -56,6 +55,33 @@ class CourseController extends Controller
         
         return view('dashboard.courses.display_course')->with(compact('ownedCourses'));
         
+    }
+    public function update(Request $request, $id){
+        $rules = [
+            'course_title' => 'required',
+            'course_description' => 'required',
+        ];
+
+        $messages = [
+            'course_title.required' => 'Please input course title.',
+            'course_description.required' => 'Please input course description.',
+        ];
+
+        $validation = Validator::make($request->input(), $rules, $messages);
+
+
+        if($validation->fails()){
+            return redirect()->back()->withInput()->withErrors($validation);
+        }
+        else{
+            $updateCourse = Course::where('course_id',$id);
+            $updateCourse->update([
+                'course_title' => $request->course_title,
+                'course_description' => $request->course_description,
+            ]);
+            
+            return back();
+        }
     }
     public function delete($id){
         $selectedCourse = Course::findOrFail($id);

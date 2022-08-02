@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('topic_id');
             $table->unsignedInteger('content_id');
             $table->string('topic_title');
-            $table->string('topic_description');
+            $table->string('topic_description')->nullable();
             $table->string('topic_type');
 
             $table->foreign('content_id')->references('content_id')->on('coursecontent')->onDelete('cascade');
