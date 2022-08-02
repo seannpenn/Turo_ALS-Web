@@ -1,4 +1,15 @@
 @extends('main')
+@extends('dashboard/modals/createquiz_modal')
+@extends('dashboard/modals/createtext_modal')
+@extends('modalslug')
+
+@section('modal-content')
+    <span id="modalContent"> Are you sure you want to delete this topic?</span>
+@stop
+@section('content-id-quiz')
+    {{$selectedModule[0]['content_id']}}
+@stop
+
 
 @section('left-side-nav')
     <li class="nav-item">
@@ -49,8 +60,8 @@
     .module-header-form{
         height:200px;
         justify-content:center;
-        width: 800px;
-        display:flex;
+        align-items:center;
+        width: 100%;
        
     }
     .module-content{
@@ -62,12 +73,30 @@
     .card{
         height: 100px;
     }
+    .upper-left-header{
+        margin: 0 auto;
+        position:absolute;
+    }
+    .create-button{
+        width: 150px;
+        line-height:50px;
+        background-color:orange;
+        color: white;
+        border: 0;
+        border-radius: 10px;
+        margin:10px;
+        
+    }
+    .create-button:hover{
+        background-color:white;
+        color: orange;
+        border: 2px solid orange;
+    }
     
     
 @stop
 
 @section('main-content')
-
 @include('navbar/navbar_inside')
     <a href="{{route('course.showInfo', $selectedModule[0]['course_id'])}}">
         < Back to courses
@@ -86,62 +115,13 @@
                 </div>
             
             <div class="module-header-form">
+                <div class="upper-left-header">
+                    <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#quizModal" data-bs-whatever="@fat">Create Quiz</button>
+                    <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#textModal" data-bs-whatever="@fat">Upload file</button>
+                    <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Text </button>
 
-                <form class="row gy-1 gx-4 align-items-center" action="{{route('topic.create')}}" method="post">
-                {{ csrf_field() }}
-                <input type="course_id" name="content_id" value="{{$module['content_id']}}" hidden>
-                    <div class="col-auto">
-                        <label class="visually-hidden" for="autoSizingInput">Topic Title</label>
-                        <input id="titleInput" type="text" name="topic_title" class="form-control" placeholder="Topic Title">
-                    </div>
-                    <div class="col-auto">
-                        <label class="visually-hidden" for="autoSizingInputGroup">Topic Description</label>
-                        <div class="input-group">
-                        <textarea type="text" name="topic_description" class="form-control" id="autoSizingInputGroup" placeholder="Topic Description"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-                        <select class="form-select" id="autoSizingSelect" name="topic_type" onchange="showInput(this)">
-                        <option selected>Type</option>
-                        <option value="text">Text</option>
-                        <option value="file">File</option>
-                        <option value="quiz">Quiz</option>
-                        </select>
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                    <div id="text" class="d-none">
-                        <div class="row">
-                            <div class="col-md-7 offset-3 mt-4">
-                                <div class="card-body">
-                                    <form method="post" action="" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="form-group">
-                                            <textarea class="ckeditor form-control" name="wysiwyg-editor"></textarea>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="file" class="d-none" style="width: 700px;">
-                        <div class="input-group">
-                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                        </div>
-                    </div>
-                    <div id="quiz" class="d-none" style="width: 500px; bakcground-color:yellow;">
-                        <div class="form-content">
-                            <form action ="{{ route('quiz.create') }}" method="post" class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="inputEmail4" class="form-label">Quiz title</label>
-                                    <input type="text" class="form-control" name="quiz_title" id="inputEmail4">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </form>
+                </div>
+                
 
             </div>
             @endforeach
@@ -159,17 +139,23 @@
         @endif
 
             @foreach($courseContentTopic as $topic)
-                <a href="{{route('topic.view', [$topic['content_id'], $topic['topic_id'] ])}}" style="text-decoration:none; color:black;" id="module" title="Click to view module">
+                <a href="{{route('topic.view', $topic['topic_id'])}}" style="text-decoration:none; color:black;" id="module" title="Click to view module">
                     <div class="card" role="button" style="margin:5px;" id="moduleCard" >
                         <div class="card-body">
                             <h5>{{$topic['topic_title']}}</h5>
                             <h9>{{$topic['topic_type']}}</h9>                          
                         </div> 
                         <div class="action-delete" style="margin:2px;">
-                            <td class="icons"><a href="{{ route('topic.delete', [$topic['content_id'], $topic['topic_id']]  ) }}" title="Delete Topic"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
+                            <td class="icons"><a title="Delete Topic"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
                         </div>
                     </div>
                 </a>
+                @section('script-area')
+                    let confirmTask = document.getElementById('confirmTask');
+                    confirmTask.addEventListener('click',()=>{
+                        window.location.href = "{{route('topic.delete', $topic['topic_id'])}}";
+                    }); 
+                @stop
             @endforeach
         </div>
     
@@ -186,40 +172,5 @@ function showTopicInput(id){
         }
         document.getElementById('ModuleId').value = id;
         console.log(id);
-    }
-
-function showInput(answer){
-        console.log(answer.value)
-
-        if(answer.value == 'text'){
-            document.getElementById('text').classList.remove('d-none');
-            document.getElementById('file').classList.add('d-none');
-            document.getElementById('quiz').classList.add('d-none');
-            document.getElementById('media').classList.add('d-none');
-        }
-        else if(answer.value == 'file'){
-            document.getElementById('file').classList.remove('d-none');
-            document.getElementById('quiz').classList.add('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('media').classList.add('d-none');
-        }
-        else if(answer.value == 'media'){
-            document.getElementById('media').classList.remove('d-none');
-            document.getElementById('quiz').classList.add('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('file').classList.add('d-none');
-        }
-        else if(answer.value == 'quiz'){
-            document.getElementById('quiz').classList.remove('d-none');
-            document.getElementById('media').classList.add('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('file').classList.add('d-none');
-        }
-        else{
-            document.getElementById('media').classList.add('d-none');
-            document.getElementById('quiz').classList.add('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('file').classList.add('d-none');
-        }
     }
 @stop
