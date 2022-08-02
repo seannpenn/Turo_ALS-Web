@@ -17,6 +17,8 @@
         line-height: 40px;
         text-decoration:none;
         font-weight: bold;
+        margin-left: 20px;
+        margin-right: 20px;
       }
       .inner-nav-link:hover {
           font-size: 22px;
@@ -34,6 +36,9 @@
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
+      <a class="inner-nav-link" aria-current="page" href="{{route('users.all')}}">Manage Students</a>
+      <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage')}}">Manage Quiz</a>
+
         @yield('left-side-nav-inside')
       </ul>
       

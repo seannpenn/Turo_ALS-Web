@@ -5,12 +5,12 @@
 @stop
 
 @section('main-content')
-@include('navbar/navbar_inside')
+
 <table class="table table-hover" style="width: 100%;">
     <tr>
-        <th scope="col">User ID</th>
-        <th scope="col">UserName</th>
-        <th scope="col">User Email </th>
+        <th scope="col">Student ID</th>
+        <th scope="col">Student Name</th>
+        <th scope="col">Status </th>
         <th scope="col">Actions</th>
     </tr>
     @foreach($userCollection as $user)

@@ -21,7 +21,7 @@
         cursor:pointer;
     }
     .card{
-        width: 50%;
+        width: 750px;
     }
     .card:hover{
         cursor:pointer;
@@ -44,7 +44,7 @@
         width: 700px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+    
     }
     .module-content-area{
         left:0;
@@ -69,7 +69,8 @@
         
     }
     .modules{
-        width:50%;
+        width:800px;
+        overflow-y:auto;
     }
     #topic-form{
         border: 2px solid black;
@@ -114,7 +115,7 @@
         <div class="course-header">
             @foreach($chosenCourse as $course)
             
-                <div class="card" id="card" style="width: 18rem; height: 180px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
+                <div class="card" id="card" style="width: 300px; height: 90px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
                     <div class="card-body">
                         
                         <h5 class="card-title">{{$course['course_title']}}</h5>
@@ -123,7 +124,7 @@
                     </div>
 
                     <div class="action" style="margin:2px;">
-                    <td class="icons"><a title="Delete Course"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
+                        <td class="icons"><a title="Delete Course"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
                     </div>
                     
                 </div>
@@ -133,34 +134,40 @@
                 
             @endforeach
 
-            <div class="form-area" style="width: 18rem; height: 250px; margin: 5px; text-align:right;">
-                <h5>Add Course Modules</h5>
-                <form class="row gy-2 gx-3 align-items-center" action="{{route('content.create')}}" method="post">
-                    {{ csrf_field() }}
+            
+            <form class="form-area" style="width: 300px; text-align: center; padding: 20px;" action="{{route('content.create')}}" method="post">
+            <h4>Create module</h4>
+            {{ csrf_field() }}
                         <input type="course_id" name="course_id" value="{{$course['course_id']}}" hidden>
-                        <div >
-                            <div class="mb-3">
-                                <input type="text" name="content_title" class="form-control" id="exampleFormControlInput1" placeholder="Module title">
-                            </div>
+                <div>
+                    <label class="visually-hidden" for="content_title">Content title</label>
+                    <input type="text" class="form-control" name="content_title" id="specificSizeInputName" placeholder="Module title">
+                </div>
+                <div>
+                    <label class="visually-hidden" for="Module Description">Module Description</label>
+                    <div class="input-group">
+                    <textarea class="form-control" name="content_description" id="exampleFormControlTextarea1" rows="3" placeholder="Module Description"></textarea>
+                    </div>
+                </div>
+                
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
 
-                            <div class="mb-3">
-                                <textarea class="form-control" name="content_description" id="exampleFormControlTextarea1" rows="3" placeholder="Module Description"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-warning btn-lg" type="button">add</button>
-
-                        </div>     
-
-                        
-                </form>
-            </div>
         </div>
-        <h1>Modules</h1>
+        
+        @if(count($courseContent) != 0)
+            <h4>Modules</h4>
+        @else
+            <h4>Add modules....</h4>
+        @endif
             
         <div class="layout-bottom">
 
                 <div class="modules">
                     @foreach($courseContent as $content)
-                    <a href="{{route('topic.view', $content['content_id'])}}" style="text-decoration:none; color:black;" id="module">
+                    <a href="{{route('content.view', $content['content_id'])}}" style="text-decoration:none; color:black;" id="module" title="Click to view module">
                         
                     
                         <div class="card" role="button" style="margin:5px;" id="moduleCard" >
@@ -187,7 +194,7 @@
                 </div>
                 <div id="topic-form" class="d-none">
                         <div class="icons" onclick="showTopicInput()"><a  title="Close form"><img src="{{ asset('images/close.png') }}" alt="" ></a></div>
-                        <h4>Add Topic for Module</h4>
+                        <h4>Add contents for Module</h4>
                         <form action="{{route('topic.create')}}" method="post">
                         {{ csrf_field() }}
                                 <input type="text" id="ModuleId" name="content_id" class="form-control" placeholder="Title" aria-label="Title" value="" hidden>
@@ -196,7 +203,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="mb-3">
-                                        <textarea class="form-control" name="topic_description" id="exampleFormControlTextarea1" rows="3" columns="8"></textarea>
+                                        <textarea class="form-control" name="topic_description" id="exampleFormControlTextarea1" placeholder="Description" rows="3" columns="8"></textarea>
                                     </div>
                                 </div>
 
@@ -206,15 +213,27 @@
                                     <option selected>Type</option>
                                     <option value="text">Text</option>
                                     <option value="file">File</option>
+                                    <option value="quiz">Quiz</option>
                                     <option value="media">Media</option>
                                     </select>
                                 </div>
 
                                 <div class="content-type">
                                     <div id="text" class="d-none">
-                                        <div class="form-floating">
-                                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                                            <label for="floatingTextarea2">Topic details</label>
+                                    <div class="container">
+        
+                                    </div>
+                                    <div id="quiz" class="d-none" style="width: 500px; bakcground-color:yellow;">
+                                        <div class="form-content">
+                                            <form class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label for="inputEmail4" class="form-label">Quiz title</label>
+                                                    <input type="email" class="form-control" name="quiz_title" id="inputEmail4">
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-primary">Create Quiz</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                     <div id="file" class="d-none">
@@ -235,8 +254,6 @@
                                 </div>
                         </form>
                 </div>
-
-
         </div>
     </div>
         
@@ -244,6 +261,12 @@
 
 
 @section('script-area')
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.ckeditor').ckeditor();
+        });
+    </script>
 
 
         let confirmTask = document.getElementById('confirmTask');
@@ -272,20 +295,30 @@
         if(answer.value == 'text'){
             document.getElementById('text').classList.remove('d-none');
             document.getElementById('file').classList.add('d-none');
+            document.getElementById('quiz').classList.add('d-none');
             document.getElementById('media').classList.add('d-none');
         }
         else if(answer.value == 'file'){
             document.getElementById('file').classList.remove('d-none');
+            document.getElementById('quiz').classList.add('d-none');
             document.getElementById('text').classList.add('d-none');
             document.getElementById('media').classList.add('d-none');
         }
         else if(answer.value == 'media'){
             document.getElementById('media').classList.remove('d-none');
+            document.getElementById('quiz').classList.add('d-none');
+            document.getElementById('text').classList.add('d-none');
+            document.getElementById('file').classList.add('d-none');
+        }
+        else if(answer.value == 'quiz'){
+            document.getElementById('quiz').classList.remove('d-none');
+            document.getElementById('media').classList.add('d-none');
             document.getElementById('text').classList.add('d-none');
             document.getElementById('file').classList.add('d-none');
         }
         else{
             document.getElementById('media').classList.add('d-none');
+            document.getElementById('quiz').classList.add('d-none');
             document.getElementById('text').classList.add('d-none');
             document.getElementById('file').classList.add('d-none');
         }

@@ -7,7 +7,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-    <script src= "{{ asset('js/bootstrap.js') }}" ></script>
+    <script src="{!! url('assets/tinymce/js/tinymce.min.js') !!}"></script>
+    <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     @yield('import-scripts')
     <script>
         @yield('script-area')
