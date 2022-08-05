@@ -27,13 +27,12 @@
 @stop  
 
 @section('main-content')
-<section id="application-form">
+    <section id="application-form">
         <br>
         <h2>Student Application</h2>
         
         <br>
         
-            {{ csrf_field() }}
             <!-- For login details -->
             <label for=""><b>Personal Information (Part 1)</b></label>
             <hr>
@@ -48,33 +47,33 @@
             </div>
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Full name: </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentPersonal['student_lname']}}, {{$studentPersonal['student_fname']}} {{$studentPersonal['student_mname']}}  </label>
 
             </div>
 
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Gender: </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentPersonal['student_gender']}}</label>
             </div>
 
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Civil status: </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentPersonal['student_civil']}} </label>
             </div>
 
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Date of Birth: </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentPersonal['student_birth']}} </label>
 
             </div>
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Address: </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentInfo['street']}}, {{$studentInfo['barangay']}}, {{$studentInfo['city']}}, {{$studentInfo['province']}} </label>
 
             </div>
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Mother's Maiden Name </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentInfo['student_motherfname']}} {{$studentInfo['student_motherfname']}} {{$studentInfo['student_motherlname']}}</label>
 
             </div>
             
@@ -85,7 +84,7 @@
             
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Last Grade Level Completed </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentBack['last_level']}} </label>
 
             </div>
 
@@ -96,18 +95,18 @@
             <label for="basic-url" class="form-label">If yes, </label>
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Name of Program </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentBack['program_attended']}} </label>
 
             </div>
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Level of literacy </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentBack['program_literacy']}} </label>
 
             </div>
 
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Year attended </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentBack['program_attended_year']}} </label>
 
             </div>
 
@@ -116,19 +115,19 @@
             <hr>
 
             <div class="input-group mb-3">
-                <label for="student_LRN" class="col-sm-4 col-form-label">Year attended </label>
+                <label for="student_LRN" class="col-sm-4 col-form-label">PSa </label>
                 <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
 
             </div>
 
             <div class="input-group mb-3">
-                <label for="student_LRN" class="col-sm-4 col-form-label">Year attended </label>
+                <label for="student_LRN" class="col-sm-4 col-form-label">2x2 picture </label>
                 <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
 
             </div>
 
             <div class="input-group mb-3">
-                <label for="student_LRN" class="col-sm-4 col-form-label">Year attended </label>
+                <label for="student_LRN" class="col-sm-4 col-form-label">Form 138 </label>
                 <label for="student_LRN" class="col-sm-2 col-form-label">info </label>
 
             </div>
@@ -138,9 +137,16 @@
             
             
             <br>
-            <div class="d-grid gap-1 col-3 mx-auto">
-                <button type="submit" class="btn btn-primary" type="button">Approve enrollment</button>
-            </div>
+            <form action="{{route('student.approve', $studentPersonal['studentId'])}}" method="post">
+                <div class="d-grid gap-1 col-3 mx-auto">
+                    {{ csrf_field() }}
+                    @if($studentPersonal['status'] == 'pending')
+                        <button type="submit" class="btn btn-primary" type="button">Approve enrollment</button>
+                    @else
+                        <button type="submit" class="btn btn-primary" type="button" disabled>Enrolled</button>
+                    @endif
+                </div>
+            </form>
             <br>
     </section>
 @stop

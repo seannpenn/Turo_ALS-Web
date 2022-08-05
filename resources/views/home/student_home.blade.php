@@ -22,6 +22,7 @@
     <div class="layout">
         <div class="message">
             <h2>Your enrollment is pending for approval.</h2>
+            {{Auth::user()->username}}
             <h4>Please wait for a confimation.</h4>
             <img src="{{ asset('images/loading.gif') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         </div>

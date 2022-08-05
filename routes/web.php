@@ -25,12 +25,15 @@ Route::view('/test', 'test')->name('test');
 
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
 
-    Route::view('/home', 'home.teacher_home')->name('teacher.home');
+    // Route::view('/home', 'home.teacher_home')->name('teacher.home');
 
     Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
-    Route::get('student/application/{id}',[UserController::class, 'showStudentApplication'])->name('student.application');
+
     // For students
 
+    Route::get('/students/records', [StudentController::class, 'showAllStudents'])->name('students.all');
+    Route::get('student/application/{id}',[StudentController::class, 'showStudentApplication'])->name('student.application');
+    Route::post('student/application/approve/{id}',[StudentController::class, 'approve'])->name('student.approve');
     Route::get('/students/records', [StudentController::class, 'showAllStudents'])->name('students.all');
 
     // For create courses
