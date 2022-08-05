@@ -46,9 +46,8 @@
                             <th scope="row">{{ $student['studentId'] }}</th>
                             @if($student['LRN'] != '')<td>{{ $student['LRN'] }}</td>@else <td>no LRN</td>@endif
                             <td>{{ $student['student_lname'] }}, {{ $student['student_fname'] }} {{ $student['student_mname'] }}</td>
-                            <td>pending approval</td>
+                            <td>{{ $student['status'] }}</td>
                             <td>
-                                <a href="{{ route('user.delete',$student['studentId']) }}" title="Delete Student Record"><button type="button" class="btn btn-primary">View Details</button></a>
                                 <a href="{{ route('student.application',$student['studentId']) }}" title="Delete Student Record"><button type="button" class="btn btn-primary">View application</button></a>
                             </td>
                         </tr>

@@ -71,6 +71,7 @@
         <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Quiz</button>
     </div>
     <div class="layout">
+    @if(count($quizCollection) != 0)
         <table class="table table-hover">
             <tr>
                 <th scope="col">Quiz Id</th>
@@ -79,30 +80,35 @@
                 <th scope="col">Status </th>
                 <th scope="col">Actions</th>
             </tr>
-            @foreach($quizCollection as $quiz)
-                <tr>
-                    <th scope="row">{{ $quiz['quiz_id'] }}</th>
-                    <td>{{ $quiz['topic_id'] }}</td>
-                    <td>{{ $quiz['quiz_title'] }}</td>
-                    <td></td>
-                    <td>
-                        <a href="" title="View Quiz"><button class="btn btn-warning">View</button></a>
-                        <a href="{{ route('quiz.edit', $quiz['quiz_id']) }}" title="Edit Quiz"><button class="btn btn-warning">Edit</button></a>
-                        <a  title="Delete Quiz"><button class="btn btn-danger" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</button></a>
-                    </td>
+            
+                @foreach($quizCollection as $quiz)
+                    <tr>
+                        <th scope="row">{{ $quiz['quiz_id'] }}</th>
+                        <td>{{ $quiz['topic_id'] }}</td>
+                        <td>{{ $quiz['quiz_title'] }}</td>
+                        <td></td>
+                        <td>
+                            <a href="" title="View Quiz"><button class="btn btn-warning">View</button></a>
+                            <a href="{{ route('quiz.edit', $quiz['quiz_id']) }}" title="Edit Quiz"><button class="btn btn-warning">Edit</button></a>
+                            <a  title="Delete Quiz"><button class="btn btn-danger" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</button></a>
+                        </td>
+                            
                         
-                    
-                    
-                </tr>
+                        
+                    </tr>
 
-                @section('script-area')
-                    let confirmTask = document.getElementById('confirmTask');
-                    confirmTask.addEventListener('click',()=>{
-                        window.location.href = "{{route('topic.delete', $quiz['topic_id'])}}";
-                    }); 
-                @stop
-            @endforeach
+                    @section('script-area')
+                        let confirmTask = document.getElementById('confirmTask');
+                        confirmTask.addEventListener('click',()=>{
+                            window.location.href = "{{route('topic.delete', $quiz['topic_id'])}}";
+                        }); 
+                    @stop
+                @endforeach
+            
         </table>
+        @else
+            <h2>No created quizes..</h2>
+        @endif
     </div>
     
 @stop

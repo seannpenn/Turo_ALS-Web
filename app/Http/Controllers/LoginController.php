@@ -18,7 +18,7 @@ class LoginController extends Controller
         if(Auth::attempt($loginCredentials)){
             $request->session()->regenerate();
             
-            return redirect()->to(route('teacher.home'));
+            return redirect()->to(route('course.all'));
         }
 
         return back()->withErrors([
