@@ -19,7 +19,6 @@ class Course extends Model
         'teacher_id',
         'course_title',
         'course_description',
-        'slug'
     ];
 
     public function coursecontent(){

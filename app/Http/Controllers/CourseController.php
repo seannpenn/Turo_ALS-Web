@@ -31,7 +31,8 @@ class CourseController extends Controller
             
             $course = new Course();
 
-            $course->teacher_id = Auth::id();
+            $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
+            $course->teacher_id = $teacherId->teacher_id;
             $course->course_title = $request->course_title;
             $course->course_description = $request->course_description;
             
@@ -51,7 +52,8 @@ class CourseController extends Controller
 
     public function showOwnedCourses(){
         $userData = Auth::user();
-        $ownedCourses = Course::where('teacher_id', Auth::id())->get()->toArray();
+        $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
+        $ownedCourses = Course::where('teacher_id', $teacherId->teacher_id)->get()->toArray();
         
         return view('dashboard.courses.display_course')->with(compact('ownedCourses'));
         

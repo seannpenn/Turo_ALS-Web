@@ -14,16 +14,16 @@ return new class extends Migration
     public function up()
     {
         Schema::create('courses', function (Blueprint $table) {
-            $table->id('course_id');
+            $table->increments('course_id');
             $table->unsignedInteger('teacher_id');
-            $table->string('course_category');
             $table->string('course_title', 100);
             $table->string('course_description', 200);
-            $table->foreign('teacher_id')->references('teacherId')->on('teachers')->onDelete('cascade');
+
+            $table->foreign('teacher_id')->references('teacher_id')->on('teachers')->onDelete('cascade');
         });
 
         Schema::create('coursecontent', function (Blueprint $table) {
-            $table->id('content_id');
+            $table->increments('content_id');
             $table->unsignedInteger('course_id');
             $table->string('content_title', 100);
             $table->string('content_description', 200);

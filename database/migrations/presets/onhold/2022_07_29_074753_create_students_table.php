@@ -30,7 +30,7 @@ return new class extends Migration
 
         Schema::create('students_information', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('studentId');
+            $table->unsignedInteger('studentId');
             $table->string('street', 50);
             $table->string('barangay', 50);
             $table->string('city', 50);

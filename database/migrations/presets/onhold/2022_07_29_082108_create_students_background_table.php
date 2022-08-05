@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('students_background', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('studentId');
+            $table->unsignedInteger('studentId');
             $table->string('last_level', 50);
             $table->string('program_attended', 50)->nullable();
             $table->string('program_literacy', 50)->nullable();
