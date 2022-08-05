@@ -5,10 +5,10 @@
         <a class="nav-link active" aria-current="page" href="{{route('teacher.home')}}">Home</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Manage Users</a>
+        <a class="nav-link active" aria-current="page" href="{{route('students.all')}}">Manage Users</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Profile</a>
+        <a class="nav-link active" aria-current="page" href="">Profile</a>
     </li>
 @stop
 
@@ -35,9 +35,9 @@
 
 @section('main-content')
 @include('navbar/navbar_inside')
-<a href="{{route('content.view', $selectedTopic[0]['content_id'])}}">< Back to courses</a>
+<a href="{{route('content.view', $selectedTopic->content_id)}}">< Back to module</a>
     <div class="layout">
-        @if($selectedTopic[0]['topic_type'] == 'quiz')
+        @if($selectedTopic->topic_type == 'quiz')
             
             <div class="topic-content">
                 <h1>View and edit this quiz in the quiz tab</h1>
@@ -49,15 +49,14 @@
             </div>
             
             
-        @elseif ($selectedTopic[0]['topic_type'] == 'text')
+        @elseif ($selectedTopic->topic_type == 'text')
             <div class="topic-content">
                 <h1>This topic contains a text content.</h1>
             </div>
 
         @else
-
-            <div class="topic-content">
-                <h1>This topic contains a pdf file.</h1>
+            <div class="pdf-content">
+                <embed src="{{ asset('storage/files/'.$selectedTopic->file_name) }}" height="750" width="1500" />
             </div>
         @endif
     </div>

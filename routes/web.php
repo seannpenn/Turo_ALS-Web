@@ -26,6 +26,13 @@ Route::view('/test', 'test')->name('test');
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
 
     Route::view('/home', 'home.teacher_home')->name('teacher.home');
+
+    Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
+    Route::get('student/application/{id}',[UserController::class, 'showStudentApplication'])->name('student.application');
+    // For students
+
+    Route::get('/students/records', [StudentController::class, 'showAllStudents'])->name('students.all');
+
     // For create courses
     Route::post('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/course/all', [CourseController::class, 'showOwnedCourses'])->name('course.all');
@@ -58,7 +65,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::get('/quiz/question/update/{id}', [QuestionController::class, 'update'])->name('question.update');
 
     // for pdf upload
-    Route::get('file/upload',[TopicController::class, 'uploadFiles'])->name('topic.upload');
+    // Route::get('file/upload',[TopicController::class, 'uploadFiles'])->name('topic.upload');
     Route::post('file/upload', [TopicController::class, 'storeUploadedFiles'])->name('topic.store');
 });
 
@@ -80,9 +87,7 @@ Route::post('/student/register', [RegisterController::class, 'studentRegister'])
 
 Route::middleware(['auth'])->group(function(){
     // For student routes
-    Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
     // For user routes
-    
     Route::view('/student/home', 'home.student_home')->name('student.home');
     Route::view('/student/profile', 'profile.student_profile')->name('student.profile');
     Route::get('user/{id}/delete',[UserController::class,'delete'])->name('user.delete');

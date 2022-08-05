@@ -17,6 +17,7 @@
 
 @section('css-style')
     .layout{
+        padding: 20px;
     }
     img{
         height: 20px;
@@ -31,6 +32,7 @@
     }
     .card:hover{
         cursor:pointer;
+        border-color: orange;
     }
     .course-area{
         height: 86%; 
@@ -117,10 +119,10 @@
         <a class="nav-link active" aria-current="page" href="{{route('teacher.home')}}">Home</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Manage Users</a>
+        <a class="nav-link active" aria-current="page" href="{{route('students.all')}}">Manage Users</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Profile</a>
+        <a class="nav-link active" aria-current="page" href="">Profile</a>
     </li>
 @stop
 
@@ -179,6 +181,7 @@
         <div class="layout-bottom">
 
                 <div class="modules">
+                    <div class="main-module"></div>
                     @foreach($courseContent as $content)
                     <a href="{{route('content.view', $content['content_id'])}}" style="text-decoration:none; color:black;" id="module" title="Click to view module">
                         

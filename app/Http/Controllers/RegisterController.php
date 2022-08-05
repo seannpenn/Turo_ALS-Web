@@ -24,7 +24,7 @@ class RegisterController extends Controller
 
 
         $userId = User::insertGetId([
-            'userType' =>$loginCredentials['userType'],
+            'userType' =>$request['userType'],
             'username' => $loginCredentials['username'],
             'email' => $loginCredentials['email'],
             'password' => bcrypt($loginCredentials['password']),
@@ -52,8 +52,8 @@ class RegisterController extends Controller
     public function studentRegister(Request $request){
 
         $credentials = $request->validate([
-            'username' => 'required | unique: username',
-            'email' => 'required | unique: email',
+            'username' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
@@ -70,8 +70,8 @@ class RegisterController extends Controller
         ]);
 
         $userId = User::insertGetId([
-            'userType' =>$credentials['userType'],
-            'username' => $credentials['username'],
+            'userType' =>  $request['userType'],
+            'username' => $request['username'],
             'email' => $credentials['email'],
             'password' => bcrypt($credentials['password']),
         ]);
@@ -104,7 +104,7 @@ class RegisterController extends Controller
         ]);
 
 
-        if(Auth::attempt($loginCredentials)){
+        if(Auth::attempt($credentials)){
             
             $request->session()->regenerate();
             return redirect()->intended('/student/home');

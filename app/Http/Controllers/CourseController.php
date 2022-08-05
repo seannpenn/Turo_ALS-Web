@@ -28,7 +28,7 @@ class CourseController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         }
         else{
-    
+            
             $course = new Course();
 
             $course->teacher_id = Auth::id();
@@ -37,7 +37,7 @@ class CourseController extends Controller
             
             $course->save();
 
-            return redirect()->to(route('course.all'));
+            return redirect('admin/course/all')->with('message', 'Course created successfully');
         }
     }
 
