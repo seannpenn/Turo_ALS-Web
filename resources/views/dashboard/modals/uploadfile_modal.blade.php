@@ -24,6 +24,7 @@
                 <input type="file" class="form-control" name="file_name" id="recipient-name">
             </div>
             <div class="modal-footer">
+                <button type="reset" class="btn btn-warning">Reset</button>
                 <button type="submit" class="btn btn-primary">Create</button>
             </div>
         </form>
