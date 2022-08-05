@@ -26,6 +26,14 @@
         margin-top: 320px;
         border: 1 solid;
     }
+    .text-content{
+        background-color: yellow;
+        margin: 0 auto;
+        justify-content: center;
+        width: 1000px;
+        border: 1 solid;
+        text-align:left;
+    }
     a{
         text-decoration: none;
         font-color: black;
@@ -50,8 +58,10 @@
             
             
         @elseif ($selectedTopic->topic_type == 'text')
-            <div class="topic-content">
-                <h1>This topic contains a text content.</h1>
+            <div class="text-content">
+                <div class="col-auto">
+                    {!! $selectedTopic->text_content !!}
+                </div>
             </div>
 
         @else

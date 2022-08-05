@@ -18,7 +18,7 @@ class TopicController extends Controller
                 'quiz_title' => 'required',
             ];
         }
-        else if($request->topic_type == 'file'){
+        else {
             $rules = [
                 'topic_title' => 'required',
             ];
@@ -59,10 +59,20 @@ class TopicController extends Controller
                     Topic::create([
                         "content_id" => $request->content_id,
                         "topic_title" => $request->topic_title,
+                        "topic_description" => $request->topic_description,
                         "topic_type" => $request->topic_type,
                         "file_name" => $originalFileName
                     ]);
                 
+                return redirect()->back();
+            }
+            else{
+                Topic::create([
+                    "content_id" => $request->content_id,
+                    "topic_title" => $request->topic_title,
+                    "topic_type" => $request->topic_type,
+                    "text_content" => $request->text_content,
+                ]);
                 return redirect()->back();
             }
             

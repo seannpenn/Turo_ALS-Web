@@ -17,7 +17,6 @@
 
 @section('css-style')
     .layout{
-        padding: 20px;
     }
     img{
         height: 20px;
@@ -28,7 +27,6 @@
         cursor:pointer;
     }
     .card{
-        width: 750px;
     }
     .card:hover{
         cursor:pointer;
@@ -49,6 +47,8 @@
         padding: 5px; 
     }
     .course-header{
+        margin: 0 auto;
+        justify-content:center;
         width: 700px;
         display: flex;
         align-items: center;
@@ -71,13 +71,16 @@
         right: 30px;
     }
     .layout-bottom{
-        height:500px;
-        display:flex;
+        margin: 0 auto;
+        justify-content:center;
+        height:600px;   
+        width: 1000px;
         <!-- align-items: center; -->
         
     }
     .modules{
-        width:800px;
+        width:1000px;
+        height:600px;
         overflow-y:auto;
     }
     #topic-form{
@@ -137,6 +140,9 @@
     @include('navbar/navbar_inside')
 
     <div class="layout">
+    <a href="{{route('course.all')}}">
+            < Back to courses
+        </a>
         <div class="course-header">
             @foreach($chosenCourse as $course)
             
@@ -172,37 +178,34 @@
             </div>
         </div>
         <hr>
-        @if(count($courseContent) != 0)
-            <h4>Modules</h4>
-        @else
-            <h4>Add modules....</h4>
-        @endif
-            
+    
         <div class="layout-bottom">
-
+                @if(count($courseContent) != 0)
+                    <h4>Modules</h4>
+                @else
+                    <h4>Add modules....</h4>
+                @endif
                 <div class="modules">
-                    <div class="main-module"></div>
-                    @foreach($courseContent as $content)
-                    <a href="{{route('content.view', $content['content_id'])}}" style="text-decoration:none; color:black;" id="module" title="Click to view module">
+                        @foreach($courseContent as $content)
+                        <a href="{{route('content.view', $content['content_id'])}}" style="text-decoration:none; color:black;" id="module" title="Click to view module">
                         
-                    
-                        <div class="card" role="button" style="margin:5px;" id="moduleCard" >
+                            <div class="card" role="button" style="margin:5px;" id="moduleCard" >
 
-                            <div class="card-body">
-                            <h5>{{$content['content_id']}}</h5>
-                                <h5>{{$content['content_title']}}</h5>
-                                <h9>{{$content['content_description']}}</h9>
-                                                    
+                                <div class="card-body">
+                                <h5>{{$content['content_id']}}</h5>
+                                    <h5>{{$content['content_title']}}</h5>
+                                    <h9>{{$content['content_description']}}</h9>
+                                                        
+                                </div>
+
+                                <div class="action" style="margin:2px;">
+                                    <td class="icons"><a href="{{ route('content.delete',$content['content_id']) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
+                                </div>   
                             </div>
 
-                            <div class="action" style="margin:2px;">
-                                <td class="icons"><a href="{{ route('content.delete',$content['content_id']) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
-                            </div>   
-                        </div>
+                        </a>
 
-                    </a>
-
-                    @endforeach
+                        @endforeach
                 </div>
         </div>
     </div>

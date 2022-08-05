@@ -18,7 +18,7 @@
             <textarea class="form-control" name="topic_description" id="message-text"></textarea>
           </div>
           <div class="modal-footer">
-        <button type="submit" id="contentCreate" class="btn btn-primary">Create Topic</button>
+        <button type="submit" id="contentCreate" class="btn btn-warning">Create Topic</button>
       </div>
         </form>
       </div>

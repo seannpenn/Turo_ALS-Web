@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('topic_title')->nullable();
             $table->string('topic_description')->nullable();
             $table->string('topic_type');
-            $table->string('text_content')->nullable();
+            $table->longText('text_content')->nullable();
             $table->string('file_name')->nullable();
 
             $table->foreign('content_id')->references('content_id')->on('coursecontent')->onDelete('cascade');
