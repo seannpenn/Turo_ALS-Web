@@ -1,15 +1,16 @@
 @extends('main')
 @extends('dashboard/modals/createquiz_modal')
 @extends('dashboard/modals/createtext_modal')
+@extends('dashboard/modals/uploadfile_modal')
 @extends('dashboard/courses/update_module_modal')
+
 @extends('modalslug')
 
 @section('modal-content')
     <span id="modalContent"> Are you sure you want to delete this topic?</span>
 @stop
-@section('content-id-quiz')
-    {{$selectedModule[0]['content_id']}}
-@stop
+@section('content-id-quiz'){{$selectedModule[0]['content_id']}}@stop
+@section('content-id-file'){{$selectedModule[0]['content_id']}}@stop
 
 
 @section('left-side-nav')
@@ -17,10 +18,10 @@
         <a class="nav-link active" aria-current="page" href="{{route('teacher.home')}}">Home</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Manage Users</a>
+        <a class="nav-link active" aria-current="page" href="{{route('students.all')}}">Manage Users</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Profile</a>
+        <a class="nav-link active" aria-current="page" href="">Profile</a>
     </li>
 @stop
 
@@ -30,6 +31,9 @@
 @stop
 
 @section('css-style')
+    .layout{
+        padding: 20px;
+    }
     img{
         height: 20px;
         width: 20px; 
@@ -99,9 +103,11 @@
 
 @section('main-content')
 @include('navbar/navbar_inside')
-    <a href="{{route('course.showInfo', $selectedModule[0]['course_id'])}}">
-        < Back to courses
-    </a>
+
+    <div class="layout">
+        <a href="{{route('course.showInfo', $selectedModule[0]['course_id'])}}">
+            < Back to courses
+        </a>
         <div class="module-header">
             @foreach($selectedModule as $module)
                 <div class="card" role="button" href="#multiCollapseExample1" style="width: 450px; height: 200px; margin: 5px;">
@@ -124,12 +130,11 @@
             <div class="module-header-form">
                 <div class="upper-left-header">
                     <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#quizModal" data-bs-whatever="@fat">Create Quiz</button>
-                    <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#textModal" data-bs-whatever="@fat">Upload file</button>
-                    <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Text </button>
+                    <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#textModal" data-bs-whatever="@fat">Create Text</button>
+                    <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#fileModal" data-bs-whatever="@fat">Upload file </button>
 
                 </div>
                 
-
             </div>
             @endforeach
 
@@ -165,7 +170,7 @@
                 @stop
             @endforeach
         </div>
-    
+    </div>
 @stop
 
 @section('script-area')

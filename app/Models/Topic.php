@@ -17,6 +17,8 @@ class Topic extends Model
         'topic_title',
         'topic_description',
         'topic_type',
+        'text-content',
+        'file_name'
     ];
 
     public static function getAllTopic(){

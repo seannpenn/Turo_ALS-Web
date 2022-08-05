@@ -23,5 +23,7 @@ class Student extends Model
         'student_civil',
         'student_birth',
     ];
-
+    public static function getAllStudents(){
+        return self::get()->toArray();
+    }
 }

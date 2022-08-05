@@ -2,8 +2,8 @@
 @extends('dashboard/courses/createCourse_modal')
 <!--//for outer navbar//-->
 @section('right-side-nav')
-    <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
-     <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">Logout</a>
+    <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
+     <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">Logout</a>
 @stop
 
 @section('left-side-nav')
@@ -14,7 +14,7 @@
         <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Manage Users</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Profile</a>
+        <a class="nav-link active" aria-current="page" href="">Profile</a>
     </li>
 @stop
 
@@ -22,8 +22,6 @@
 
 @section('left-side-nav-inside')
     <li class="nav-item">
-        <!-- <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Create Course</a> -->
-        <!-- <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a> -->
 
     </li>
 @stop
