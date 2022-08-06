@@ -36,6 +36,8 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::get('student/application/{id}',[StudentController::class, 'showStudentApplication'])->name('student.application');
     Route::post('student/application/approve/{id}',[StudentController::class, 'approve'])->name('student.approve');
     Route::get('/students/records', [StudentController::class, 'showAllStudents'])->name('students.all');
+    Route::post('student/application/provideLRN/{id}',[StudentController::class, 'provideLRN'])->name('student.provideLRN');
+
 
     // For create courses
     Route::post('/course/create', [CourseController::class, 'create'])->name('course.create');

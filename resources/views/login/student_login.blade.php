@@ -38,7 +38,13 @@
         <br>
         <h2>Student Login</h2>
         <br>
+        <div class="col-auto">
+            @if (session('error'))
+                <span>{{ session('error') }}</span>
+            @endif
+        </div>
         <form action="{{ route('student.login') }}" method="post">
+            
         {{ csrf_field() }}
             <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-2 col-form-label">Username</label>

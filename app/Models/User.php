@@ -60,6 +60,6 @@ class User extends Authenticatable
         return $this->hasMany(Teacher::class, 'user_id', 'id');
     }
     public function student(){
-        return $this->hasMany(Student::class, 'user_id', 'id');
+        return $this->hasOne(Student::class, 'user_id', 'id');
     }
 }

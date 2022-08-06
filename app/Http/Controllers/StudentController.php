@@ -28,12 +28,41 @@ class StudentController extends Controller
     }
 
     public function approve($id){
-        $updateStudentStatus = Student::where('studentId', $id);
+        $updateStudentStatus = Student::where('studentId', $id)->get()->first();
+        if($updateStudentStatus->LRN != null){
+            $updateStudentStatus->update([
+                'status' => 'approved',
+            ]);
+
+            return redirect()->to(route('students.all'));
+        }
+        else{
+            return redirect()->back()->with('error', 'Please provide LRN to student first');
+        }
         
-        $updateStudentStatus->update([
-            'status' => 'pending',
-        ]);
         
-        return redirect()->to(route('students.all'));
+    }
+
+    public function provideLRN(Request $request, $id){
+        $rules = [
+            'LRN' => 'required',
+        ];
+        $messages = [
+            'LRN.required' => 'Please input a student LRN.',
+        ];
+
+        $validation = Validator::make($request->input(), $rules, $messages);
+        if($validation->fails()){
+            return redirect()->back()->withInput()->withErrors($validation);
+        }
+        else{
+            $provideStudentLRN = Student::where('studentId', $id);
+
+            $provideStudentLRN->update([
+                'LRN' => $request->LRN,
+            ]);
+            return redirect()->back();
+        }
+        
     }
 }

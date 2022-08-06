@@ -24,6 +24,13 @@
             text-overflow: ellipsis;
             margin-bottom: 10px;
         }
+        span{
+            color: #f00;
+            font-weight: bold;
+        }
+        #application-form{
+            width:100%;
+        }
 @stop  
 
 @section('main-content')
@@ -43,10 +50,29 @@
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">LRN (if available): </label>
                 @if($studentPersonal['LRN'] != null)
-                    <label for="student_LRN" class="col-sm-2 col-form-label">No LRN </label>
+                    <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentPersonal['LRN']}}</label>
+                
                 @else
-                    <label for="student_LRN" class="col-sm-2 col-form-label"><input type="text" class="form-control" name="quiz_title" id="staticEmail2" value=""></label>
-                    <label for="student_LRN" class="col-sm-2 col-form-label"><button type="submit" class="btn btn-primary mb-1">Provide LRN</button></label>
+                    <form action="{{route('student.provideLRN', $studentPersonal['studentId'])}}" method="post" class="row g-3">
+                        {{ csrf_field() }}
+                        <div class="col-auto">
+                            <input type="text" class="form-control" name="LRN" id="staticEmail2" value="">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-1">Provide LRN</button>
+                        </div>
+                        <div class="col-auto">
+                            @foreach($errors->get('LRN') as $errorMessage )
+                                <span>{{ $errorMessage }}</span>
+                            @endforeach
+
+                            @if (session('error'))
+                                <span>{{ session('error') }}</span>
+                            @endif
+                        </div>
+                        
+                    </form>
+                
                 @endif
             </div>
             <div class="input-group mb-3">
