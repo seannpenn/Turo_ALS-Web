@@ -42,22 +42,21 @@ class CourseController extends Controller
         }
     }
 
-    public function showCourse($id){
-        
-        $chosenCourse = Course::where('course_id',$id)->get()->toArray();
-        $courseContent = CourseContent::where('course_id',$id)->get()->toArray();
-        $courseId = $id;
-        return view('dashboard.courses.view_course')->with(compact('chosenCourse', 'courseContent', 'courseId'));  
-    }
-
     public function showOwnedCourses(){
-        $userData = Auth::user();
         $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
-        $ownedCourses = Course::where('teacher_id', $teacherId->teacher_id)->get()->toArray();
+        $ownedCourses = Course::where('teacher_id', $teacherId->teacher_id)->get();
         
         return view('dashboard.courses.display_course')->with(compact('ownedCourses'));
         
     }
+
+    public function showCourse($id){
+        
+        $chosenCourse = Course::where('course_id',$id)->get();
+        return view('dashboard.courses.view_course')->with(compact('chosenCourse'));  
+    }
+
+    
     public function update(Request $request, $id){
         $rules = [
             'course_title' => 'required',
@@ -87,8 +86,8 @@ class CourseController extends Controller
     }
     public function delete($id){
         $selectedCourse = Course::findOrFail($id);
-        
         $selectedCourse->delete();
         return redirect()->to(route('course.all'));
     }
+    
 }

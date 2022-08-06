@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\CourseContent;
+use App\Models\Quiz;
 class Topic extends Model
 {
     use HasFactory;
@@ -23,5 +24,12 @@ class Topic extends Model
 
     public static function getAllTopic(){
         return self::get()->toArray();
+    }
+
+    public function coursecontent(){
+        return $this->belongsTo(CourseContent::class, 'content_id', 'content_id');
+    }
+    public function selectedquiz(){
+        return $this->hasOne(Quiz::class, 'topic_id', 'topic_id');
     }
 }

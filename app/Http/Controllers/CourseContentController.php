@@ -72,16 +72,14 @@ class CourseContentController extends Controller
         $selectedCourseContent = CourseContent::findOrFail($id);
         
         $selectedCourseContent->delete();
-        return redirect()->to(route('course.showInfo', $selectedCourseContent['course_id']));
+        return redirect()->to(route('course.showInfo', $selectedCourseContent->course_id));
     }
     
     public function viewModule($id){
 
-        $selectedModule = CourseContent::where('content_id', $id)->get()->toArray();
+        $selectedModule = CourseContent::where('content_id', $id)->get();
 
-        $courseContentTopic = Topic::where('content_id',$id)->get()->toArray();
-
-        return view('dashboard.courses.view_module')->with(compact('selectedModule', 'courseContentTopic'));
+        return view('dashboard.courses.view_module')->with(compact('selectedModule'));
     }
 
 }

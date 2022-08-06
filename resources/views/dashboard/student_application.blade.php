@@ -42,8 +42,12 @@
 
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">LRN (if available): </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentPersonal['LRN']}} </label>
-
+                @if($studentPersonal['LRN'] != null)
+                    <label for="student_LRN" class="col-sm-2 col-form-label">No LRN </label>
+                @else
+                    <label for="student_LRN" class="col-sm-2 col-form-label"><input type="text" class="form-control" name="quiz_title" id="staticEmail2" value=""></label>
+                    <label for="student_LRN" class="col-sm-2 col-form-label"><button type="submit" class="btn btn-primary mb-1">Provide LRN</button></label>
+                @endif
             </div>
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Full name: </label>

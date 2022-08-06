@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Quiz;
 use App\Models\Question;
+use App\Models\Topic;
 class QuizController extends Controller
 {
     
@@ -37,10 +38,9 @@ class QuizController extends Controller
     }
     
     public function edit($id){
-        $selectedQuiz = Quiz::where('quiz_id',$id)->get()->toArray();
-        $questionCollection = Question::where('quiz_id',$id)->get()->toArray();
+        $selectedQuiz = Quiz::where('quiz_id',$id)->get();
             
-        return view('dashboard.quiz.edit')->with(compact('selectedQuiz', 'questionCollection'));  
+        return view('dashboard.quiz.edit')->with(compact('selectedQuiz'));
     }
     public function update(Request $request, $id){
         $rules = [
@@ -49,7 +49,6 @@ class QuizController extends Controller
 
         $messages = [
             'quiz_title.required' => 'Please input quiz title.',
-
         ];
 
         $validation = Validator::make($request->input(), $rules, $messages);
@@ -59,9 +58,13 @@ class QuizController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         }
         else{
-            $updateQuiz = Quiz::where('quiz_id',$id);
+            $updateQuiz = Quiz::where('quiz_id',$id)->get()->first();
+            $topic = Topic::where('topic_id', $updateQuiz['topic_id']);
             $updateQuiz->update([
                 'quiz_title' => $request->quiz_title,
+            ]);
+            $topic->update([
+                'topic_title' => $request->quiz_title,
             ]);
             
             return back();

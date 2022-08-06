@@ -8,8 +8,8 @@
       <div class="modal-body">
         <form action=" {{route('topic.create')}}" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
-            <input type="text" name="content_id" class="form-control" value="@yield('content-id-file')">
-            <input type="text" name="topic_type" class="form-control" value="file" >
+            <input type="text" name="content_id" class="form-control" value="@yield('content-id-file')" hidden>
+            <input type="text" name="topic_type" class="form-control" value="file" hidden>
 
             <div class="mb-3">
                 <label for="topic_title" class="col-form-label">Topic Title</label>

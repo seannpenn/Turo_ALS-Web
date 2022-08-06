@@ -10,6 +10,7 @@ use App\Http\Controllers\CourseContentController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\TeacherController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,10 +26,10 @@ Route::view('/test', 'test')->name('test');
 
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
 
-    // Route::view('/home', 'home.teacher_home')->name('teacher.home');
+    Route::view('/home', 'home.teacher_home')->name('teacher.home');
 
     Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
-
+    Route::get('/teachers/all', [TeacherController::class, 'testing'])->name('teachers.all');
     // For students
 
     Route::get('/students/records', [StudentController::class, 'showAllStudents'])->name('students.all');
@@ -65,7 +66,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     //for question
     Route::post('/quiz/question/create', [QuizController::class, 'createQuestion'])->name('question.create');
     Route::get('/quiz/question/delete/{id}', [QuestionController::class, 'delete'])->name('question.delete');
-    Route::get('/quiz/question/update/{id}', [QuestionController::class, 'update'])->name('question.update');
+    Route::post('/quiz/question/update/{id}', [QuestionController::class, 'update'])->name('question.update');
 
     // for pdf upload
     // Route::get('file/upload',[TopicController::class, 'uploadFiles'])->name('topic.upload');
