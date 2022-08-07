@@ -17,7 +17,10 @@ class LoginController extends Controller
 
         if(Auth::attempt($loginCredentials)){
             $request->session()->regenerate();
-            
+            if(Auth::user()->userType == 0){
+                Auth::logout();
+                return redirect()->to('/student/login')->with('error', 'You are not allowed to gain Admin access.');
+            }
             return redirect()->to(route('course.all'));
         }
 

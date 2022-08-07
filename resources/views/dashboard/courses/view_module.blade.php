@@ -9,9 +9,9 @@
 @section('modal-content')
     <span id="modalContent"> Are you sure you want to delete this topic?</span>
 @stop
-@section('content-id-quiz'){{$selectedModule[0]['content_id']}}@stop
-@section('content-id-file'){{$selectedModule[0]['content_id']}}@stop
-@section('content-id-text'){{$selectedModule[0]['content_id']}}@stop
+@section('content-id-quiz'){{$selectedModule[0]->content_id}}@stop
+@section('content-id-file'){{$selectedModule[0]->content_id}}@stop
+@section('content-id-text'){{$selectedModule[0]->content_id}}@stop
 
 @section('left-side-nav')
     <li class="nav-item">
@@ -110,7 +110,7 @@
 @include('navbar/navbar_inside')
 
     <div class="layout">
-        <a href="{{route('course.showInfo', $selectedModule[0]['course_id'])}}">
+        <a href="{{route('course.showInfo', $selectedModule[0]->course_id)}}">
             < Back to course
         </a>
         <div class="module-header">
@@ -119,8 +119,8 @@
                 @foreach($selectedModule as $module)
                     <div class="card" role="button" href="#multiCollapseExample1" style="width: 500px; height: 100px;">
                         <div class="card-body">
-                            <h5>{{$module['content_title']}}</h5>
-                            <h9>{{$module['content_description']}}</h9>
+                            <h5>{{$module->content_title}}</h5>
+                            <h9>{{$module->content_description}}</h9>
                                                                         
                         </div>
                         <div class="action" style="margin:2px;">
@@ -130,10 +130,10 @@
                     </div>
                 
                     @section('module-action-update')
-                        {{route('content.update', $module['course_id'])}}
+                        {{route('content.update', $module->course_id)}}
                     @stop
-                    @section('content-title'){{$module['content_title']}}@stop
-                    @section('content-description'){{$module['content_description']}}@stop
+                    @section('content-title'){{$module->content_title}}@stop
+                    @section('content-description'){{$module->content_description}}@stop
                 
                 @endforeach
             </div>
@@ -149,19 +149,19 @@
         <hr>
             
         <div class="module-content">
-            @if(count($courseContentTopic) != 0)
+            @if($selectedModule[0]->topic->count() != 0)
                 <h3>Topics</h3>
             @else
                 <h3>Add Topics....</h3>
             @endif
 
             <div class="module-list">
-                @foreach($courseContentTopic as $topic)
-                    <a href="{{route('topic.view', $topic['topic_id'])}}" style="text-decoration:none; color:black;" id="module" title="Click to view topic">
+                @foreach($selectedModule[0]->topic as $topic)
+                    <a href="{{route('topic.view', $topic->topic_id)}}" style="text-decoration:none; color:black;" id="module" title="Click to view topic">
                         <div class="card" role="button" style="margin:5px;" id="moduleCard" >
                             <div class="card-body">
-                                <h5>{{$topic['topic_title']}}</h5>
-                                <h9>{{$topic['topic_type']}}</h9>                          
+                                <h5>{{$topic->topic_title}}</h5>
+                                <h9>{{$topic->topic_type}}</h9>                          
                             </div> 
                             <div class="action-delete" style="margin:2px;">
                                 <td class="icons"><a title="Delete Topic"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
@@ -171,7 +171,7 @@
                     @section('script-area')
                         let confirmTask = document.getElementById('confirmTask');
                         confirmTask.addEventListener('click',()=>{
-                            window.location.href = "{{route('topic.delete', $topic['topic_id'])}}";
+                            window.location.href = "{{route('topic.delete', $topic->topic_id)}}";
                         }); 
                     @stop
                 @endforeach

@@ -42,16 +42,31 @@
             border-radius: 15px;
             border-color: orange;
         }
+        .banner-image {
+            height: 720px;
+            background-image: url("images/home_cover.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .header h1{
+            font-size: 7em;
+        }
 @stop 
 
 @section('guest-content')
     
         <div class="main-content">
-
-            <div class="header">
-                <h1>Welcome to </h1><h2 style="font-size: 80px; color: orange;">TURO</h2>
-                <p>In collaboration with DepEd</p>
+            <div class="banner-image">
+                <div class="header">
+                    <h1>Welcome to </h1>
+                    <h2>TURO</h2>
+                    <p>In collaboration with DepEd</p>
+                </div>
             </div>
+
+
+
+            
             
             <div class="center">
                 <button type="submit" id="contentCreate" class="enroll"><a class="nav-link" style="color: white;" href="{{route('student.registration')}}"><b>Enroll now for free!</b></a></button>

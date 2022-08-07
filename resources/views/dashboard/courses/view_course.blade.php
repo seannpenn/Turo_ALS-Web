@@ -149,8 +149,8 @@
                 <div class="card" id="card" style="width: 300px; height: 90px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
                     <div class="card-body">
                         
-                        <h5 class="card-title">{{$course['course_title']}}</h5>
-                        <p class="card-text">{{$course['course_description']}}</p>
+                        <h5 class="card-title">{{$course->course_title}}</h5>
+                        <p class="card-text">{{$course->course_description}}</p>
                     
                     </div>
 
@@ -163,12 +163,19 @@
                 <p>
                 <br>
                 @section('form-action-update')
-                    {{route('course.update', $course['course_id'])}}
+                    {{route('course.update', $course->course_id)}}
                 @stop
-                @section('title-value'){{$course['course_title']}}@stop
-                @section('description-value'){{$course['course_description']}}@stop
+                @section('title-value'){{$course->course_title}}@stop
+                @section('description-value'){{$course->course_description}}@stop
                 @section('course_id')
-                    {{$course['course_id']}}
+                    {{$course->course_id}}
+                @stop
+
+                @section('script-area')
+                    let confirmTask = document.getElementById('confirmTask');
+                    confirmTask.addEventListener('click',()=>{
+                        window.location.href = "{{ route('course.delete', $course->course_id) }}";
+                    });  
                 @stop
                 
             @endforeach
@@ -180,31 +187,33 @@
         <hr>
     
         <div class="layout-bottom">
-                @if(count($courseContent) != 0)
+                @if($chosenCourse[0]->coursecontent->count() != 0)
                     <h4>Modules</h4>
                 @else
                     <h4>Add modules....</h4>
                 @endif
                 <div class="modules">
-                        @foreach($courseContent as $content)
-                        <a href="{{route('content.view', $content['content_id'])}}" style="text-decoration:none; color:black;" id="module" title="Click to view module">
-                        
-                            <div class="card" role="button" style="margin:5px;" id="moduleCard" >
 
-                                <div class="card-body">
-                                <h5>{{$content['content_id']}}</h5>
-                                    <h5>{{$content['content_title']}}</h5>
-                                    <h9>{{$content['content_description']}}</h9>
-                                                        
-                                </div>
+                        @foreach($chosenCourse as $course)
+                            @foreach($course->coursecontent as $content)
+                                <a href="{{route('content.view', $content->content_id)}}" style="text-decoration:none; color:black;" id="module" title="Click to view module">
+                                
+                                    <div class="card" role="button" style="margin:5px;" id="moduleCard" >
 
-                                <div class="action" style="margin:2px;">
-                                    <td class="icons"><a href="{{ route('content.delete',$content['content_id']) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
-                                </div>   
-                            </div>
+                                        <div class="card-body">
+                                        <h5>{{$content->content_id}}</h5>
+                                            <h5>{{$content->content_title}}</h5>
+                                            <h9>{{$content->content_description}}</h9>
+                                                                
+                                        </div>
 
-                        </a>
+                                        <div class="action" style="margin:2px;">
+                                            <td class="icons"><a href="{{ route('content.delete',$content->content_id) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
+                                        </div>   
+                                    </div>
 
+                                </a>
+                            @endforeach
                         @endforeach
                 </div>
         </div>
@@ -220,13 +229,6 @@
             $('.ckeditor').ckeditor();
         });
     
-
-
-        let confirmTask = document.getElementById('confirmTask');
-        confirmTask.addEventListener('click',()=>{
-            window.location.href = "{{ route('course.delete', $courseId) }}";
-        });  
-
     function showTopicInput(id){
         if(document.getElementById('topic-form').classList.contains('d-none')){
             document.getElementById('topic-form').classList.remove('d-none');
@@ -241,43 +243,6 @@
    function getModuleId(id){
         return id;
    }
-
-    function showInput(answer){
-        console.log(answer.value)
-
-        if(answer.value == 'text'){
-            document.getElementById('text').classList.remove('d-none');
-            document.getElementById('file').classList.add('d-none');
-            document.getElementById('quiz').classList.add('d-none');
-            document.getElementById('media').classList.add('d-none');
-        }
-        else if(answer.value == 'file'){
-            document.getElementById('file').classList.remove('d-none');
-            document.getElementById('quiz').classList.add('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('media').classList.add('d-none');
-        }
-        else if(answer.value == 'media'){
-            document.getElementById('media').classList.remove('d-none');
-            document.getElementById('quiz').classList.add('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('file').classList.add('d-none');
-        }
-        else if(answer.value == 'quiz'){
-            document.getElementById('quiz').classList.remove('d-none');
-            document.getElementById('media').classList.add('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('file').classList.add('d-none');
-        }
-        else{
-            document.getElementById('media').classList.add('d-none');
-            document.getElementById('quiz').classList.add('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('file').classList.add('d-none');
-        }
-
-    }
-
     
 @stop
 

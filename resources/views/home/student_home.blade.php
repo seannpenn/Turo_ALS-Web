@@ -20,11 +20,17 @@
     
     
     <div class="layout">
+        
         <div class="message">
-            <h2>Your enrollment is pending for approval.</h2>
-            {{Auth::user()->username}}
-            <h4>Please wait for a confimation.</h4>
-            <img src="{{ asset('images/loading.gif') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            @if(Auth::user()->student->status != 'approved')
+                <h2>Your enrollment is pending for approval.</h2>
+                
+                <h4>Please wait for a confimation.</h4>
+                <img src="{{ asset('images/loading.gif') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            @else
+                <h2>Your enrollment application is approved.</h2>
+                <h4>Your Learning Reference number(LRN) is {{Auth::user()->student->LRN}}</h4>
+            @endif
         </div>
     </div>
     

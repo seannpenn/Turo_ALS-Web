@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CourseContent;
+use App\Models\Teacher;
 class Course extends Model
 {
     use HasFactory;
@@ -21,10 +22,6 @@ class Course extends Model
         'course_description',
     ];
 
-    public function coursecontent(){
-        return $this->hasMany(CourseContent::class, 'course_id', 'content_id');
-    }
-
     public static function getAllCourses(){
         
         return self::get()->toArray();
@@ -32,9 +29,17 @@ class Course extends Model
     // public function getCourseContents(){
     //     return $this->hasMany(CourseContent::class);
     // }
-
     public function scopeFilter(Builder $builder, $request)
     {
         return (new CourseFilter($request))->filter($builder);
     }
+    public function teacher(){
+        return $this->belongsTo(Teacher::class, 'teacher_id', 'teacher_id');
+    }
+
+    public function coursecontent(){
+        return $this->hasMany(CourseContent::class, 'course_id', 'course_id');
+    }
+    
+
 }

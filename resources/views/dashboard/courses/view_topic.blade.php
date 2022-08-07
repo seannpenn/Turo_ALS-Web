@@ -51,8 +51,7 @@
                 <h1>View and edit this quiz in the quiz tab</h1>
                     
                 <div class="col-auto">
-                    <a href="{{route('quiz.manage')}}"><button type="submit" class="btn btn-primary">Go to Quiz tab</button></a>
-                    
+                    <a href="{{ route('quiz.edit', $selectedTopic->selectedquiz->quiz_id) }}"><button type="submit" class="btn btn-primary">Go to Quiz</button></a>
                 </div>
             </div>
             

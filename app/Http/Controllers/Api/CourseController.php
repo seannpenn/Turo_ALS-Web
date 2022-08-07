@@ -52,7 +52,7 @@ class CourseController extends Controller
 
         return response()->json([
             'status' =>true,
-            'courses' => [$courseCollection]
+            'courses' => $courseCollection
         ]);
     }
 
