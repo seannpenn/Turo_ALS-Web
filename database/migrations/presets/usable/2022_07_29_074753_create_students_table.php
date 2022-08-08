@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('city', 50);
             $table->string('province', 50);
             $table->string('status')->default('pending');
+            $table->string('program_enrolled')->nullable();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
