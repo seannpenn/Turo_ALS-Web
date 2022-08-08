@@ -71,7 +71,7 @@
            
             
             <div class="d-grid gap-2 col-6 mx-auto">
-                <button type="submit" class="btn btn-primary" type="button">Sign in</button>
+                <button type="submit" class="btn btn-warning" type="button">Sign in</button>
             </div>
         </form>
     </section>

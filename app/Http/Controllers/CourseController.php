@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Models\Teacher;
 use App\Models\Course;
+use App\Models\Programs;
 use App\Models\CourseContent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ class CourseController extends Controller
             $course = new Course();
 
             $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
+            $course->prog_id = $request->prog_id;
             $course->teacher_id = $teacherId->teacher_id;
             $course->course_title = $request->course_title;
             $course->course_description = $request->course_description;
@@ -46,7 +48,8 @@ class CourseController extends Controller
         $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
         $ownedCourses = Course::where('teacher_id', $teacherId->teacher_id)->get();
         
-        return view('dashboard.courses.display_course')->with(compact('ownedCourses'));
+        $programs = Programs::getAll();
+        return view('dashboard.courses.display_course')->with(compact('ownedCourses','programs' ));
         
     }
 

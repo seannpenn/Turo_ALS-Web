@@ -23,11 +23,6 @@ class ProgramSeeder extends Seeder
                 'prog_fname' => 'Accreditation and Equivalency Program',
                 'prog_sname' => 'AEP'
             ],
-            [
-                'prog_fname' => 'Life Skills for Work Readiness and Civic Engagement Program',
-                'prog_sname' => 'LSWRCEP'
-            ]
-
         ];
 
         DB::table('programs')->insert($programs);

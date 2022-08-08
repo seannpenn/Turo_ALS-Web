@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\StudentEducation;
+use App\Models\StudentFamily;
 class Student extends Model
 {
     use HasFactory;
@@ -22,9 +23,19 @@ class Student extends Model
         'student_gender',
         'student_civil',
         'student_birth',
+        'street',
+        'barangay',
+        'city',
+        'province',
         'status',
     ];
     public static function getAllStudents(){
-        return self::get()->toArray();
+        return self::get();
+    }
+    public function education(){
+        return $this->hasOne(StudentEducation::class, 'studentId', 'studentId');
+    }
+    public function family(){
+        return $this->hasOne(StudentFamily::class, 'studentId', 'studentId');
     }
 }

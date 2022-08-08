@@ -13,30 +13,14 @@
 @section('content-id-file'){{$selectedModule[0]->content_id}}@stop
 @section('content-id-text'){{$selectedModule[0]->content_id}}@stop
 
-@section('left-side-nav')
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('teacher.home')}}">Home</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('students.all')}}">Manage Users</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="">Profile</a>
-    </li>
-@stop
-
-@section('right-side-nav')
-    <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
-     <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">Logout</a>
-@stop
 
 @section('css-style')
     .layout{
         padding: 20px;
     }
     img{
-        height: 20px;
-        width: 20px; 
+        height: 30px;
+        width: 30px; 
     } 
     .module-header{
         margin: 0 auto;
@@ -103,7 +87,6 @@
         
     }
     
-    
 @stop
 
 @section('main-content')
@@ -160,8 +143,16 @@
                     <a href="{{route('topic.view', $topic->topic_id)}}" style="text-decoration:none; color:black;" id="module" title="Click to view topic">
                         <div class="card" role="button" style="margin:5px;" id="moduleCard" >
                             <div class="card-body">
+                            
                                 <h5>{{$topic->topic_title}}</h5>
-                                <h9>{{$topic->topic_type}}</h9>                          
+                                
+                                @if($topic->topic_type == 'text')
+                                    <img src="{{ asset('images/text.jpg') }}">
+                                @elseif($topic->topic_type == 'quiz')
+                                    <img src="{{ asset('images/quiz.png') }}">
+                                @else
+                                    <img src="{{ asset('images/pdf.png') }}">
+                                @endif                        
                             </div> 
                             <div class="action-delete" style="margin:2px;">
                                 <td class="icons"><a title="Delete Topic"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>

@@ -10,6 +10,14 @@
         {{ csrf_field() }}
 
           <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Create course for:</label>
+            <select class="form-select" name="prog_id" style="width: 400px; height: 40px;">
+              @yield('option')
+            </select>
+            <br>
+          </div>
+
+          <div class="mb-3">
             <label for="recipient-name" class="col-form-label">@yield('first-label')</label>
             <input type="text" name="course_title" class="form-control" id="recipient-name">
           </div>

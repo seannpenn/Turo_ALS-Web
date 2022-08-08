@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Teacher;
 use App\Models\Student;
-use App\Models\StudentBackground;
-use App\Models\StudentInformation;
+use App\Models\StudentEducation;
+use App\Models\StudentFamily;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -60,13 +60,22 @@ class RegisterController extends Controller
         $backgroundCredentials = $request->validate([
             'student_fname' => 'required',
             'student_lname' => 'required',
+            'student_gender' => 'required',
+            'student_civil' => 'required',
+            'student_birth' => 'required',
+            'student_placeofbirth' => 'required',
             'street' => 'required',
             'barangay' => 'required',
             'city' => 'required',
             'province' => 'required',
             'student_motherfname' => 'required',
             'student_motherlname' => 'required',
+            'student_compfname' => 'required',
+            'student_complname' => 'required',
             'last_level' => 'required',
+            'student_reason' => 'required',
+            'answer_type' => 'required',
+
         ]);
 
         $userId = User::insertGetId([
@@ -84,20 +93,26 @@ class RegisterController extends Controller
             'student_gender' => $request['student_gender'],
             'student_civil' => $request['student_civil'],
             'student_birth' => $request['student_birth'],
-        ]);
-        StudentInformation::create([
-            'studentId' => $studentId,
+            'student_placeofbirth' => $request['student_placeofbirth'],
             'street' => $request['street'],
             'barangay' => $request['barangay'],
             'city' => $request['city'],
-            'province' => $request['student_fname'],
+            'province' => $request['province'],
+        ]);
+        StudentFamily::create([
+            'studentId' => $studentId,
+            'student_compfname' => $request['student_compfname'],
+            'student_compmname' => $request['student_compmname'],
+            'student_complname' => $request['student_complname'],
             'student_motherfname' => $request['student_motherfname'],
             'student_mothermname' => $request['student_mothermname'],
             'student_motherlname' => $request['student_motherlname'],
         ]);
-        StudentBackground::create([
+        StudentEducation::create([
             'studentId' => $studentId,
             'last_level' => $request['last_level'],
+            'student_reason' => $request['student_reason'],
+            'answer_type' => $request['answer_type'],
             'program_attended' => $request['program_attended'],
             'program_literacy' => $request['program_literacy'],
             'program_attended_year' => $request['program_attended_year'],

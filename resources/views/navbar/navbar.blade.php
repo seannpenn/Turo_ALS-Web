@@ -10,17 +10,28 @@
     <title>Document</title>
 
     <style>
+      .nav-link {
+        color:white;
+      }
+      a{
+        text-decoration: none;
+        color:white;
+      }
       nav{
         box-shadow: 2px 1px 5px 2px lightgrey;
+        background-color: #FF8E01;
+      }
+      .navbar-brand{
+        color:white;
       }
     </style>
 </head>
 <body>
 
 
-<nav class="navbar navbar-expand-lg bg-light" >
+<nav class="navbar navbar-expand-lg" >
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{ route('landing') }}" style="color: black;">
+    <a class="navbar-brand" href="{{ route('landing') }}">
       <img src="{{ asset('images/logo.png') }}" alt="" width="30" height="24" class="d-inline-block align-text-top">
       TURO
     </a>
@@ -33,10 +44,28 @@
 
           <a class="nav-link active" id="homeButton" aria-current="page">Home</a>
         </li> -->
+        @auth
+          @if(Auth::user()->userType == '0')
+            <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{route('teacher.home')}}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="">Profile</a>
+            </li>
+          @else
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{route('users.all')}}" style="color:white;">Manage Users</a>
+            </li>
+          @endif
+        @endauth
         @yield('left-side-nav')
       </ul>
       
       <span class="d-flex">
+        @auth
+          <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
+          <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">Logout</a>
+        @endauth
         @yield('right-side-nav')
       
       </span>

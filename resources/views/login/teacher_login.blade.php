@@ -17,6 +17,7 @@
         }
         button{
             text-align:center;
+            background-color: #FF8E01;
         }
         label {
             display: inline-block;

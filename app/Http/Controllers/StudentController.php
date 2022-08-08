@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
-use App\Models\StudentBackground;
-use App\Models\StudentInformation;
+use App\Models\StudentEducation;
+use App\Models\StudentFamily;
 use Validator;
 class StudentController extends Controller
 {
@@ -20,11 +20,9 @@ class StudentController extends Controller
     }
 
     public function showStudentApplication($id){
-        $studentPersonal= Student::where('studentId', $id)->get()->first();
-        $studentInfo = StudentInformation::where('studentId', $studentPersonal['studentId'])->get()->first();
-        $studentBack = StudentBackground::where('studentId', $studentPersonal['studentId'])->get()->first();
-
-        return view('dashboard.student_application')->with(compact('studentPersonal', 'studentInfo', 'studentBack'));
+        $studentApplication= Student::where('studentId', $id)->get()->first();
+        
+        return view('dashboard.student_application')->with(compact('studentApplication'));
     }
 
     public function approve($id){

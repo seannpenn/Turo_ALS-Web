@@ -4,23 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-class StudentInformation extends Model
+use App\Models\Student;
+class StudentFamily extends Model
 {
     use HasFactory;
 
-    protected $table = 'students_information';
+    protected $table = 'student_family';
     protected $primaryKey = 'id';
     public $incrementing = false;
     public $timestamps = false;
     protected $fillable = [
         'studentId',
-        'street',
-        'barangay',
-        'city',
-        'province',
+        'student_compfname',
+        'student_compmname',
+        'student_complname',
         'student_motherfname',
         'student_mothermname',
         'student_motherlname'
     ];
+
+    public function student(){
+        return $this->belongsTo(Student::class, 'studentId', 'studentId');
+    }
 }

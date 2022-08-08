@@ -1,8 +1,4 @@
 @extends('main')
-@section('right-side-nav')
-    <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
-     <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">Logout</a>
-@stop
 
 @section('css-style')
         img {
@@ -38,17 +34,19 @@
                     <th scope="col">Student LRN</th>
                     <th scope="col">Student Name</th>
                     <th scope="col">Status </th>
+                    <th scope="col">Program enrolled </th>
                     <th scope="col">Actions</th>
                 </tr>
             
                     @foreach($studentCollection as $student)
                         <tr>
-                            <th scope="row">{{ $student['studentId'] }}</th>
-                            @if($student['LRN'] != '')<td>{{ $student['LRN'] }}</td>@else <td>no LRN</td>@endif
-                            <td>{{ $student['student_lname'] }}, {{ $student['student_fname'] }} {{ $student['student_mname'] }}</td>
-                            <td>{{ $student['status'] }}</td>
+                            <th scope="row">{{ $student->studentId }}</th>
+                            @if($student->LRN != '')<td>{{ $student->LRN }}</td>@else <td>no LRN</td>@endif
+                            <td>{{ $student->student_lname }}, {{ $student->student_fname }} {{ $student->student_mname }}</td>
+                            <td>{{ $student->status }}</td>
+                            <td></td>
                             <td>
-                                <a href="{{ route('student.application',$student['studentId']) }}" title="Delete Student Record"><button type="button" class="btn btn-primary">View application</button></a>
+                                <a href="{{ route('student.application',$student->studentId) }}" title="Delete Student Record"><button type="button" class="btn btn-warning" style="color:white;">View application</button></a>
                             </td>
                         </tr>
                     @endforeach

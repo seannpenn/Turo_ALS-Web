@@ -9,6 +9,12 @@
 @section('modal-title')
     Delete Course
 @stop
+@section('option')
+    @foreach($programs as $program)
+        <option value="{{ $program['prog_id'] }}" selected>{{ $program['prog_fname'] }}</option>
+    @endforeach
+@stop
+
 
 @section('css-style')
     .layout{
@@ -49,8 +55,9 @@
     right: 30px;
     }
     .header{
+        display:flex;
         margin: 30 auto;
-        width: 500px;
+        width: 800px;
         border: 1 solid;
     }
     .empty-course{
@@ -85,23 +92,6 @@
     }
 @stop
 
-@section('left-side-nav')
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('teacher.home')}}">Home</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('students.all')}}">Manage Users</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="">Profile</a>
-    </li>
-@stop
-
-@section('right-side-nav')
-    <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
-     <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">Logout</a>
-@stop
-
 @section('main-content')
 @include('dashboard.courses.create_course')
 @include('navbar/navbar_inside')
@@ -112,14 +102,24 @@
 
     <div class="upper-left-header">
         <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Course</button>
+        <!-- <div class="header">
+            <label class="col-sm-3 col-form-label">Show courses for: </label>
+            <select class="courseCategory" aria-label="Default select example" name="courseCategory" id="courseCategory" onchange="getId(this)">
+                @yield('option')
+            </select>
+        </div> -->
     </div>
+    
+
+    
     @if(count($ownedCourses) != 0)
         <div class="course-area">
             @foreach($ownedCourses as $course)
-                    <div class="card" id="card" style="width: 300px; height: 200;" class="btn btn-primary" data-bs-toggle="modal">
+                
+                    <div class="card" id="card" style="width: 300px; height: 200;" class="btn btn-primary" data-bs-toggle="modal" >
                         <div class="card-body">
-                            <div class="card-content">
-                                <!-- <h1>{{$course['course_id']}}</h1> -->
+                            <div class="card-content" >
+                                <h1>{{$course['course_id']}}</h1>
                                 <h5 class="card-title">{{$course['course_title']}}</h5>
                                 <p class="card-text">{{$course['course_description']}}</p>
                             </div>
@@ -128,20 +128,12 @@
                                 <td class="icons"><a href="{{route('course.showInfo', $course['course_id'])}}" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
                             </div>
                             <div class="action-delete" style="margin:2px;">
-                                <td class="icons"><a title="Delete Course"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
+                                <td class="icons"><a href ="{{ route('course.delete', $course['course_id']) }}" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
                             </div>
                         </div>
                     </div>
                 
-                @section('script-area')
                     
-
-                    let confirmTask = document.getElementById('confirmTask');
-                    confirmTask.addEventListener('click',()=>{
-                        window.location.href = "{{ route('course.delete', $course['course_id']) }}";
-                    }); 
-                @stop
-
             @endforeach
              
         </div>
@@ -153,33 +145,18 @@
 
 @stop
 
-@section('script-area')
-
-    function displayCourses(answer){
-        console.log(answer.value)
-
-        if(answer.value == 'text'){
-            document.getElementById('text').classList.remove('d-none');
-            document.getElementById('file').classList.add('d-none');
-            document.getElementById('media').classList.add('d-none');
-        }
-        else if(answer.value == 'file'){
-            document.getElementById('file').classList.remove('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('media').classList.add('d-none');
-        }
-        else if(answer.value == 'media'){
-            document.getElementById('media').classList.remove('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('file').classList.add('d-none');
-        }
-        else{
-            document.getElementById('media').classList.add('d-none');
-            document.getElementById('text').classList.add('d-none');
-            document.getElementById('file').classList.add('d-none');
-        }
-
+<script>
+    let id;
+    console.log(id);
+    function getId($id){
+        id = $id.value;
+        alert($id.value);
     }
-@stop
+
+    function returnId(){
+        return id;
+    }
+    
+</script>
 
 

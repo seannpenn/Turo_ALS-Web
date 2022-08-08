@@ -12,9 +12,7 @@
             display: flex;
             flex-direction: column;
         }
-        .header{
-            text-align:center;
-        }
+        
         .center{
             margin-top: 40px;
             
@@ -37,6 +35,15 @@
             background-image: url("images/home_cover.jpg");
             background-size: cover;
             background-attachment: fixed;
+            justify-content:center;
+            display:flex;
+            flex-direction: row;
+        }
+        .header{
+            margin-top: 50px;
+            width: 1000px;
+            text-align:center;
+            
         }
         .header h1{
             font-family: 'Montserrat';
@@ -44,7 +51,7 @@
         }
         .header h2{
             color:white;
-           font-size: 10em;
+            font-size: 10em;
         }
         .header p{
             font-family: 'Montserrat';
@@ -71,6 +78,14 @@
             text-align: center;
             color: #4b5563;
         }
+        .logo{
+            width: 200px;
+        }
+        .icons{
+            margin-top: 200px;
+            width:150px;
+            height: 150px;
+        }
 @stop 
 
 @section('guest-content')
@@ -78,6 +93,9 @@
         <div class="main-content">
             <div class="banner-image">
                 <br><br><br><br>
+                <div class="logo">
+                    <img class="icons"src="{{ asset('images/als.png') }}" alt="">
+                </div>
                 <div class="header">
                     <h1>Welcome to </h1>
                     <h2>TURO</h2>
@@ -85,6 +103,10 @@
                     <br>
                     <button type="submit" id="contentCreate" class="enroll"><a href="{{route('student.registration')}}"><b>Enroll now for free!</b></a></button>
                     <h6>Already enrolled? <a href="{{route('s-login')}}">Login </a>here</h6>
+                </div>
+                
+                <div class="logo">
+                    <img class="icons"src="{{ asset('images/deped_logo.png') }}" alt="">
                 </div>
 
             </div>

@@ -12,6 +12,7 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
     @yield('import-scripts')
     <script>
+        
         @yield('script-area')
     </script>
     <style>

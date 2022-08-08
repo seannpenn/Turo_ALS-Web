@@ -13,4 +13,8 @@ class Programs extends Model
     protected $primaryKey = 'prog_id';
     
     public $timestamps = false;
+
+    public static function getAll(){
+        return self::all();
+    }
 }

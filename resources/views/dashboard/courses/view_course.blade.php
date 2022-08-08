@@ -111,30 +111,6 @@
     
 @stop
 
-@section('left-side-nav-inside')
-    <li class="nav-item">
-        
-    </li>
-@stop
-
-@section('left-side-nav')
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('teacher.home')}}">Home</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('students.all')}}">Manage Users</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="">Profile</a>
-    </li>
-@stop
-
-@section('right-side-nav')
-    <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
-     <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">Logout</a>
-@stop
-
-
 @section('main-content')
     @include('dashboard.courses.create_course')
     @include('navbar/navbar_inside')
@@ -208,7 +184,7 @@
                                         </div>
 
                                         <div class="action" style="margin:2px;">
-                                            <td class="icons"><a href="{{ route('content.delete',$content->content_id) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
+                                            <td class="icons"><a href="{{ route('content.delete',$content->content_id) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this module?');"></a></td>
                                         </div>   
                                     </div>
 
