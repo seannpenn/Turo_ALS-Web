@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: white;">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: white; border-bottom:1px solid orange">
   <div class="container-fluid">
     <!-- <a class="navbar-brand" href="#">Create Course</a> -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,9 +39,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
-      <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Students</a>
-      <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage')}}">Manage Quiz</a>
+        <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
+        <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Students</a>
+        <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage')}}">Manage Quiz</a>
 
         @yield('left-side-nav-inside')
       </ul>

@@ -18,11 +18,15 @@
         color:white;
       }
       nav{
-        box-shadow: 2px 1px 5px 2px lightgrey;
+        /* box-shadow: 2px 1px 5px 2px lightgrey; */
+        border-bottom: 2px solid white;
         background-color: #FF8E01;
       }
       .navbar-brand{
         color:white;
+      }
+      .container-fluid a{
+        font-size: 20px;
       }
     </style>
 </head>
@@ -32,7 +36,7 @@
 <nav class="navbar navbar-expand-lg" >
   <div class="container-fluid">
     <a class="navbar-brand" href="{{ route('landing') }}">
-      <img src="{{ asset('images/logo.png') }}" alt="" width="30" height="24" class="d-inline-block align-text-top">
+      <img src="{{ asset('images/logo.png') }}" alt="" width="40" height="30" class="d-inline-block align-text-top">
       TURO
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">

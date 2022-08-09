@@ -1,11 +1,28 @@
 @extends('main')
 <!--//for outer navbar//-->
-@section('right-side-nav')
-    <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
-     <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">Logout</a>
+
+@section('css-style')
+    .layout{
+        border: 1 solid;
+        height:94vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .message{
+        text-align:center;
+        padding: 0 24px;
+        margin: 150px auto;
+    }
+    .work {
+        max-width: 900px;
+        padding: 0 24px;
+        margin: 150px auto;
+        margin-bottom: 32px;
+        border-radius: 5px;
+        background-color: #f9fafb;
+    }
 @stop
-
-
 
 @section('main-content')
     
@@ -21,8 +38,11 @@
             @else
                 <h1>Your enrollment application is approved.</h1>
                 <h4>Your Learning Reference number(LRN) is {{Auth::user()->student->LRN}}</h4>
-                <p>Install the mobile application to access your courses.</p>
-                <p>Enter your login credentials and enjoy learning.</p>
+                <br>
+                <img src="{{ asset('images/loginUI.png')}}" width="200" height="350" class="img" />
+                <br><br>
+                <p><b>Install the mobile application to access your learning materials.</b></p>
+                    
             @endif
         </div>
     </div>
@@ -30,18 +50,3 @@
 
 @stop
 
-@section('css-style')
-    .layout{
-        
-        border: 1 solid;
-        height:94vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .message{
-        text-align:center;
-    }
-    h2{
-    }
-@stop

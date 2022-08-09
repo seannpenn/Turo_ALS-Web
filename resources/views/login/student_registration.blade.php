@@ -8,9 +8,14 @@
     
         #registration-form {
             margin: 0 auto;
-            width: 1000px;
-            height: 300px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            
+            width:60%;
+            padding: 30px;
+
             border: 1 solid;
+            box-shadow: 0px 10px 20px grey;
         }
         h2{
             text-align:center;
@@ -37,7 +42,7 @@
 @section('guest-content')
     <section id="registration-form">
         <br>
-        <h2>Student Registration</h2>
+        <h2>Student Enrollment</h2>
         
         <br>
         <form action="{{ route('student.register') }}" method="post">
@@ -279,9 +284,14 @@
 
             <div id="survey-form">
                 <label for="basic-url" class="form-label">If yes, </label>
-                <div style="display: flex; height:50px;">
-                    <label for="program_attended" name="program_attended" class="col-sm-3 col-form-label">Name of the program: </label>
-                    <input type="text" style="width:300px;margin-right: 20px;" name="program_attended" class="form-control" placeholder="Name of program" aria-label="Username" aria-describedby="basic-addon1">
+
+                <div class="row mb-3">
+                    <label for="program_attended" class="col-sm-3 col-form-label">Name of the program:</label>
+                    <div class="col-sm-3">
+                        <input type="text" name="program_attended"  class="form-control" id="inputPassword3">
+                    </div>
+                </div>
+                <div class="row mb-3">
                     
                     <label for="student_LRN" class="col-sm-2 col-form-label">Level of Literacy: </label>
                     <br>
