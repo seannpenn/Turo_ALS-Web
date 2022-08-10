@@ -39,15 +39,27 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
-        <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Students</a>
-        <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage')}}">Manage Quiz</a>
+      @auth
+          @if(Auth::user()->userType == '1')
+          <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
+          <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Students</a>
+          <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage')}}">Manage Quiz</a>
+          @else
+            
+          @endif
+      @endauth
+        
 
         @yield('left-side-nav-inside')
       </ul>
       
       <span class="d-flex">
-        @yield('right-side-nav-insite')
+        @yield('right-side-nav-inside')
+        @auth
+          @if(Auth::user()->userType == '0')
+            
+          @endif
+        @endauth
       <!-- <a class="nav-link" href="#">Login</a>
       <a class="nav-link" href="#">Register</a> -->
       </span>

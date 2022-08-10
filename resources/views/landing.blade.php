@@ -1,10 +1,5 @@
 @extends('main')
 
-
-@section('right-side-nav')
-     <a class="nav-link" style="color: black;" href="{{ route('s-login') }}">Login</a>
-@stop
-
 @section('css-style')
         .main-content {
             width:100%;
@@ -107,8 +102,8 @@
         }
 @stop 
 
-@section('guest-content')
-<link rel="stylesheet" href="{{ asset('css/landing.css') }}">
+@section('main-content')
+
     
         <div class="main-content">
             <div class="banner-image">
@@ -120,9 +115,12 @@
                     <p style="font-size: 30px;">A seamless access for your <b style="color:white;">ALS</b> learning materials</p>
                     <p>In collaboration with DepEd</p>
                     <br>
-                    <button type="submit" id="contentCreate" class="enroll"><a href="{{route('student.registration')}}"><b>Enroll now for free!</b></a></button>
-                    
-                    <!-- <h6>Already enrolled? <a href="{{route('s-login')}}">Login </a>here</h6> -->
+                        @auth
+                            <button type="submit" id="contentCreate" class="enroll"><a href="{{route('student.enrollment_page')}}"><b>Enroll now for free!</b></a></button>
+                        @endauth
+                        @guest
+                            <button type="submit" id="contentCreate" class="enroll"><a href="{{route('s-login')}}"><b>Enroll now for free!</b></a></button>
+                        @endguest
                 </div>
                 
                 <div class="logo">
@@ -160,9 +158,9 @@
                     Roadmap.
                 </p>
                 <br>
-                <h2>ALS Programs offered</h2>
+                <!-- <h2><b>ALS Programs offered</b></h2>
                 
-                <h3>Basic Literacy Program</h3>
+                <h3><b>BASIC LITERACY PROGRAM</b></h3>
                 <p>
                     The Basic Literacy Program (BLP) is a program component of ALS aimed at eradicating
                     illiteracy among OSYA, and in extreme cases, school-aged children, 
@@ -171,7 +169,7 @@
 
                 <br>
 
-                <h3>Accreditation and Equivalency Program</h3>
+                <h3><b>ACCREDICATION AND EQUIVALENCY PROGRAM</b></h3>
                 <p>
                     The Accreditation and Equivalency (A&E) Program is a program component of ALS aimed 
                     at providing an alternative pathway of learning for OSYA who have the basic literacy 
@@ -180,25 +178,37 @@
                     and high school education outside the formal school system.
                 </p>
 
+                <h3><b>LIFE SKILLS FOR WORK READINESS AND CIVIC ENGAGEMENT PROGRAM</b></h3>
+                <p>
+                Consistent with the goal to intensify its second chance education program and make it more 
+                responsive to the needs of the learners, DepEd integrated the Life Skills for Work Readiness 
+                and Civic Engagement Program developed under the Mindanao Youth Development project of USAID.
+                The Life Skills for Work Readiness and Civic Engagement Program aimed to address the mismatch 
+                between skills taught in school and skills demanded in the workplace that have left young people 
+                unable to find jobs, start their own businesses, or otherwise contribute to their communities.
+                </p>
+
+                <h3><b>INFORMAL EDUCATION FOR DISADVANTAGED CHILDREN</b></h3>
+                <p>
+                This program focuses on packaging of short-term educational activity that addresses the 
+                special needs and interests of the street and working children. It intends to use life skills 
+                active learning approaches/strategies aimed at developing/enhancing social, civic, aesthetic, 
+                cultural, recreational physical and personal development. The learning materials/packages may be 
+                developed/adopted/adapted or gathered from other sources and tailored-fit to the identified needs 
+                of the said users.
+                </p>
+
+                <h3><b>PARENT EDUCATION</b></h3>
+                <p>
+                The Parent Education is an informal education which is a life skills short-term course that addresses
+                the special needs and interests of the parents to promote pride in their work and ownership of their 
+                responsibilities as members of the family and their community.
+                </p> -->
+
             </section>
             
             
-            <div class="floating-container">
-                <div class="floating-button">?</div>
-                <div class="element-container">
-                    <a href="google.com"> <span class="float-element tooltip-left">
-                    <i class="material-icons">phone
-                    </i></a>
-                    </span>
-                    <span class="float-element">
-                    <i class="material-icons">email
-                </i>
-                    </span>
-                    <span class="float-element">
-                    <i class="material-icons">chat</i>
-                    </span>
-                </div>
-            </div>
+            
             
             
             <footer class="site-footer">

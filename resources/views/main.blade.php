@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="{!! url('assets/tinymce/js/tinymce.min.js') !!}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
     @yield('import-scripts')
     <script>
         
@@ -29,10 +30,59 @@
     @include('navbar.navbar')
     @guest
         @yield('guest-content')
+        @yield('main-content')
+        <div class="floating-container">
+                <div class="floating-button">?</div>
+                <div class="element-container">
+                    <a href="google.com"> 
+                        <span class="float-element tooltip-left">
+                        <i class="material-icons">phone
+                        </i>
+                        </span>
+                    </a>
+
+                    <a href="www.gmail.com">
+                        <span class="float-element">
+                            <i class="material-icons">email
+                            </i>
+                        </span>
+                    </a>    
+                    <a href="www.messenger.com">
+                        <span class="float-element">
+                            <i class="material-icons">chat</i>
+                        </span>
+                    </a>
+                    
+                </div>
+            </div>
     @endguest
 
     @auth
         @yield('main-content')
+        <div class="floating-container">
+                <div class="floating-button">?</div>
+                <div class="element-container">
+                    <a href="google.com"> 
+                        <span class="float-element tooltip-left">
+                        <i class="material-icons">phone
+                        </i>
+                        </span>
+                    </a>
+
+                    <a href="www.gmail.com">
+                        <span class="float-element">
+                            <i class="material-icons">email
+                            </i>
+                        </span>
+                    </a>    
+                    <a href="www.messenger.com">
+                        <span class="float-element">
+                            <i class="material-icons">chat</i>
+                        </span>
+                    </a>
+                    
+                </div>
+            </div>
     @endauth
 
     <script>

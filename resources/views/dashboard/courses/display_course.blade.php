@@ -18,6 +18,7 @@
 
 @section('css-style')
     .layout{
+        padding: 20px;
         display: flex;
         flex-grow: 1;
         flex-direction: row;
@@ -35,19 +36,20 @@
         cursor:pointer;
     }
     .course-area{
-        justify-content:center;
-        height: auto; 
-        display: grid;
-        grid-template-columns: 300px 300px 300px 300px 300px 300px;
-        gap: 10px;
+        margin: 0 auto;
+        display: flex;
+        flex-grow: 1;
+        flex-direction: row;
+        justify-content:left;
+        gap: 15px;
         <!-- background-color: #2196F3; -->
         padding: 20px; 
         
     }
     .action{
         position: absolute;
-    bottom: 0px;
-    right: 0px;
+        bottom: 0px;
+        right: 0px;
     }
     .action-delete{
         position: absolute;
@@ -90,9 +92,7 @@
         font-size: 18px;
     }
 
-@stop
-<style>
-    .collapsible {
+    <!-- .collapsible {
     background-color: #777;
     color: white;
     cursor: pointer;
@@ -104,30 +104,19 @@
     font-size: 15px;
     }
 
-.active, .collapsible:hover {
-  background-color: #555;
-}
+    .collapsible:hover {
+    background-color: #555;
+    }
 
-.collapsible:after {
-  content: '\002B';
-  color: white;
-  font-weight: bold;
-  float: right;
-  margin-left: 5px;
-}
+    .collapsible:after {
+    content: '\002B';
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+    } -->
 
-.active:after {
-  content: "\2212";
-}
-
-.content {
-  padding: 0 18px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  background-color: #f1f1f1;
-}
-</style>
+@stop
 
 @section('main-content')
 @include('dashboard.courses.create_course')
@@ -147,38 +136,39 @@
         </div> -->
     </div>
     
-    <button class="collapsible">Open Collapsible</button>
+    <!-- <button class="collapsible">Open Collapsible</button> -->
     <div class="content">
-    @if(count($ownedCourses) != 0)
-        <div class="course-area">
-            @foreach($ownedCourses as $course)
-                
-                    <div class="card" id="card" style="width: 300px; height: 200;" class="btn btn-primary" data-bs-toggle="modal" >
-                        <div class="card-body">
-                            <div class="card-content" >
-                                <h1>{{$course['course_id']}}</h1>
-                                <h5 class="card-title">{{$course['course_title']}}</h5>
-                                <p class="card-text">{{$course['course_description']}}</p>
-                            </div>
-                            
-                            <div class="action">
-                                <td class="icons"><a href="{{route('course.showInfo', $course['course_id'])}}" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
-                            </div>
-                            <div class="action-delete" style="margin:2px;">
-                                <td class="icons"><a href ="{{ route('course.delete', $course['course_id']) }}" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
+        @if(count($ownedCourses) != 0)
+            <div class="d-flex flex-wrap" style="width: 100%; padding: 20px; gap: 10px;">
+                @foreach($ownedCourses as $course)
+                    
+                        <div class="card" id="card" style="width: 300px; height: 200;" class="btn btn-primary" data-bs-toggle="modal" >
+                            <div class="card-body">
+                                <div class="card-content" >
+                                    <h1>{{$course['course_id']}}</h1>
+                                    <h5 class="card-title">{{$course['course_title']}}</h5>
+                                    <p class="card-text">{{$course['course_description']}}</p>
+                                </div>
+                                
+                                <div class="action">
+                                    <td class="icons"><a href="{{route('course.showInfo', $course['course_id'])}}" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
+                                </div>
+                                <div class="action-delete" style="margin:2px;">
+                                    <td class="icons"><a href ="{{ route('course.delete', $course['course_id']) }}" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                
                     
-            @endforeach
-             
-        </div>
-    @else
-        <div class="empty-course">
-            <h1>You dont have any courses posted.</h1>
-        </div>
-    @endif    </div>
+                        
+                @endforeach
+                
+            </div>
+        @else
+            <div class="empty-course">
+                <h1>You dont have any courses posted.</h1>
+            </div>
+        @endif    
+    </div>
     
     
 

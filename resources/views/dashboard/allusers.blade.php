@@ -1,8 +1,5 @@
 @extends('main')
-@section('right-side-nav')
-    <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
-     <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">Logout</a>
-@stop
+
 
 @section('main-content')
 @include('navbar/navbar_inside')

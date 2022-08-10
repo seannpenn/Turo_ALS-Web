@@ -2,6 +2,7 @@
 
 @section('css-style')
     .layout{
+        padding: 20px;
         justify-content:center;
         text-align:center;
     }
@@ -10,7 +11,6 @@
         border: 1 solid;
     }
     .text-content{
-        background-color: yellow;
         margin: 0 auto;
         justify-content: center;
         width: 1000px;
@@ -42,7 +42,25 @@
         @elseif ($selectedTopic->topic_type == 'text')
             <div class="text-content">
                 <div class="col-auto">
-                    {!! $selectedTopic->text_content !!}
+                <div class="card-body">
+                <form method="post" action="{{route('topic.create')}}" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Topic Title</label>
+                    <input type="text" name="topic_title" class="form-control" id="recipient-name" value="{{$selectedTopic->topic_title}}">
+                    <input type="text" name="content_id" class="form-control" value="@yield('content-id-text')" hidden>
+
+                    <input type="text" name="topic_type" class="form-control" value="text" hidden>
+                </div>
+                    <div class="form-group">
+                        <textarea class="form-control mt-5" name="text_content" id="editor" rows="20" >{!! $selectedTopic->text_content !!}</textarea>
+                    </div>
+                    <div class="modal-footer">  
+                        <button type="submit" class="btn btn-warning">Update</button>
+                    </div>
+                </form>
+            </div>
+                    
                 </div>
             </div>
 

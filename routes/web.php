@@ -21,9 +21,9 @@ use App\Http\Controllers\TeacherController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::view('/', 'landing')->name('landing');
-Route::view('/test', 'test')->name('test');
 
+Route::view('/test', 'test')->name('test');
+Route::view('/', 'landing')->name('home');
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
 
     Route::view('/home', 'home.teacher_home')->name('teacher.home');
@@ -57,6 +57,8 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::post('/course/content/topic/create', [TopicController::class, 'create'])->name('topic.create');
     Route::get('/course/content/topic/{topicid}', [TopicController::class, 'viewModuleTopics'])->name('topic.view');
     Route::get('/course/content/topic/{topicid}/delete', [TopicController::class, 'delete'])->name('topic.delete');
+    Route::post('/course/content/topic/{topicid}/update', [TopicController::class, 'update'])->name('topic.update');
+
 
     // for quiz make
     Route::view('/quiz/create', 'dashboard.quiz.create')->name('quiz.create');
@@ -86,14 +88,17 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
 
 Route::view('/register/teacher', 'login.teacher_registration')->name('teacher.registration');
 Route::view('/register/student', 'login.student_registration')->name('student.registration');
+
 Route::post('/teacher/register', [RegisterController::class, 'teacherRegister'])->name('teacher.register');
 Route::post('/student/register', [RegisterController::class, 'studentRegister'])->name('student.register');
 
 
 
-Route::middleware(['auth'])->group(function(){
-    // For student routes
-    // For user routes
+Route::middleware('auth')->group(function(){
+    
+    Route::view('/student/enrollment', 'enrollment.student_enrollment')->name('student.enrollment_page');
+    Route::view('/student/enrollment/enroll', 'enrollment.student_enrollment_form')->name('student.enrollment');
+    Route::post('/student/enrollment', [StudentController::class, 'enroll'])->name('student.enroll');
     Route::view('/student/home', 'home.student_home')->name('student.home');
     Route::view('/student/profile', 'profile.student_profile')->name('student.profile');
     Route::get('user/{id}/delete',[UserController::class,'delete'])->name('user.delete');

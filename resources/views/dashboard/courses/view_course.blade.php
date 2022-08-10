@@ -17,6 +17,7 @@
 
 @section('css-style')
     .layout{
+        padding: 20px;
     }
     img{
         height: 20px;

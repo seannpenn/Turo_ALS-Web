@@ -81,6 +81,10 @@ class TopicController extends Controller
         
     }
 
+    public function update(Request $request){
+        
+    }
+
     public function delete($topicId){
         $selectedTopic = Topic::findOrFail($topicId);
         

@@ -9,7 +9,7 @@
             height: 400px;
             width: 100%;
             background-image: url("images/t-login.png");
-            <!-- background-color: #FF8E01; -->
+            background-color: #FF8E01;
             background-repeat: no-repeat;
             background-size: cover;
             background-attachment: fixed;
