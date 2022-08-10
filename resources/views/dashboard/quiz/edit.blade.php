@@ -3,23 +3,6 @@
 @extends('dashboard/modals/editquestion_modal')
 @extends('modalslug')
 
-@section('left-side-nav')
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('teacher.home')}}">Home</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="{{route('students.all')}}">Manage Users</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="">Profile</a>
-    </li>
-@stop
-
-@section('right-side-nav')
-    <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
-     <a class="nav-link" style="color: black;" href="{{route('user.logout')}}">Logout</a>
-@stop
-
 @section('modal-content')
     <span id="modalContent"> Are you sure you want to delete this question?</span>
 @stop

@@ -55,7 +55,7 @@ class User extends Authenticatable
     public static function getAllUsers(){
         return self::paginate(10);
     }
-
+    
     public function teacher(){
         return $this->hasOne(Teacher::class, 'user_id', 'id');
     }

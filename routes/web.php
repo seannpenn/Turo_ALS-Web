@@ -95,9 +95,8 @@ Route::post('/student/register', [RegisterController::class, 'studentRegister'])
 
 
 Route::middleware('auth')->group(function(){
-    
-    Route::view('/student/enrollment', 'enrollment.student_enrollment')->name('student.enrollment_page');
-    Route::view('/student/enrollment/enroll', 'enrollment.student_enrollment_form')->name('student.enrollment');
+    Route::get('/student/enrollment/enroll', [StudentController::class, 'enrollForm'])->name('student.enrollment');
+    Route::get('/student/enrollment', [StudentController::class, 'enrollmentPage'])->name('student.enrollment_page');
     Route::post('/student/enrollment', [StudentController::class, 'enroll'])->name('student.enroll');
     Route::view('/student/home', 'home.student_home')->name('student.home');
     Route::view('/student/profile', 'profile.student_profile')->name('student.profile');

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Enrollment;
+use App\Models\Programs;
 use App\Models\Student;
 use App\Models\StudentEducation;
 use App\Models\StudentFamily;
@@ -13,6 +15,7 @@ class StudentController extends Controller
     public function enroll(Request $request){
 
         $backgroundCredentials = $request->validate([
+            'prog_id' => 'required',
             'student_fname' => 'required',
             'student_lname' => 'required',
             'student_gender' => 'required',
@@ -33,7 +36,12 @@ class StudentController extends Controller
 
         ]);
 
-        $studentId = Student::insertGetId([
+        $studentId = Enrollment::insertGetId([
+            'prog_id' => $request['prog_id']
+        ]);
+
+        Student::create([
+            'studentId' => $studentId,
             'user_id' => Auth::id(),
             'LRN' => $request['LRN'],
             'student_fname' => $request['student_fname'],
@@ -69,14 +77,24 @@ class StudentController extends Controller
 
         return redirect()->to('/student/home');
     }
+    public function enrollmentPage(){
+        $enrollees = Enrollment::getAllEnrollees();
+        return view('enrollment.student_enrollment')->with(compact('enrollees'));
+    }
+    public function enrollForm(){
+        $programs = Programs::getAll();
+
+        return view('enrollment.student_enrollment_form')->with(compact('programs'));
+    }
     public function showEnrollmentStatus($id){
         $studentStatus= Student::where('studentId', $id)->get()->status;
         return view('home.student_home')->with(compact('studentStatus')); 
     }
     public function showAllStudents(){
         $studentCollection = Student::getAllStudents();
+        $enrollees = Enrollment::getAllEnrollees();
 
-        return view('dashboard.student_list')->with(compact('studentCollection'));
+        return view('dashboard.student_list')->with(compact('enrollees'));
     }
 
     public function showStudentApplication($id){
@@ -87,8 +105,9 @@ class StudentController extends Controller
 
     public function approve($id){
         $updateStudentStatus = Student::where('studentId', $id)->get()->first();
+        $enrollmentStatus = $updateStudentStatus->enrollment;
         if($updateStudentStatus->LRN != null){
-            $updateStudentStatus->update([
+            $enrollmentStatus->update([
                 'status' => 'approved',
             ]);
 

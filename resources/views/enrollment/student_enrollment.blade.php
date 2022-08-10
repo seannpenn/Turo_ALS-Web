@@ -84,10 +84,13 @@
                         <div class="content">
                             <p>
                                 Click the enroll button to start filling up the enrollment form.
-                                <div class="button-area">
-                                    <button type="submit" id="contentCreate" class="btn btn-warning"><a href="{{route('student.enrollment')}}"><b>Enroll online!</b></a></button>
-                                </div>
                             </p>
+                            <p>
+                                If you don't have your LRN with you, you may leave it blank. A LRN will be provided to you once your enrollment is already approved.
+                            </p>
+                            <div class="button-area">
+                                <button type="submit" id="contentCreate" class="btn btn-warning"><a href="{{route('student.enrollment')}}"><b>Enroll online!</b></a></button>
+                            </div>
                         </div>
                     </tr>
                     <!-- STEP 3 -->
@@ -95,10 +98,39 @@
                         <button type="button" class="collapsible"><b>STEP 3: ENROLLMENT REVIEW AND STATUS</b></button>
                     </tr>
                     <tr>
+                        
                         <div class="content">
+                        @if(Auth::user()->student != null)
                             <p>
-                                Enrollment status: {{Auth::user()->student->status}}
+                                Enrollment status: {{Auth::user()->student->enrollment->status}}
                             </p>
+                            <p>
+                                Your LRN: {{Auth::user()->student->LRN != null ? Auth::user()->student->LRN : 'LRN unavailable'}} 
+                            </p>
+                            @if(Auth::user()->student->enrollment->status == 'approved')
+                                <h3>You are officialy enrolled.</h3>
+
+                                <p>You may now download the mobile app in the play store.</p>
+                                <div class="buttons justify-content-center mt-3">
+                                    <button class="btn btn-dark app-button"><i class="fa fa-play fa-2x"></i><span class="text-uppercase ml-2">Play store</span></button>
+                                </div>
+                                <br><br>
+                                <h4>Steps in using the TURO mobile app:</h4>
+                                <ul>
+                                    <li>
+                                        Input your login credentials
+                                    </li>
+                                    <li>
+                                        Once login, the courses for your program is already visible.
+                                    </li>
+                                    <li>
+                                        The name of your teacher and the location you are enrolled to is also stated in your feed.
+                                    </li>
+                                </ul>
+                            @endif
+                        @else
+                            <h2>Hello</h2>
+                        @endif
                         </div>
                     </tr>
                 </table>

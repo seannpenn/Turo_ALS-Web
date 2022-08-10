@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->increments('studentId');
+            $table->unsignedInteger('studentId')->primary();
             $table->foreignId('user_id');
             $table->String('LRN', 12)->nullable();
             $table->string('student_fname', 45);
@@ -28,10 +28,10 @@ return new class extends Migration
             $table->string('barangay', 50);
             $table->string('city', 50);
             $table->string('province', 50);
-            $table->string('status')->default('pending');
             $table->string('program_enrolled')->nullable();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('studentId')->references('studentId')->on('enrollment')->onDelete('cascade');
         });
 
         Schema::create('student_family', function (Blueprint $table) {

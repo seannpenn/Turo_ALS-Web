@@ -5,12 +5,23 @@
         margin: 0 auto;
         margin-top: 20px;
         margin-bottom: 20px;
-        text-align: center;
+        text-align: left;
         width:1000px;
         padding: 30px;
 
         border: 1 solid;
         box-shadow: 0px 10px 20px grey;
+    }
+    select {
+        width: 200px;
+        text-overflow: ellipsis;
+        margin-bottom: 10px;
+    }
+    #radio-label{
+        margin-right: 50px;
+    }
+    .form-check-label{
+        margin-right: 50px;
     }
     .feedback{
         margin: 0 auto;
@@ -20,7 +31,8 @@
 @section('main-content')
 
     <section id="registration-form">
-    @if(Auth::user()->student()== null)
+
+    @if(Auth::user()->student == null)
         <br>
         <h2>Student Enrollment</h2>
         
@@ -28,7 +40,16 @@
         <form action="{{ route('student.enroll') }}" method="post">
             {{ csrf_field() }}
     
-            <label for=""><b>Personal Information (Part 2)</b></label>
+            <label for=""><b>Personal Information (Part 1)</b></label>
+            <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Program applying for:</label>
+            <select class="form-select" name="prog_id" style="width: 400px; height: 40px;">
+              @foreach($programs as $program)
+                <option value="{{ $program['prog_id'] }}" selected>{{ $program['prog_fname'] }}</option>
+              @endforeach
+            </select>
+            <br>
+          </div>
             <hr>
             <input type="text" name="userType"  class="form-control" id="inputEmail3" value="0" hidden>
 
@@ -41,9 +62,7 @@
             <label for="basic-url" class="form-label">Full name:</label>
             <div class="input-group mb-3">
             <input type="text" class="form-control" name="student_fname" placeholder="Last Name" aria-label="Username">
-            <span class="input-group-text"> </span>
             <input type="text" class="form-control" name="student_mname" placeholder="First Name (Optional)" aria-label="Server">
-            <span class="input-group-text"> </span>
             <input type="text" class="form-control" name="student_lname" placeholder="Middle Name (Optional)" aria-label="Server">
             </div>
             <!-- end of full name -->
@@ -157,7 +176,7 @@
 
             <br>
             <hr>
-            <label for=""><b>Student Family background (Part 3)</b></label>
+            <label for=""><b>Student Family background (Part 2)</b></label>
             <hr>
 
             <!-- Father's Full name -->
@@ -187,7 +206,7 @@
            
             <br>
             <hr>
-            <label for=""><b>Educational Information (Part 4)</b></label>
+            <label for=""><b>Educational Information (Part 3)</b></label>
             <hr>
             
             <div class="mb-3">
@@ -254,7 +273,7 @@
 
             <br>
             <hr>
-            <label for=""><b>Necessary files to be submitted (Part 5)</b></label>
+            <label for=""><b>Necessary files to be submitted (Part 4)</b></label>
             <hr>
 
 
@@ -274,12 +293,12 @@
             <div class="d-grid gap-1 col-2 mx-auto">
                 <button type="submit" class="btn btn-warning" type="button">Enroll</button>
             </div>
-    </form>
-
+        </form>
     @else
-    <span class="align-text-top"><h3>Enrollment submitted.</h3></span>
-    <p>View enrollment status <a href="{{ route('student.enrollment_page')}}" style="color:orange;">here</a> </p>
+        <h2>Enrollment submitted</h2>
+        <p>View your Enrollment status <a href="{{route('student.enrollment_page')}}" style="color:#FF8E01">here.</a></p>
     @endif
+    
 </section>
 
 @stop

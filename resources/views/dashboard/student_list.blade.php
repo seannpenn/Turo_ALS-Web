@@ -27,7 +27,7 @@
 @section('main-content')
 @include('navbar/navbar_inside')
     <div class="layout">
-        @if(count($studentCollection) != 0)
+        @if(count($enrollees) != 0)
             <table class="table table-hover" style="width: 100%;">
                 <tr>
                     <th scope="col">Student ID</th>
@@ -38,15 +38,15 @@
                     <th scope="col">Actions</th>
                 </tr>
             
-                    @foreach($studentCollection as $student)
+                    @foreach($enrollees as $enrollee)
                         <tr>
-                            <th scope="row">{{ $student->studentId }}</th>
-                            @if($student->LRN != '')<td>{{ $student->LRN }}</td>@else <td>no LRN</td>@endif
-                            <td>{{ $student->student_lname }}, {{ $student->student_fname }} {{ $student->student_mname }}</td>
-                            <td>{{ $student->status }}</td>
+                            <th scope="row">{{ $enrollee->studentId }}</th>
+                            @if( $enrollee->student->LRN != null)<td>{{ $enrollee->student->LRN }}</td>@else <td>no LRN</td>@endif
+                            <td>{{ $enrollee->student->student_lname }}, {{ $enrollee->student->student_fname }} {{ $enrollee->student->student_mname }}</td>
+                            <td>{{ $enrollee->status }}</td>
                             <td></td>
                             <td>
-                                <a href="{{ route('student.application',$student->studentId) }}" title="Delete Student Record"><button type="button" class="btn btn-warning" style="color:white;">View application</button></a>
+                                <a href="{{ route('student.application',$enrollee->studentId) }}" title="Delete Student Record"><button type="button" class="btn btn-warning" style="color:white;">View application</button></a>
                             </td>
                         </tr>
                     @endforeach

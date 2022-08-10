@@ -179,7 +179,7 @@
             <form action="{{route('student.approve', $studentApplication->studentId)}}" method="post">
                 <div class="d-grid gap-1 col-3 mx-auto" id="action-button">
                     {{ csrf_field() }}
-                    @if($studentApplication->status == 'pending')
+                    @if($studentApplication->enrollment->status == 'pending')
                         <button type="submit" class="btn btn-warning" type="button" onclick="return confirm('are you sure?')">Approve enrollment</button>
                     @else
                         <button type="submit" class="btn btn-warning" type="button" disabled>Enrolled</button>
