@@ -2,7 +2,7 @@
 @extends('dashboard/modals/createquiz_modal')
 @extends('dashboard/modals/createtext_modal')
 @extends('dashboard/modals/uploadfile_modal')
-@extends('dashboard/courses/update_module_modal')
+@extends('dashboard/coursecontent/update_module_modal')
 
 @extends('modalslug')
 

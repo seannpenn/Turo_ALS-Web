@@ -35,10 +35,25 @@
 
 <nav class="navbar navbar-expand-lg" >
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{ route('home') }}">
-      <img src="{{ asset('images/logo_white.png') }}" alt="" width="40" height="30" class="d-inline-block align-text-top">
-      TURO
-    </a>
+  @auth
+    @if(Auth::user()->userType == '0')
+      <a class="navbar-brand" href="{{ route('home') }}">
+        <img src="{{ asset('images/logo_white.png') }}" alt="" width="40" height="30" class="d-inline-block align-text-top">
+        TURO
+      </a>
+    @else
+      <a class="navbar-brand" href="">
+        <img src="{{ asset('images/logo_white.png') }}" alt="" width="40" height="30" class="d-inline-block align-text-top">
+        TURO
+      </a>
+      @endif
+  @endauth
+  @guest
+      <a class="navbar-brand" href="{{ route('home') }}">
+        <img src="{{ asset('images/logo_white.png') }}" alt="" width="40" height="30" class="d-inline-block align-text-top">
+        TURO
+      </a>
+  @endguest
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -59,8 +74,12 @@
             
           @else
             <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{route('course.all')}}" style="color:white;">Dashboard</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{route('users.all')}}" style="color:white;">Manage Users</a>
             </li>
+            
           @endif
         @endauth
         @yield('left-side-nav')
@@ -69,16 +88,16 @@
       <span class="d-flex">
       @auth
         @if(Auth::user()->userType == '0')
-        
           <li class="nav-link dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{{Auth::user()->username}}</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ route('student.profile')}}">Profile</a></li>
+              <!-- <li><a class="dropdown-item" href="{{ route('student.profile')}}">Profile</a></li> -->
               <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
             </ul>
           </li>
         @else
             <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
+            <!-- <a class="nav-link" style="color: white;" href="{{route('teacher.profile')}}">Profile</a> -->
             <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">Logout</a>
 
         @endif

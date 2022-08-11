@@ -11,6 +11,7 @@ use Validator;
 
 class TopicController extends Controller
 {
+    // create topics inside modules
     public function create(Request $request){
         
         if($request->topic_type == 'quiz'){
@@ -24,7 +25,6 @@ class TopicController extends Controller
             ];
         }
         
-
         $messages = [
             'quiz_title.required' => 'Please input a topic title',
             'topic_title.required' => 'Please input a topic title',
@@ -51,9 +51,9 @@ class TopicController extends Controller
                 return redirect()->back();
             }
             else if($request->topic_type == 'file'){
+
                 $file = $request->file_name;
                 $originalFileName = $file->getClientOriginalName();
-                // $file_path = $file->storeAs('files', $originalFileName);
                 Storage::putFileAs('public/files', $file, $originalFileName);
 
                     Topic::create([
@@ -75,23 +75,16 @@ class TopicController extends Controller
                 ]);
                 return redirect()->back();
             }
-            
         }
-
-        
     }
-
-    public function update(Request $request){
-        
-    }
-
+    // deleting a topic
     public function delete($topicId){
         $selectedTopic = Topic::findOrFail($topicId);
-        
         $selectedTopic->delete();
         return redirect()->back();
     }
 
+    // viewing of topics.
     public function viewModuleTopics($topicId){
 
         $selectedTopic = Topic::where('topic_id',$topicId)->get()->first();
@@ -99,11 +92,11 @@ class TopicController extends Controller
         return view('dashboard.courses.view_topic')->with(compact('selectedTopic', 'file_path'));
     }
 
-    public function storeUploadedFiles(Request $request){
-        $file = $request->file_name;
-        $originalFileName = $file->getClientOriginalName();
+    // public function storeUploadedFiles(Request $request){
+    //     $file = $request->file_name;
+    //     $originalFileName = $file->getClientOriginalName();
 
-        $path = Storage::putFileAs('Topic/Files', $file, $originalFileName);
-    }
+    //     $path = Storage::putFileAs('Topic/Files', $file, $originalFileName);
+    // }
     
 }

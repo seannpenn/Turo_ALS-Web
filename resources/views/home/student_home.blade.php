@@ -145,7 +145,6 @@
             </div>
             <div class="message">
                 <h2>Hello, {{Auth::user()->username}}</h2>
-                
             </div>
 
             

@@ -19,29 +19,21 @@ class Course extends Model
 
     protected $fillable = [
         'teacher_id',
-        'prog_id',
         'course_title',
         'course_description',
     ];
 
-    public static function getAllCourses(){
-        
-        return self::get()->toArray();
-    }
-    // public function getCourseContents(){
-    //     return $this->hasMany(CourseContent::class);
-    // }
     public function filter($prog_id)
     {
         return self::where('prog_id',$prog_id)->get();
     }
+
+    // This COURSE/S belongs to a specific teacher.
     public function teacher(){
         return $this->belongsTo(Teacher::class, 'teacher_id', 'teacher_id');
     }
-
-    public function program(){
-        return $this->hasMany(Programs::class, 'prog_id', 'prod_id');
-    }
+    
+    // This COURSE has many coursecontent/modules.
     public function coursecontent(){
         return $this->hasMany(CourseContent::class, 'course_id', 'course_id');
     }

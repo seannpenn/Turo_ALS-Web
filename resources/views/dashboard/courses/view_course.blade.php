@@ -7,10 +7,6 @@
     <span id="modalContent"> Deleting this course would also remove all of its contents. Are you sure you want to proceed?</span>
 @stop
 
-
-
-
-
 @section('modal-title')
     Delete Course
 @stop

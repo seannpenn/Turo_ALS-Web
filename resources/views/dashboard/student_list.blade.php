@@ -28,6 +28,7 @@
 @include('navbar/navbar_inside')
     <div class="layout">
         @if(count($enrollees) != 0)
+        <h3>Location: {{Auth::user()->teacher->location->loc_city}}, {{Auth::user()->teacher->location->loc_name}}</h3>
             <table class="table table-hover" style="width: 100%;">
                 <tr>
                     <th scope="col">Student ID</th>
@@ -40,13 +41,13 @@
             
                     @foreach($enrollees as $enrollee)
                         <tr>
-                            <th scope="row">{{ $enrollee->studentId }}</th>
-                            @if( $enrollee->student->LRN != null)<td>{{ $enrollee->student->LRN }}</td>@else <td>no LRN</td>@endif
+                            <th scope="row">{{ $enrollee->student_id }}</th>
+                            @if( $enrollee->student->information->LRN != null)<td>{{ $enrollee->student->information->LRN }}</td>@else <td>no LRN</td>@endif
                             <td>{{ $enrollee->student->student_lname }}, {{ $enrollee->student->student_fname }} {{ $enrollee->student->student_mname }}</td>
                             <td>{{ $enrollee->status }}</td>
-                            <td></td>
+                            <td>{{$enrollee->program->prog_fname}}</td>
                             <td>
-                                <a href="{{ route('student.application',$enrollee->studentId) }}" title="Delete Student Record"><button type="button" class="btn btn-warning" style="color:white;">View application</button></a>
+                                <a href="{{ route('student.application',$enrollee->student_id) }}" title="Delete Student Record"><button type="button" class="btn btn-warning" style="color:white;">View application</button></a>
                             </td>
                         </tr>
                     @endforeach

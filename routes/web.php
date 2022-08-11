@@ -30,8 +30,12 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
 
     Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
     Route::get('/teachers/all', [TeacherController::class, 'testing'])->name('teachers.all');
-    // For students
 
+    // For teacher 
+
+    Route::view('/teacher/profile', 'profile.teacher_profile')->name('teacher.profile');
+
+    // For students
     Route::get('/students/records', [StudentController::class, 'showAllStudents'])->name('students.all');
     Route::get('student/application/{id}',[StudentController::class, 'showStudentApplication'])->name('student.application');
     Route::post('student/application/approve/{id}',[StudentController::class, 'approve'])->name('student.approve');
@@ -68,7 +72,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::get('/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
     // ^
     //for question
-    Route::post('/quiz/question/create', [QuizController::class, 'createQuestion'])->name('question.create');
+    Route::post('/quiz/question/create', [QuestionController::class, 'create'])->name('question.create');
     Route::get('/quiz/question/delete/{id}', [QuestionController::class, 'delete'])->name('question.delete');
     Route::post('/quiz/question/update/{id}', [QuestionController::class, 'update'])->name('question.update');
 
@@ -86,8 +90,8 @@ Route::post('/teacher/login', [LoginController::class, 'teacherLogin'])->name('t
 Route::post('/student/login', [LoginController::class, 'studentLogin'])->name('student.login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
 
-Route::view('/register/teacher', 'login.teacher_registration')->name('teacher.registration');
-Route::view('/register/student', 'login.student_registration')->name('student.registration');
+Route::get('/register/teacher', [RegisterController::class,'teacherRegistration'])->name('teacher.registration');
+Route::get('/register/student', [RegisterController::class,'studentRegistration'])->name('student.registration');
 
 Route::post('/teacher/register', [RegisterController::class, 'teacherRegister'])->name('teacher.register');
 Route::post('/student/register', [RegisterController::class, 'studentRegister'])->name('student.register');

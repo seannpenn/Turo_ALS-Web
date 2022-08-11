@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    //
+    // Teacher login
     public function teacherLogin(Request $request){
         $loginCredentials = $request->validate([
             'username' => 'required',
@@ -17,6 +17,7 @@ class LoginController extends Controller
 
         if(Auth::attempt($loginCredentials)){
             $request->session()->regenerate();
+            // User is automatically logged out when they log in to a wrong portal.
             if(Auth::user()->userType == 0){
                 Auth::logout();
                 return redirect()->to('/student/login')->with('error', 'You are not allowed to gain Admin access.');
@@ -29,7 +30,7 @@ class LoginController extends Controller
             'password.required' => 'Empty passwords are not accepted'
         ])->onlyInput('username');
     }
-
+    // Student login
     public function studentLogin(Request $request){
         $loginCredentials = $request->validate([
             'username' => 'required',
@@ -61,6 +62,5 @@ class LoginController extends Controller
             Auth::logout();
             return redirect()->to('/student/login');
         }
-        
     }
 }

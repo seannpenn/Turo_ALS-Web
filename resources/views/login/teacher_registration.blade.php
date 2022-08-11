@@ -43,6 +43,23 @@
             <!-- For login details -->
             <input type="text" name="userType"  class="form-control" id="inputEmail3" value="1" hidden>
 
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Location assigned: </label>
+                <select class="form-select" name="loc_id" style="width: 400px; height: 40px;">
+                    @foreach($locations as $location)
+                        <option value="{{ $location['loc_id'] }}" selected>{{ $location['loc_city'] }}, {{$location['loc_name']}}</option>
+                    @endforeach
+                </select>
+            
+                <label for="recipient-name" class="col-form-label">Program assigned: </label>
+                <select class="form-select" name="prog_id" style="width: 400px; height: 40px;">
+                    @foreach($programs as $program)
+                        <option value="{{ $program['prog_id'] }}" selected>{{ $program['prog_fname'] }}</option>
+                    @endforeach
+                </select>
+                <br>
+            </div>
+
             <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
@@ -117,8 +134,9 @@
             </div>
 
             <div class="d-grid gap-2 col-6 mx-auto">
-                <button type="submit" class="btn btn-primary" type="button">Submit</button>
+                <button type="submit" class="btn btn-warning" type="button">Submit</button>
             </div>
+            <br><br><br>
             
         </form>
     </section>

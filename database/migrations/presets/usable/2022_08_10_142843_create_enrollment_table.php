@@ -14,10 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('enrollment', function (Blueprint $table) {
-            $table->increments('studentId');
+            $table->unsignedInteger('student_id')->primary();
             $table->unsignedInteger('prog_id');
+            $table->unsignedInteger('loc_id');
             $table->string('status')->default('pending');
 
+            $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
+            $table->foreign('loc_id')->references('loc_id')->on('learning_center')->onDelete('cascade');
             $table->foreign('prog_id')->references('prog_id')->on('programs')->onDelete('cascade');
         });
     }

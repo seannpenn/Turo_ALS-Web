@@ -50,14 +50,14 @@
             
             
             <input type="text" name="userType"  class="form-control" id="inputEmail3" value="0" hidden>
-
+            {{$studentApplication->student_id}}
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">LRN (if available): </label>
-                @if($studentApplication->LRN!= null)
-                    <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentApplication->LRN}}</label>
+                @if($studentApplication->information->LRN!= null)
+                    <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentApplication->information->LRN}}</label>
                 
                 @else
-                    <form action="{{route('student.provideLRN', $studentApplication->studentId)}}" method="post" class="row g-3">
+                    <form action="{{route('student.provideLRN', $studentApplication->student_id)}}" method="post" class="row g-3">
                         {{ csrf_field() }}
                         <div class="col-auto">
                             <input type="text" class="form-control" name="LRN" id="staticEmail2" value="">
@@ -87,27 +87,27 @@
 
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Gender: </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentApplication->student_gender}}</label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentApplication->information->student_gender}}</label>
             </div>
 
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Civil status: </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentApplication->student_civil}} </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentApplication->information->student_civil}} </label>
             </div>
 
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Date of Birth: </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentApplication->student_birth}} </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentApplication->information->student_birth}} </label>
 
             </div>
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Place of Birth: </label>
-                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentApplication->student_placeofbirth}} </label>
+                <label for="student_LRN" class="col-sm-2 col-form-label">{{$studentApplication->information->student_placeofbirth}} </label>
 
             </div>
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">Address: </label>
-                <label for="student_LRN" class="col-sm-4 col-form-label">{{$studentApplication->street}}, {{$studentApplication->barangay}}, {{$studentApplication->city}}, {{$studentApplication->province}} </label>
+                <label for="student_LRN" class="col-sm-4 col-form-label">{{$studentApplication->information->street}}, {{$studentApplication->information->barangay}}, {{$studentApplication->information->city}}, {{$studentApplication->information->province}} </label>
 
             </div>
             <div class="input-group mb-3">
@@ -176,7 +176,7 @@
             
             
             <br>
-            <form action="{{route('student.approve', $studentApplication->studentId)}}" method="post">
+            <form action="{{route('student.approve', $studentApplication->student_id)}}" method="post">
                 <div class="d-grid gap-1 col-3 mx-auto" id="action-button">
                     {{ csrf_field() }}
                     @if($studentApplication->enrollment->status == 'pending')

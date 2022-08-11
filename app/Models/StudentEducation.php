@@ -10,11 +10,11 @@ class StudentEducation extends Model
     use HasFactory;
 
     protected $table = 'student_education';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'student_id';
     public $incrementing = false;
     public $timestamps = false;
     protected $fillable = [
-        'studentId',
+        'student_id',
         'last_level',
         'student_reason',
         'answer_type',
@@ -24,6 +24,6 @@ class StudentEducation extends Model
     ];
 
     public function student(){
-        return $this->belongsTo(Student::class, 'studentId', 'studentId');
+        return $this->belongsTo(Student::class, 'student_id', 'student_id');
     }
 }

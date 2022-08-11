@@ -32,7 +32,7 @@
 
     <section id="registration-form">
 
-    @if(Auth::user()->student == null)
+    @if(Auth::user()->student->enrollment == null)
         <br>
         <h2>Student Enrollment</h2>
         
@@ -42,6 +42,7 @@
     
             <label for=""><b>Personal Information (Part 1)</b></label>
             <div class="mb-3">
+
             <label for="recipient-name" class="col-form-label">Program applying for:</label>
             <select class="form-select" name="prog_id" style="width: 400px; height: 40px;">
               @foreach($programs as $program)
@@ -61,9 +62,9 @@
             <!-- Full name -->
             <label for="basic-url" class="form-label">Full name:</label>
             <div class="input-group mb-3">
-            <input type="text" class="form-control" name="student_fname" placeholder="Last Name" aria-label="Username">
-            <input type="text" class="form-control" name="student_mname" placeholder="First Name (Optional)" aria-label="Server">
-            <input type="text" class="form-control" name="student_lname" placeholder="Middle Name (Optional)" aria-label="Server">
+            <input type="text" class="form-control" placeholder="Last Name" aria-label="Username" value="{{$student->student_fname}}" readonly>
+            <input type="text" class="form-control" placeholder="First Name (Optional)" aria-label="Server" value="{{$student->student_mname}}" readonly>
+            <input type="text" class="form-control" placeholder="Middle Name (Optional)" aria-label="Server" value="{{$student->student_lname}}" readonly>
             </div>
             <!-- end of full name -->
 

@@ -20,13 +20,11 @@ class CourseContent extends Model
         'content_description',
     ];
 
+    // This COURSECONTENT/MODULE belongs to a specific COURSE.
     public function course(){
         return $this->belongsTo(Course::class, 'content_id', 'course_id');
     }
-
-    public static function getAllModule(){
-        return self::get()->toArray();
-    }
+    // This COURSECONTENT/MODULE has many Topics.
     public function topic(){
         return $this->hasMany(Topic::class, 'content_id', 'content_id');
     }

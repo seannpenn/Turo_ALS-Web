@@ -21,13 +21,21 @@ class Quiz extends Model
         'quiz_title',
     ];
 
+    public static function getAllQuizByTopic($topicId){
+        return self::where('topic_id', $topicId)->get();
+    }
+
+    // return all quizzes created by specific teacher in order to manage it.
     public static function getAllQuiz(){
-        
         return self::get();
     }
+
+    // This quiz belongs to a specific topic.
     public function topic(){
         return $this->belongsTo(Topic::class, 'topic_id', 'topic_id');
     }
+    
+    // This specific quiz has many questions.
     public function question(){
         return $this->hasMany(Question::class, 'quiz_id', 'quiz_id');
     }

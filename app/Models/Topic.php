@@ -26,9 +26,11 @@ class Topic extends Model
         return self::get()->toArray();
     }
 
+    // These topic/s belongs to a specific coursecontent/module
     public function coursecontent(){
         return $this->belongsTo(CourseContent::class, 'content_id', 'content_id');
     }
+    
     public function selectedquiz(){
         return $this->hasOne(Quiz::class, 'topic_id', 'topic_id');
     }

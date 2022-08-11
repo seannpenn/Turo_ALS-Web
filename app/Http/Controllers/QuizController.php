@@ -9,7 +9,7 @@ use App\Models\Question;
 use App\Models\Topic;
 class QuizController extends Controller
 {
-    
+    // creation of quiz
     public function create(Request $request, $topicId){
         $rules = [
             'quiz_title' => 'required',
@@ -36,7 +36,7 @@ class QuizController extends Controller
             return back();
         }
     }
-    
+    // editing of quiz
     public function edit($id){
         $selectedQuiz = Quiz::where('quiz_id',$id)->get();
             
@@ -70,49 +70,10 @@ class QuizController extends Controller
             return back();
         }
     }
+    // manage all quizzes created by the teacher
     public function manage(){
         $quizCollection = Quiz::getAllQuiz();
         return view('dashboard.quiz.manage')->with(compact('quizCollection'));  
     }
-    public function manageQuestions($id){
-        
-    }
 
-    // for questions
-
-    public function createQuestion(Request $request){
-        $rules = [
-            'question' => 'required',
-            'choice_a' => 'required',
-            'choice_b' => 'required',
-            'answer' => 'required'
-        ];
-
-        $messages = [
-            'question.required' => 'Please input question.',
-            'choice_a.required' => 'Please input a choice.',
-            'choice_b.required' => 'Please input a choice.',
-            'answer.required' => 'Please set an answer for this question.',
-        ];
-
-        $validation = Validator::make($request->input(), $rules, $messages);
-        if($validation->fails()){
-            return redirect()->back()->withInput()->withErrors($validation);
-        }
-        else{
-            $questionModel = new Question();
-
-            $questionModel->quiz_id = $request['quiz_id'];
-            $questionModel->question = $request['question'];
-            $questionModel->choice_a = $request['choice_a'];
-            $questionModel->choice_b = $request['choice_b'];
-            $questionModel->choice_c = $request['choice_c'];
-            $questionModel->choice_d = $request['choice_d'];
-            $questionModel->answer = $request['answer'];
-            $questionModel->save();
-            
-            
-            return back();
-        }
-    }
 }

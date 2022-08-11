@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    //
+    //creating of courses
     public function create(Request $request){
         $rules = [
             'course_title' => 'required',
@@ -31,9 +31,7 @@ class CourseController extends Controller
         else{
             
             $course = new Course();
-
             $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
-            $course->prog_id = $request->prog_id;
             $course->teacher_id = $teacherId->teacher_id;
             $course->course_title = $request->course_title;
             $course->course_description = $request->course_description;
@@ -43,23 +41,7 @@ class CourseController extends Controller
             return redirect('admin/course/all')->with('message', 'Course created successfully');
         }
     }
-
-    public function showOwnedCourses(){
-        $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
-        $ownedCourses = Course::where('teacher_id', $teacherId->teacher_id)->get();
-        
-        $programs = Programs::getAll();
-        return view('dashboard.courses.display_course')->with(compact('ownedCourses','programs' ));
-        
-    }
-
-    public function showCourse($id){
-        
-        $chosenCourse = Course::where('course_id',$id)->get();
-        return view('dashboard.courses.view_course')->with(compact('chosenCourse'));  
-    }
-
-    
+    // updating of courses
     public function update(Request $request, $id){
         $rules = [
             'course_title' => 'required',
@@ -87,10 +69,29 @@ class CourseController extends Controller
             return back();
         }
     }
+    // deleting of courses
     public function delete($id){
         $selectedCourse = Course::findOrFail($id);
         $selectedCourse->delete();
         return redirect()->to(route('course.all'));
     }
+
+    // displaying courses created by specific teacher
+    public function showOwnedCourses(){
+        $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
+        $ownedCourses = Course::where('teacher_id', $teacherId->teacher_id)->get();
+
+        return view('dashboard.courses.display_course')->with(compact('ownedCourses' ));
+        
+    }
+    // viewing of course created.
+    public function showCourse($id){
+        $chosenCourse = Course::where('course_id',$id)->get();
+        return view('dashboard.courses.view_course')->with(compact('chosenCourse'));  
+    }
+
+    
+    
+    
     
 }

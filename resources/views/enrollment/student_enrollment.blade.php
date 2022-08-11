@@ -100,14 +100,14 @@
                     <tr>
                         
                         <div class="content">
-                        @if(Auth::user()->student != null)
+                        @if($enrolleeInfo)
                             <p>
-                                Enrollment status: {{Auth::user()->student->enrollment->status}}
+                                Enrollment status: {{$enrolleeInfo->status}}
                             </p>
                             <p>
-                                Your LRN: {{Auth::user()->student->LRN != null ? Auth::user()->student->LRN : 'LRN unavailable'}} 
+                                Your LRN: {{$enrolleeInfo->student->information->LRN != null ? $enrolleeInfo->student->information->LRN : 'LRN unavailable'}} 
                             </p>
-                            @if(Auth::user()->student->enrollment->status == 'approved')
+                            @if($enrolleeInfo->student->enrollment->status == 'approved')
                                 <h3>You are officialy enrolled.</h3>
 
                                 <p>You may now download the mobile app in the play store.</p>

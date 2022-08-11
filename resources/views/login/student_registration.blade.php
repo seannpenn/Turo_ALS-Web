@@ -50,6 +50,16 @@
             {{ csrf_field() }}
             <!-- For login details -->
             <hr>
+
+                <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Nearest Learning Center: </label>
+                    <select class="form-select" name="loc_id" style="width: 400px; height: 40px;">
+                        @foreach($locations as $location)
+                            <option value="{{ $location['loc_id'] }}" selected>{{ $location['loc_city'] }}, {{$location['loc_name']}}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <input type="text" name="userType"  class="form-control" id="inputEmail3" value="0" hidden>
 
                 <div class="row mb-3">
@@ -70,6 +80,36 @@
                             
                         </div>
                     </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="student_fname" class="col-sm-3 col-form-label">First Name:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="student_fname"  class="form-control" id="inputUsername3">
+                        <div class="col-auto">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row mb-3">
+                    <label for="inputUsername3" class="col-sm-3 col-form-label">Middle initial:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="student_mname"  class="form-control" id="inputUsername3" placeholder="(optional)">
+                        <div class="col-auto">
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row mb-3">
+                    <label for="inputUsername3" class="col-sm-3 col-form-label">Last Name:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="student_lname"  class="form-control" id="inputUsername3">
+                        <div class="col-auto">
+                            
+                        </div>
+                    </div>
+                    
                 </div>
 
                 <div class="row mb-3">

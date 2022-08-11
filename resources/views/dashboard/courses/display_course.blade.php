@@ -9,12 +9,6 @@
 @section('modal-title')
     Delete Course
 @stop
-@section('option')
-    @foreach($programs as $program)
-        <option value="{{ $program['prog_id'] }}" selected>{{ $program['prog_fname'] }}</option>
-    @endforeach
-@stop
-
 
 @section('css-style')
     .layout{
@@ -63,8 +57,9 @@
         border: 1 solid;
     }
     .empty-course{
+        text-align:center;
+        margin: 250 auto;
         justify-content:center;
-        margin: 300 auto;
         width: 700px;
         border: 1 solid;
     }
@@ -169,31 +164,10 @@
             </div>
         @endif    
     </div>
-    
-    
-
-    <script>
-            var coll = document.getElementsByClassName("collapsible");
-        var i;
-
-        for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.maxHeight){
-            content.style.maxHeight = null;
-            } else {
-            content.style.maxHeight = content.scrollHeight + "px";
-            } 
-        });
-        }
-    </script>
 
 @stop
 
 <script>
-    
-
     let id;
     console.log(id);
     function getId($id){

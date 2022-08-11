@@ -24,7 +24,7 @@ class Question extends Model
         'choice_d',
         'answer',
     ];
-
+    // This QUESTION/S belongs to a specific quiz.
     public function quiz(){
         return $this->belongsTo(Quiz::class, 'quiz_id', 'quiz_id');
     }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 class CourseContentController extends Controller
 {
+    // creating of course content
     public function create(Request $request){
         $rules = [
             'content_title' => 'required',
@@ -41,6 +42,7 @@ class CourseContentController extends Controller
             return redirect()->to(route('course.showInfo',$request->course_id));
         }
     }
+    // updating of course content
     public function update(Request $request, $id){
         $rules = [
             'content_title' => 'required',
@@ -68,18 +70,19 @@ class CourseContentController extends Controller
             return back();
         }
     }
+    // deleting of course content
     public function delete($id){
         $selectedCourseContent = CourseContent::findOrFail($id);
         
         $selectedCourseContent->delete();
         return redirect()->to(route('course.showInfo', $selectedCourseContent->course_id));
     }
-    
+    // viewing of course content
     public function viewModule($id){
 
         $selectedModule = CourseContent::where('content_id', $id)->get();
 
-        return view('dashboard.courses.view_module')->with(compact('selectedModule'));
+        return view('dashboard.coursecontent.view_module')->with(compact('selectedModule'));
     }
 
 }

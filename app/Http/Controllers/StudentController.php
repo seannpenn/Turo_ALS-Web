@@ -5,19 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Enrollment;
+use App\Models\LearningCenter;
 use App\Models\Programs;
 use App\Models\Student;
+use App\Models\StudentInformation;
 use App\Models\StudentEducation;
 use App\Models\StudentFamily;
 use Validator;
 class StudentController extends Controller
 {
+    // enroll student
     public function enroll(Request $request){
+        $studentId = Auth::user()->student->student_id;
+        $locId = Auth::user()->student->loc_id;
 
         $backgroundCredentials = $request->validate([
             'prog_id' => 'required',
-            'student_fname' => 'required',
-            'student_lname' => 'required',
             'student_gender' => 'required',
             'student_civil' => 'required',
             'student_birth' => 'required',
@@ -36,17 +39,15 @@ class StudentController extends Controller
 
         ]);
 
-        $studentId = Enrollment::insertGetId([
-            'prog_id' => $request['prog_id']
+        Enrollment::insertGetId([
+            'student_id' => $studentId,
+            'prog_id' => $request['prog_id'],
+            'loc_id' => $locId,
         ]);
 
-        Student::create([
-            'studentId' => $studentId,
-            'user_id' => Auth::id(),
+        StudentInformation::create([
+            'student_id' => $studentId,
             'LRN' => $request['LRN'],
-            'student_fname' => $request['student_fname'],
-            'student_mname' => $request['student_mname'],
-            'student_lname' => $request['student_lname'],
             'student_gender' => $request['student_gender'],
             'student_civil' => $request['student_civil'],
             'student_birth' => $request['student_birth'],
@@ -57,7 +58,7 @@ class StudentController extends Controller
             'province' => $request['province'],
         ]);
         StudentFamily::create([
-            'studentId' => $studentId,
+            'student_id' => $studentId,
             'student_compfname' => $request['student_compfname'],
             'student_compmname' => $request['student_compmname'],
             'student_complname' => $request['student_complname'],
@@ -66,7 +67,7 @@ class StudentController extends Controller
             'student_motherlname' => $request['student_motherlname'],
         ]);
         StudentEducation::create([
-            'studentId' => $studentId,
+            'student_id' => $studentId,
             'last_level' => $request['last_level'],
             'student_reason' => $request['student_reason'],
             'answer_type' => $request['answer_type'],
@@ -77,37 +78,44 @@ class StudentController extends Controller
 
         return redirect()->to('/student/home');
     }
+    // show student enrollment status
     public function enrollmentPage(){
-        $enrollees = Enrollment::getAllEnrollees();
-        return view('enrollment.student_enrollment')->with(compact('enrollees'));
+        $enrollmentModel = new Enrollment;
+        $enrolleeInfo = $enrollmentModel->where('student_id', Auth::user()->student->student_id)->get()->first();
+        return view('enrollment.student_enrollment')->with(compact('enrolleeInfo'));
     }
+    // show enrollment form
     public function enrollForm(){
         $programs = Programs::getAll();
+        $locations = LearningCenter::getAll();
+        $student = Auth::user()->student;
+        return view('enrollment.student_enrollment_form')->with(compact('programs', 'locations', 'student'));
+    }
 
-        return view('enrollment.student_enrollment_form')->with(compact('programs'));
-    }
-    public function showEnrollmentStatus($id){
-        $studentStatus= Student::where('studentId', $id)->get()->status;
-        return view('home.student_home')->with(compact('studentStatus')); 
-    }
+
+    // For admine functions
+
+    // Manage Enrollment application from students
     public function showAllStudents(){
         $studentCollection = Student::getAllStudents();
         $enrollees = Enrollment::getAllEnrollees();
+
+        $enrollees = Enrollment::getEnrolleesByLocProg(Auth::user()->teacher->loc_id, Auth::user()->teacher->prog_id);    
 
         return view('dashboard.student_list')->with(compact('enrollees'));
     }
 
     public function showStudentApplication($id){
-        $studentApplication= Student::where('studentId', $id)->get()->first();
-        
+        $studentApplication= Student::where('student_id', $id)->get()->first();
         return view('dashboard.student_application')->with(compact('studentApplication'));
     }
-
+    // approving student's application
     public function approve($id){
-        $updateStudentStatus = Student::where('studentId', $id)->get()->first();
-        $enrollmentStatus = $updateStudentStatus->enrollment;
-        if($updateStudentStatus->LRN != null){
-            $enrollmentStatus->update([
+        $updateEnrollmentStatus = Enrollment::where('student_id', $id);
+        $studentLRN = StudentInformation::where('student_id', $id)->get()->first();
+
+        if($studentLRN->LRN != null){
+            $updateEnrollmentStatus->update([
                 'status' => 'approved',
             ]);
 
@@ -116,10 +124,8 @@ class StudentController extends Controller
         else{
             return redirect()->back()->with('error', 'Please provide LRN to student first');
         }
-        
-        
     }
-
+    // provide student an LRN if they dont have one.
     public function provideLRN(Request $request, $id){
         $rules = [
             'LRN' => 'required',
@@ -133,7 +139,7 @@ class StudentController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         }
         else{
-            $provideStudentLRN = Student::where('studentId', $id);
+            $provideStudentLRN = StudentInformation::where('student_id', $id);
 
             $provideStudentLRN->update([
                 'LRN' => $request->LRN,
