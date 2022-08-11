@@ -57,7 +57,6 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::post('/course/content/{id}/update', [CourseContentController::class, 'update'])->name('content.update');
 
     // for create content topic
-
     Route::post('/course/content/topic/create', [TopicController::class, 'create'])->name('topic.create');
     Route::get('/course/content/topic/{topicid}', [TopicController::class, 'viewModuleTopics'])->name('topic.view');
     Route::get('/course/content/topic/{topicid}/delete', [TopicController::class, 'delete'])->name('topic.delete');
