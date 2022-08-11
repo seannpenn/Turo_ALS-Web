@@ -45,13 +45,14 @@ class TopicController extends Controller
      * @param  \App\Models\Topic  $topic
      * @return \Illuminate\Http\Response
      */
-    public function show(Topic $topic)
+    public function show(Topic $topic, $contentID)
     {
-        $topicCollection = $topic->getAllTopic();
+        $selectedModule = Module::findOrFail($contentID);
+        $topicCollection = $selectedModule->topic->toArray();
 
         return response()->json([
             'status' =>true,
-            'courses' => [$topicCollection]
+            'courses' => $topicCollection
         ]);
     }
 

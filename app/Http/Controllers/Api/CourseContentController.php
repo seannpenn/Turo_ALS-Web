@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\CourseContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,13 +46,15 @@ class CourseContentController extends Controller
      * @param  \App\Models\CourseContent  $courseContent
      * @return \Illuminate\Http\Response
      */
-    public function show(CourseContent $courseContent)
+    public function show(CourseContent $courseContent, $courseID)
     {
-        $moduleCollection = $courseContent->getAllModule();
-
+        $selectedCourse = Course::findOrFail($courseID);
+        $moduleCollection = $selectedCourse->coursecontent->toArray();
+    
         return response()->json([
+
             'status' =>true,
-            'courses' => [$moduleCollection]
+            'coursecontent' => $moduleCollection
         ]);
     }
 

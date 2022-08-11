@@ -19,14 +19,19 @@ use App\Http\Controllers\Api\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::apiResource('posts', PostController::class);
 
+Route::middleware('auth:sanctum')->group(function(){
+
+});
+
+
 Route::post('/register', [AuthController::class, 'teacherRegister']);
 Route::post('/login', [AuthController::class, 'StudentLogin']); //ok
 Route::get('/course', [CourseController::class, 'show']); //ok
-Route::get('/module', [CourseContentController::class, 'show']); //ok
-Route::get('/topic', [TopicController::class, 'show']); //ok
+Route::get('/course/{id}/module', [CourseContentController::class, 'show']); //ok
+Route::get('/module/{id}/topic', [TopicController::class, 'show']); 

@@ -57,21 +57,25 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
         
-        if(!Auth::attempt($loginCredentials)){
-            return response()->json([
-                'status' => false,
-                'message' => "Error loggin in ",
-             ]);
-        }
+        if(Auth::attempt($loginCredentials)){
+            $user = User::where('username', $request->username)->get()->first();
+            $request->session()->regenerate();
 
-        $user = User::where('username', $request->username)->get()->first();
-        $request->session()->regenerate();
+            return response()->json([
+                'status' => true,
+                'message' => 'Logged in user',
+                'token' => $request->session()->token(),
+                'user' => $user,
+            ]);
+            
+        }
+        
         return response()->json([
-            'status' =>true,
-            'message' => 'Logged in user',
-            'token' => $request->session()->token(),
-            'user' => $user,
+            'status' => false,
+            'message' => "Error loggin in ",
         ]);
+        
+
     }
 
 }
