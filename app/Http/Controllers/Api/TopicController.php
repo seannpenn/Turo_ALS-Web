@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\CourseContent;
 use App\Models\Topic;
 use Illuminate\Http\Request;
 
@@ -45,14 +46,14 @@ class TopicController extends Controller
      * @param  \App\Models\Topic  $topic
      * @return \Illuminate\Http\Response
      */
-    public function show(Topic $topic, $contentID)
+    public function show($contentID)
     {
-        $selectedModule = Module::findOrFail($contentID);
+        $selectedModule = CourseContent::findOrFail($contentID);
         $topicCollection = $selectedModule->topic->toArray();
 
         return response()->json([
             'status' =>true,
-            'courses' => $topicCollection
+            'topics' => $topicCollection
         ]);
     }
 

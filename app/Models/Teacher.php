@@ -23,6 +23,10 @@ class Teacher extends Model
         'teacher_lname',
         'teacher_birth',
     ];
+    public static function getTeacherByLocProg($locId, $progId){
+        $byLocation = self::where('loc_id', $locId);
+        return $byLocation->where('prog_id', $progId)->get()->first();
+    }
     // A specific teacher has many course
     public function course(){
         return $this->hasMany(Course::class, 'teacher_id', 'teacher_id');

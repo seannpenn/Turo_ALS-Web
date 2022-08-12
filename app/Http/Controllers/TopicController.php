@@ -77,6 +77,42 @@ class TopicController extends Controller
             }
         }
     }
+
+    public function update(Request $request, $id){
+        if($request->topic_type == 'quiz'){
+            $rules = [
+                'quiz_title' => 'required',
+            ];
+        }
+        else {
+            $rules = [
+                'topic_title' => 'required',
+            ];
+        }
+        
+        $messages = [
+            'quiz_title.required' => 'Please input a topic title',
+            'topic_title.required' => 'Please input a topic title',
+        ];
+
+        $validation = Validator::make($request->input(), $rules, $messages);
+
+        if($validation->fails()){
+            return redirect()->back()->withInput()->withErrors($validation);
+        }
+        else{
+            if($request->topic_type == 'text'){
+
+                $updateTopic = Topic::where('topic_id',$id);
+                $updateTopic->update([
+                    'topic_title' => $request->topic_title,
+                    'text_content' => $request->text_content,
+                ]);
+                
+                return back();
+            }
+        }
+    }
     // deleting a topic
     public function delete($topicId){
         $selectedTopic = Topic::findOrFail($topicId);

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\CourseContentController;
 use App\Http\Controllers\Api\TopicController;
 use App\Http\Controllers\Api\AuthController;
@@ -26,12 +27,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResource('posts', PostController::class);
 
 Route::middleware('auth:sanctum')->group(function(){
-
+    
 });
-
-
-Route::post('/register', [AuthController::class, 'teacherRegister']);
 Route::post('/login', [AuthController::class, 'StudentLogin']); //ok
-Route::get('/course', [CourseController::class, 'show']); //ok
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/register', [AuthController::class, 'teacherRegister']);
+Route::get('/{id}/course', [CourseController::class, 'show']); //ok
+
 Route::get('/course/{id}/module', [CourseContentController::class, 'show']); //ok
 Route::get('/module/{id}/topic', [TopicController::class, 'show']); 
+Route::get('/topic/{id}/quiz', [QuizController::class, 'show']);

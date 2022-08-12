@@ -30,6 +30,7 @@ class Topic extends Model
     public function coursecontent(){
         return $this->belongsTo(CourseContent::class, 'content_id', 'content_id');
     }
+
     
     public function selectedquiz(){
         return $this->hasOne(Quiz::class, 'topic_id', 'topic_id');

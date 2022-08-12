@@ -77,5 +77,14 @@ class AuthController extends Controller
         
 
     }
+    public function logout(){
+        if(Auth::user()->userType == 0){
+            Auth::logout();
+            return response()->json([
+                'status' => true,
+                'message' => "Logged out."
+            ]);
+        }
+    }
 
 }

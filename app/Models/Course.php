@@ -23,16 +23,20 @@ class Course extends Model
         'course_description',
     ];
 
+    public static function getAllCourses(){
+        return self::get()->toArray();
+    }
+    
     public function filter($prog_id)
     {
         return self::where('prog_id',$prog_id)->get();
     }
-
+    
     // This COURSE/S belongs to a specific teacher.
     public function teacher(){
         return $this->belongsTo(Teacher::class, 'teacher_id', 'teacher_id');
     }
-    
+
     // This COURSE has many coursecontent/modules.
     public function coursecontent(){
         return $this->hasMany(CourseContent::class, 'course_id', 'course_id');

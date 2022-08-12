@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Enrollment;
+use App\Models\Teacher;
+use App\Models\Student;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,10 +48,13 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show(Course $course, $id)
     {
+        $student = Student::where('user_id', $id)->get()->first();
+        $EnrolledStudent = Enrollment::where('student_id', $student->student_id)->get()->first();
+        $teacher = Teacher::getTeacherByLocProg($EnrolledStudent->loc_id, $EnrolledStudent->prog_id);
 
-        $courseCollection = $course->getAllCourses();
+        $courseCollection = $teacher->course->toArray();
 
         return response()->json([
             'status' =>true,

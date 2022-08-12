@@ -43,7 +43,7 @@
             <div class="text-content">
                 <div class="col-auto">
                 <div class="card-body">
-                <form method="post" action="{{route('topic.create')}}" enctype="multipart/form-data">
+                <form method="post" action="{{route('topic.update', $selectedTopic->topic_id)}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">Topic Title</label>

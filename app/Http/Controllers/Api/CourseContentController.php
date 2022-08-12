@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Enrollment;
 use App\Models\Course;
 use App\Models\CourseContent;
 use Illuminate\Http\Request;
@@ -46,8 +47,11 @@ class CourseContentController extends Controller
      * @param  \App\Models\CourseContent  $courseContent
      * @return \Illuminate\Http\Response
      */
-    public function show(CourseContent $courseContent, $courseID)
+    public function show($courseID)
     {
+
+        
+        
         $selectedCourse = Course::findOrFail($courseID);
         $moduleCollection = $selectedCourse->coursecontent->toArray();
     
