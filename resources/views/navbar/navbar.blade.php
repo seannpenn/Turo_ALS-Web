@@ -103,7 +103,20 @@
         @endif
       @endauth
       @guest
+      
+      @if(Route::currentRouteName() == 's-login')
+        <a class="nav-link" style="color: white;" href="{{route('student.registration')}}">Register</a>
+      @elseif(Route::currentRouteName() == 'student.registration')
         <a class="nav-link" style="color: white;" href="{{route('s-login')}}">Login</a>
+      @elseif(Route::currentRouteName() == 'home')
+        <a class="nav-link" style="color: white;" href="{{route('s-login')}}">Login</a>
+
+      @elseif(Route::currentRouteName() == 'teacher.registration')
+        <a class="nav-link" style="color: white;" href="{{route('t-login')}}">Login</a>
+      @elseif(Route::currentRouteName() == 't-login')
+        <a class="nav-link" style="color: white;" href="{{route('teacher.registration')}}">Register</a>
+      @endif
+        
       @endguest
         @yield('right-side-nav')
       

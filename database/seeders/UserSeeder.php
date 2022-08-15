@@ -17,10 +17,10 @@ class UserSeeder extends Seeder
     {
         //
         $data = [
-            'userType' => 1,
-            'username' => 'seanpinote',
-            'password' => bcrypt('sean123'),
-            'email' => 'spinote16@gmail.com',
+            'userType' => 0,
+            'username' => 'admin',
+            'password' => bcrypt('admin'),
+            'email' => 'admin@gmail.com',
 
         ];
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Topic;
 use App\Models\Question;
+use App\Models\TopicContent;
 class Quiz extends Model
 {
     use HasFactory;
@@ -38,5 +39,8 @@ class Quiz extends Model
     // This specific quiz has many questions.
     public function question(){
         return $this->hasMany(Question::class, 'quiz_id', 'quiz_id');
+    }
+    public function link(){
+        return $this->belongsTo(TopicContent::class, 'link', 'quiz_id');
     }
 }

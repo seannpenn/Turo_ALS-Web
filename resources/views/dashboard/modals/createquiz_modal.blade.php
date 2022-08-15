@@ -6,10 +6,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action=" {{route('topic.create')}} " method="post">
+        <form action=" {{route('quiz.store')}} " method="post">
             {{ csrf_field() }}
-            <input type="text" name="content_id" class="form-control" value="@yield('content-id-quiz')" hidden>
-            <input type="text" name="topic_type" class="form-control" value="quiz" hidden>
 
             <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Quiz Title</label>

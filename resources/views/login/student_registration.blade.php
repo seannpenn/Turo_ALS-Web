@@ -1,9 +1,5 @@
 @extends('main')
 
-@section('right-side-nav')
-     <a class="nav-link" style="color: white;" href="{{route('s-login')}}">Login</a>
-@stop
-
 @section('css-style')
     
         #registration-form {
@@ -60,7 +56,7 @@
                     </select>
                 </div>
 
-                <input type="text" name="userType"  class="form-control" id="inputEmail3" value="0" hidden>
+                <input type="text" name="userType"  class="form-control" id="inputEmail3" value="2" hidden>
 
                 <div class="row mb-3">
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Email:</label>

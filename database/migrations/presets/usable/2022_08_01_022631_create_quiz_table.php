@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('quiz', function (Blueprint $table) {
             $table->increments('quiz_id');
-            $table->unsignedInteger('topic_id');
+            $table->unsignedInteger('teacher_id');
             $table->String('quiz_title');
 
-            $table->foreign('topic_id')->references('topic_id')->on('topics')->onDelete('cascade');
+
+            
+            $table->foreign('teacher_id')->references('teacher_id')->on('teachers')->onDelete('cascade');
         });
     }
 

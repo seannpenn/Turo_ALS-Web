@@ -3,6 +3,8 @@
 @extends('dashboard/courses/create_module_modal')
 @extends('dashboard/courses/update_course_modal')
 @extends('modalslug')
+@extends('dashboard/modals/createTopic_modal')
+@extends('dashboard/topic_content/choices_modal')
 @section('modal-content')
     <span id="modalContent"> Deleting this course would also remove all of its contents. Are you sure you want to proceed?</span>
 @stop
@@ -23,8 +25,7 @@
     img:hover{
         cursor:pointer;
     }
-    .card{
-    }
+
     .card:hover{
         cursor:pointer;
         border-color: orange;
@@ -44,11 +45,10 @@
         padding: 5px; 
     }
     .course-header{
-        margin: 0 auto;
-        justify-content:center;
-        width: 700px;
+        
         display: flex;
         align-items: center;
+        width: 700px;
     
     }
     .module-content-area{
@@ -68,16 +68,14 @@
         right: 30px;
     }
     .layout-bottom{
-        margin: 0 auto;
-        justify-content:center;
-        height:600px;   
-        width: 1000px;
-        <!-- align-items: center; -->
+        display: flex;
+        align-items: stretch;
+        width: 100%;
         
     }
     .modules{
-        width:1000px;
-        height:600px;
+        width: 330px;
+        height:575px;
         overflow-y:auto;
     }
     #topic-form{
@@ -105,6 +103,69 @@
         color: orange;
         border: 2px solid orange;
     }
+    .collapsible {
+        margin: 10px;
+        background-color: white;
+        color: orange;
+        cursor: pointer;
+        padding: 5px;
+        width: 280px;
+        text-align: left;
+        outline: none;
+        font-size: 25px;
+        border: 1px solid orange;
+        border-radius: 5px;
+    }
+    .collapsible:hover {
+        background-color: lightgrey;
+    }
+    .content {
+        margin-bottom: 10px;
+        font-size: 20px;
+        padding: 0 18px;
+        display: none;
+        overflow: hidden;
+        text-align: justify;
+    }
+    .topic{
+        width: 255px;
+        border: 1px solid orange;
+        border-radius: 5px;
+        margin: 10px; 
+        padding: 5px;
+        margin-left: 15px;
+    }
+    .topic:hover{
+        background-color: lightgrey;
+        cursor:pointer;
+    }
+    .view-topic{
+        display: none;
+    }
+    .topic-content-list {
+        margin-bottom: 10px;
+        font-size: 20px;
+        padding: 0 18px;
+        display: none;
+        overflow: hidden;
+        text-align: justify;
+    }
+    .topic-content{
+        width: 235px;
+        border: 1px solid orange;
+        border-radius: 5px;
+        margin: 10px; 
+        margin-bottom: 10px;
+        padding: 10px;
+        margin-left: 15px;
+    }
+    .topic-content:hover{
+        cursor: pointer;
+        background-color: lightgrey;
+    }
+    .add-icon{
+        
+    }
     
 @stop
 
@@ -113,8 +174,8 @@
     @include('navbar/navbar_inside')
 
     <div class="layout">
-    <a href="{{route('course.all')}}">
-            < Back to courses
+        <a href="{{route('course.all')}}">
+                < Back to courses
         </a>
         <div class="course-header">
             @foreach($chosenCourse as $course)
@@ -158,46 +219,138 @@
             </div>
         </div>
         <hr>
-    
-        <div class="layout-bottom">
-                @if($chosenCourse[0]->coursecontent->count() != 0)
-                    <h4>Modules</h4>
-                @else
-                    <h4>Add modules....</h4>
-                @endif
-                <div class="modules">
 
+        <div class="layout-bottom">
+                
+                <div class="modules">
+                    @if($chosenCourse[0]->coursecontent->count() != 0)
+                        <h4>Modules</h4>
+                    @else
+                        <h4>Add modules....</h4>
+                    @endif
+                    <table>
                         @foreach($chosenCourse as $course)
                             @foreach($course->coursecontent as $content)
-                                <a href="{{route('content.view', $content->content_id)}}" style="text-decoration:none; color:black;" id="module" title="Click to view module">
-                                
-                                    <div class="card" role="button" style="margin:5px;" id="moduleCard" >
+                            
+                                    <tr>
+                                        @section('content-id')
+                                            {{$content->content_id}}
+                                        @stop
+                                        <button type="button" class="collapsible" ><b>{{$content->content_title}}</b>
+                                            <a  title="View Course" data-bs-toggle="modal" data-bs-target="#topicCreate" data-bs-whatever="@fat"><img src="{{ asset('images/add.png') }}" alt=""></a>                                           
+                                        </button>
+                                        
+                                    </tr>
 
-                                        <div class="card-body">
-                                        <h5>{{$content->content_id}}</h5>
-                                            <h5>{{$content->content_title}}</h5>
-                                            <h9>{{$content->content_description}}</h9>
-                                                                
+                                    <tr>
+                                        <div class="content">
+                                                @foreach($content->topic as $topic)
+                                                    
+                                                        <div class="topic">
+                                                            <label for="">
+                                                                {{$topic->topic_title}}
+                                                            </label>
+                                                            <div class="icon" style="display: flex; margin-left: 200px; right: 0;">
+                                                                <a  title="Add Topic Content" data-bs-toggle="modal" data-bs-target="#topicChoices" data-bs-whatever="@fat"><img src="{{ asset('images/add.png') }}" alt=""></a>                                                                                    
+                                                                <a  title="Delete Topic Content" data-bs-toggle="modal" data-bs-target="#topicChoices" data-bs-whatever="@fat"><img src="{{ asset('images/delete.png') }}" alt=""></a>                                                                                    
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div class="topic-content-list">
+                                                            @foreach($topic->topiccontent as $topiccontent)
+                                                            <a href="{{ route('topicContent.view', $topiccontent->topic_content_id) }}" style="text-decoration:none; color:black;">
+                                                                <div class="topic-content">
+                                                                    @if($topiccontent->type == 'html')
+                                                                        <img src="{{ asset('images/text.jpg') }}" alt=""> 
+                                                                    @elseif($topiccontent->type == 'quiz')
+                                                                    <img src="{{ asset('images/link.png') }}" alt="">
+                                                                    @endif
+                                                                    <p>{{$topiccontent->topic_content_title}}</p>
+                                                                    
+                                                                    <div class="icon" style="display: flex; margin-left: 200px; right: 0;">
+                                                                        <a href="{{route('topicContent.delete', $topiccontent->topic_content_id)}}" onclick="return confirm('Are you sure you want to delete this content?')"><img src="{{ asset('images/delete.png') }}" alt=""></a>                                                                                    
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                            @endforeach
+                                                        </div>
+                                                    
+                                                    @section('html_create')
+                                                        {{ route('html.create', $topic->topic_id) }}
+                                                    @stop
+                                                    @section('file_create')
+                                                        {{ route('file.create', $topic->topic_id) }}
+                                                    @stop
+                                                    @section('link_create')
+                                                        {{ route('link.create', $topic->topic_id) }}
+                                                    @stop
+                                                @endforeach
                                         </div>
+                                        
+                                    </tr>
 
-                                        <div class="action" style="margin:2px;">
-                                            <td class="icons"><a href="{{ route('content.delete',$content->content_id) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this module?');"></a></td>
-                                        </div>   
-                                    </div>
-
-                                </a>
                             @endforeach
                         @endforeach
+                    </table>
+                </div>
+                <div class="view-topic" id="view-topic">
+                
+                    @include('dashboard.courses.view_topictest')
                 </div>
         </div>
     </div>
-        
+
+    <script>
+        var i;
+        var z;
+        var coll = document.getElementsByClassName("collapsible");
+        var topic = document.getElementsByClassName("topic");
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                content.style.display = "none";
+                } else {
+                content.style.display = "block";
+                }
+            });
+        }
+        for (z = 0; z < topic.length; z++) {
+            topic[z].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var topiccontent = this.nextElementSibling;
+                if (topiccontent.style.display === "block") {
+                    topiccontent.style.display = "none";
+                } else {
+                    topiccontent.style.display = "block";
+                }
+            });
+        }
+
+
+        var x;
+        var topic = document.getElementsByClassName("topic");
+        var viewTopic = document.getElementsByClassName("view-topic");  
+        function load_main_content(){
+            
+                for (x = 0; x < topic.length; x++) {
+                    topic[x].addEventListener("click", function() {
+                        var content = document.getElementById("view-topic");
+                        content.style.display = "block";
+                        
+                    });
+                    
+                }
+        }
+    </script>
+
+    
 @stop
 
 
 @section('script-area')
 
-    
         $(document).ready(function () {
             $('.ckeditor').ckeditor();
         });

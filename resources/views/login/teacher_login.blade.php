@@ -1,9 +1,5 @@
 @extends('main')
 
-@section('right-side-nav')
-     <a class="nav-link" style="color: white;" href="{{route('teacher.registration')}}">Register</a>
-@stop
-
 @section('css-style')
         .banner-image{
             height: 400px;

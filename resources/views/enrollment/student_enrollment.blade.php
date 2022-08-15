@@ -129,7 +129,7 @@
                                 </ul>
                             @endif
                         @else
-                            <h2>Hello</h2>
+                            Student record not found. 
                         @endif
                         </div>
                     </tr>

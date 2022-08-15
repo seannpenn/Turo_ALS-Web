@@ -42,6 +42,7 @@
       @auth
           @if(Auth::user()->userType == '1')
           <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
+          <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage')}}">Quizzes</a>
           <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
           <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage')}}">Manage Quiz</a>
           @else

@@ -138,35 +138,7 @@
                 <h3>Add Topics....</h3>
             @endif
 
-            <div class="module-list">
-                @foreach($selectedModule[0]->topic as $topic)
-                    <a href="{{route('topic.view', $topic->topic_id)}}" style="text-decoration:none; color:black;" id="module" title="Click to view topic">
-                        <div class="card" role="button" style="margin:5px;" id="moduleCard" >
-                            <div class="card-body">
-                            
-                                <h5>{{$topic->topic_title}}</h5>
-                                
-                                @if($topic->topic_type == 'text')
-                                    <img src="{{ asset('images/text.jpg') }}">
-                                @elseif($topic->topic_type == 'quiz')
-                                    <img src="{{ asset('images/quiz.png') }}">
-                                @else
-                                    <img src="{{ asset('images/pdf.png') }}">
-                                @endif                        
-                            </div> 
-                            <div class="action-delete" style="margin:2px;">
-                                <td class="icons"><a title="Delete Topic"><img src="{{ asset('images/delete.png') }}" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></a></td>
-                            </div>
-                        </div>
-                    </a>
-                    @section('script-area')
-                        let confirmTask = document.getElementById('confirmTask');
-                        confirmTask.addEventListener('click',()=>{
-                            window.location.href = "{{route('topic.delete', $topic->topic_id)}}";
-                        }); 
-                    @stop
-                @endforeach
-            </div>
+            
         </div>
     </div>
 @stop

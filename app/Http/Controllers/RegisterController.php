@@ -55,7 +55,7 @@ class RegisterController extends Controller
             return redirect()->intended('/admin/course/all');
         }
 
-        return redirect()->to('student.home');
+        return redirect()->to('teacher.registration');
     }
 
     //Student registration page

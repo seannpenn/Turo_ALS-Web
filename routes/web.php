@@ -11,6 +11,8 @@ use App\Http\Controllers\TopicController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TopicContentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -57,17 +59,32 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::post('/course/content/{id}/update', [CourseContentController::class, 'update'])->name('content.update');
 
     // for create content topic
-    Route::post('/course/content/topic/create', [TopicController::class, 'create'])->name('topic.create');
-    Route::get('/course/content/topic/{topicid}', [TopicController::class, 'viewModuleTopics'])->name('topic.view');
+    Route::post('/course/content/topic', [TopicController::class, 'create'])->name('topic.create');
     Route::get('/course/content/topic/{topicid}/delete', [TopicController::class, 'delete'])->name('topic.delete');
-    Route::post('/course/content/topic/{topicid}/update', [TopicController::class, 'update'])->name('topic.update');
+    
+
+    // for create topic content
+
+    Route::get('/course/content/topic/content/{id}/delete', [TopicContentController::class, 'delete'])->name('topicContent.delete');
+    Route::post('/course/content/topic/content/create', [TopicContentController::class, 'create'])->name('topicContent.create');
+    Route::get('/course/content/topic/content/view/{id}', [TopicContentController::class, 'viewTopicContent'])->name('topicContent.view');
+    Route::post('/course/content/topic/content/{id}/update', [TopicContentController::class, 'update'])->name('topicContent.update');
+    Route::get('/course/content/topic/content/{id}/create/html', [TopicContentController::class, 'createHtml'])->name('html.create');
+    Route::get('/course/content/topic/content/{id}/create/file', [TopicContentController::class, 'createFile'])->name('file.create');
+    Route::get('/course/content/topic/content/{id}/create/link', [TopicContentController::class, 'createLink'])->name('link.create');
+    Route::post('/course/content/topic/content/{id}/link', [TopicContentController::class, 'linkContent'])->name('topicContent.link');
+  
+    
+    // for pdf upload
+    // Route::get('file/upload',[TopicController::class, 'uploadFiles'])->name('topic.upload');
+    Route::post('file/upload', [TopicController::class, 'storeUploadedFiles'])->name('topic.store');
 
 
     // for quiz make
     Route::view('/quiz/create', 'dashboard.quiz.create')->name('quiz.create');
     Route::get('/quiz/edit/{id}', [QuizController::class, 'edit'])->name('quiz.edit');
     Route::post('/quiz/update/{id}', [QuizController::class, 'update'])->name('quiz.update');
-    Route::post('/quiz/create/{id}', [QuizController::class, 'create'])->name('quiz.store');
+    Route::post('/quiz/store', [QuizController::class, 'create'])->name('quiz.store');
     Route::get('/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
     // ^
     //for question
@@ -75,9 +92,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::get('/quiz/question/delete/{id}', [QuestionController::class, 'delete'])->name('question.delete');
     Route::post('/quiz/question/update/{id}', [QuestionController::class, 'update'])->name('question.update');
 
-    // for pdf upload
-    // Route::get('file/upload',[TopicController::class, 'uploadFiles'])->name('topic.upload');
-    Route::post('file/upload', [TopicController::class, 'storeUploadedFiles'])->name('topic.store');
+    
 });
 
 

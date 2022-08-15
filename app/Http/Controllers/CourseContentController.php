@@ -78,11 +78,11 @@ class CourseContentController extends Controller
         return redirect()->to(route('course.showInfo', $selectedCourseContent->course_id));
     }
     // viewing of course content
-    public function viewModule($id){
+    // public function viewModule($id){
 
-        $selectedModule = CourseContent::where('content_id', $id)->get();
+    //     $selectedModule = CourseContent::where('content_id', $id)->get();
 
-        return view('dashboard.coursecontent.view_module')->with(compact('selectedModule'));
-    }
+    //     return view('dashboard.coursecontent.view_module')->with(compact('selectedModule'));
+    // }
 
 }

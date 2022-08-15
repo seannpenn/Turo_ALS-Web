@@ -7,10 +7,11 @@ use Validator;
 use App\Models\Quiz;
 use App\Models\Question;
 use App\Models\Topic;
+use Illuminate\Support\Facades\Auth;
 class QuizController extends Controller
 {
     // creation of quiz
-    public function create(Request $request, $topicId){
+    public function create(Request $request){
         $rules = [
             'quiz_title' => 'required',
         ];
@@ -28,10 +29,10 @@ class QuizController extends Controller
     
             $quiz = new Quiz();
 
-            $quiz->topic_id = $topicId;
+            $quiz->teacher_id = Auth::user()->teacher->teacher_id;
             $quiz->quiz_title = $request->quiz_title;
             
-            $course->save();
+            $quiz->save();
 
             return back();
         }
@@ -72,7 +73,7 @@ class QuizController extends Controller
     }
     // manage all quizzes created by the teacher
     public function manage(){
-        $quizCollection = Quiz::getAllQuiz();
+        $quizCollection = Quiz::where('teacher_id', Auth::user()->teacher->teacher_id)->get();
         return view('dashboard.quiz.manage')->with(compact('quizCollection'));  
     }
 

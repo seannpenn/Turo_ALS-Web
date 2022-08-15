@@ -1,9 +1,5 @@
 @extends('main')
 
-@section('right-side-nav')
-     <a class="nav-link" style="color: white;" href="{{route('t-login')}}">Login</a>
-@stop
-
 @section('css-style')
     
         #registration-form {
