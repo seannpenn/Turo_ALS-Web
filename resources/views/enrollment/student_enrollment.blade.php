@@ -71,9 +71,7 @@
                             <p>
                                 All new ALS applicants must confront an als facilitator in order to be evaluated on what program you need to enroll to.
                             </p>
-                            <p>
-                                ALS applicants must also inquire for the availability of the program they intend to enroll.
-                            </p>
+                           
                         </div>
                     </tr>
                     <!-- STEP 2 -->

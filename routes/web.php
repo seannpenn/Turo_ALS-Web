@@ -27,10 +27,15 @@ use App\Http\Controllers\TopicContentController;
 Route::view('/test', 'test')->name('test');
 Route::view('/', 'landing')->name('home');
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
+    Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
+    Route::view('/', 'home.admin_home')->name('admin.home');
+});
+
+Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
 
     Route::view('/home', 'home.teacher_home')->name('teacher.home');
 
-    Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
+    
     Route::get('/teachers/all', [TeacherController::class, 'testing'])->name('teachers.all');
 
     // For teacher 
@@ -98,7 +103,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
 
 
 //for login and register routes
-Route::view('/admin', 'login.teacher_login')->name('t-login');
+Route::view('/teacher', 'login.teacher_login')->name('t-login');
 Route::view('/student/login', 'login.student_login')->name('s-login');
 Route::post('/teacher/login', [LoginController::class, 'teacherLogin'])->name('teacher.login');
 Route::post('/student/login', [LoginController::class, 'studentLogin'])->name('student.login');

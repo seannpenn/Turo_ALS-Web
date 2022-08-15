@@ -140,7 +140,6 @@
                         <div class="card" id="card" style="width: 300px; height: 200;" class="btn btn-primary" data-bs-toggle="modal" >
                             <div class="card-body">
                                 <div class="card-content" >
-                                    <h1>{{$course['course_id']}}</h1>
                                     <h5 class="card-title">{{$course['course_title']}}</h5>
                                     <p class="card-text">{{$course['course_description']}}</p>
                                 </div>

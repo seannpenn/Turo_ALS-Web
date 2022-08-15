@@ -38,7 +38,7 @@ class CourseController extends Controller
             
             $course->save();
 
-            return redirect('admin/course/all')->with('message', 'Course created successfully');
+            return redirect('teacher/course/all')->with('message', 'Course created successfully');
         }
     }
     // updating of courses

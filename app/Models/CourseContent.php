@@ -22,7 +22,7 @@ class CourseContent extends Model
 
     // This COURSECONTENT/MODULE belongs to a specific COURSE.
     public function course(){
-        return $this->belongsTo(Course::class, 'content_id', 'course_id');
+        return $this->belongsTo(Course::class, 'course_id', 'course_id');
     }
     // This COURSECONTENT/MODULE has many Topics.
     public function topic(){

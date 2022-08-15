@@ -2,7 +2,6 @@
 
 
 @section('main-content')
-@include('navbar/navbar_inside')
 <table class="table table-hover" style="width: 100%;">
     <tr>
         <th scope="col">User ID</th>

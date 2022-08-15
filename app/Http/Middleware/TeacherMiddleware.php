@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class TeacherMiddleware
 {
     /**
@@ -17,7 +17,7 @@ class TeacherMiddleware
     public function handle(Request $request, Closure $next)
     {
         if(Auth::check()){
-            if(Auth::user()->userType === 0){
+            if(Auth::user()->userType === 1){
                 return $next($request);
             }
             else{

@@ -13,20 +13,23 @@ class TopicContentController extends Controller
     //
     
     public function create(Request $request){
-        $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
-        $course = $topic->coursecontent->course;
+
 
             if($request->type == 'html'){
+                $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
+                $course = $topic->coursecontent->course;
                 TopicContent::insertGetId([
                     'topic_id' => $request['topic_id'],
                     'topic_content_title' => $request['topic_content_title'],
                     'type' =>$request['type'],
                     'html' => $request['html'],
                 ]);
-                return redirect()->route('course.showInfo', $course->course_id);
+                return redirect()->route('course.showInfo', $course);
             }
 
             if($request->type == 'file'){
+                $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
+                $course = $topic->coursecontent->course->course_id;
                 $file = $request->file;
                 $originalFileName = $file->getClientOriginalName();
                 
@@ -37,17 +40,20 @@ class TopicContentController extends Controller
                     'type' =>$request['type'],
                     'file' => $originalFileName,
                 ]);
-                return redirect()->route('course.showInfo', $course->course_id);
+                
+                return redirect()->route('course.showInfo', $course);
             }
 
             if($request->type == 'quiz'){
+                $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
+                $course = $topic->coursecontent->course;
                 TopicContent::insertGetId([
                     'topic_id' => $request['topic_id'],
                     'type' => $request->type,
                     'topic_content_title' => $request['topic_content_title'],
                     'link' =>$request['link'],
                 ]);
-                return redirect()->route('course.showInfo', $course->course_id);
+                return redirect()->route('course.showInfo', $course);
             }
             
     }
@@ -74,8 +80,7 @@ class TopicContentController extends Controller
     
     public function update(Request $request, $id){
 
-        $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
-        $course = $topic->coursecontent->course;
+        
        
         $rules = [
             'topic_content_title' => 'required',
@@ -91,6 +96,8 @@ class TopicContentController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         }
         else{
+            $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
+            $course = $topic->coursecontent->course;
             if($request->type == 'html'){
                 
                 $updateTopicContent = TopicContent::where('topic_content_id',$id);

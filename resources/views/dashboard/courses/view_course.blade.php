@@ -112,7 +112,7 @@
         width: 280px;
         text-align: left;
         outline: none;
-        font-size: 25px;
+        font-size: 15px;
         border: 1px solid orange;
         border-radius: 5px;
     }
@@ -121,7 +121,7 @@
     }
     .content {
         margin-bottom: 10px;
-        font-size: 20px;
+        font-size: 15px;
         padding: 0 18px;
         display: none;
         overflow: hidden;
@@ -144,20 +144,21 @@
     }
     .topic-content-list {
         margin-bottom: 10px;
-        font-size: 20px;
+        font-size: 15px;
         padding: 0 18px;
         display: none;
         overflow: hidden;
-        text-align: justify;
+        text-align: left;
     }
     .topic-content{
+        font-size: 10px;
         width: 235px;
         border: 1px solid orange;
         border-radius: 5px;
         margin: 10px; 
-        margin-bottom: 10px;
         padding: 10px;
         margin-left: 15px;
+        justify-content:start;
     }
     .topic-content:hover{
         cursor: pointer;
@@ -183,7 +184,7 @@
                 <div class="card" id="card" style="width: 300px; height: 90px; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal">
                     <div class="card-body">
                         
-                        <h5 class="card-title">{{$course->course_title}}</h5>
+                        <h6 class="card-title">{{$course->course_title}}</h6>
                         <p class="card-text">{{$course->course_description}}</p>
                     
                     </div>
@@ -237,7 +238,7 @@
                                             {{$content->content_id}}
                                         @stop
                                         <button type="button" class="collapsible" ><b>{{$content->content_title}}</b>
-                                            <a  title="View Course" data-bs-toggle="modal" data-bs-target="#topicCreate" data-bs-whatever="@fat"><img src="{{ asset('images/add.png') }}" alt=""></a>                                           
+                                            <a  title="View Course" data-bs-toggle="modal" data-bs-target="#topicCreate" data-bs-whatever="@fat" style="display: flex; margin-left: 250px; right: 0;"><img src="{{ asset('images/add.png') }}" alt=""></a>                                           
                                         </button>
                                         
                                     </tr>
@@ -263,7 +264,9 @@
                                                                     @if($topiccontent->type == 'html')
                                                                         <img src="{{ asset('images/text.jpg') }}" alt=""> 
                                                                     @elseif($topiccontent->type == 'quiz')
-                                                                    <img src="{{ asset('images/link.png') }}" alt="">
+                                                                        <img src="{{ asset('images/link.png') }}" alt="">
+                                                                    @else
+                                                                        <img src="{{ asset('images/pdf.png') }}" alt="">
                                                                     @endif
                                                                     <p>{{$topiccontent->topic_content_title}}</p>
                                                                     

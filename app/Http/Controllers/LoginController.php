@@ -18,9 +18,12 @@ class LoginController extends Controller
         if(Auth::attempt($loginCredentials)){
             $request->session()->regenerate();
             // User is automatically logged out when they log in to a wrong portal.
-            if(Auth::user()->userType == 0){
+            if(Auth::user()->userType == 2){
                 Auth::logout();
                 return redirect()->to('/student/login')->with('error', 'You are not allowed to gain Admin access.');
+            }
+            else if(Auth::user()->userType == 0){
+                return redirect()->to(route('users.all'));
             }
             return redirect()->to(route('course.all'));
         }
@@ -56,11 +59,15 @@ class LoginController extends Controller
     public function logout(){
         if(Auth::user()->userType == 1){
             Auth::logout();
-            return redirect()->to('/admin');
+            return redirect()->to('/teacher');
+        }
+        else if(Auth::user()->userType == 2){
+            Auth::logout();
+            return redirect()->to('/student/login');
         }
         else{
             Auth::logout();
-            return redirect()->to('/student/login');
+            return redirect()->to('/teacher');
         }
     }
 }

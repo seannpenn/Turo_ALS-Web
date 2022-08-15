@@ -64,7 +64,7 @@
           <a class="nav-link active" id="homeButton" aria-current="page">Home</a>
         </li> -->
         @auth
-          @if(Auth::user()->userType == '0')
+          @if(Auth::user()->userType == '2')
             <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{{route('student.home')}}">Dashboard</a>
             </li>
@@ -72,14 +72,15 @@
                 <a class="nav-link active" aria-current="page" href="{{route('student.enrollment_page')}}">Enrollment</a>
             </li>
             
-          @else
+          @elseif(Auth::user()->userType == '1')
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{{route('course.all')}}" style="color:white;">Dashboard</a>
             </li>
+            
+          @else
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{route('users.all')}}" style="color:white;">Manage Users</a>
             </li>
-            
           @endif
         @endauth
         @yield('left-side-nav')
