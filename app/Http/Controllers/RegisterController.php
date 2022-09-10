@@ -87,6 +87,7 @@ class RegisterController extends Controller
         ]);
 
         Student::create([
+            
             'user_id' => $userId,
             'loc_id' => $request->loc_id,
             'student_fname' => $request->student_fname,

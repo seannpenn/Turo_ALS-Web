@@ -88,18 +88,18 @@
       
       <span class="d-flex">
       @auth
-        @if(Auth::user()->userType == '0')
+        @if(Auth::user()->userType == '2')
           <li class="nav-link dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">{{Auth::user()->username}}</a>
             <ul class="dropdown-menu">
-              <!-- <li><a class="dropdown-item" href="{{ route('student.profile')}}">Profile</a></li> -->
+             <li><a class="dropdown-item" href="{{route('student.profile')}}">Profile</a></li>
               <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
             </ul>
           </li>
+
         @else
-            <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">{{Auth::user()->username}}</a>
-            <!-- <a class="nav-link" style="color: white;" href="{{route('teacher.profile')}}">Profile</a> -->
-            <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">Logout</a>
+          <a class="nav-link" style="color: white;" href="{{route('teacher.profile')}}">{{Auth::user()->username}}</a>
+          <a class="nav-link" style="color: white;" href="{{route('user.logout')}}">Logout</a>
 
         @endif
       @endauth

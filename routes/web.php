@@ -125,6 +125,7 @@ Route::middleware('auth')->group(function(){
     Route::view('/student/home', 'home.student_home')->name('student.home');
     Route::view('/student/profile', 'profile.student_profile')->name('student.profile');
     Route::get('user/{id}/delete',[UserController::class,'delete'])->name('user.delete');
+    Route::view('/teacher/profile', 'profile.teacher_profile')->name('teacher.profile');
     // Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.delete');
     
 });
