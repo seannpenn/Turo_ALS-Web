@@ -50,7 +50,6 @@
             
             
             <input type="text" name="userType"  class="form-control" id="inputEmail3" value="0" hidden>
-            {{$studentApplication->student_id}}
             <div class="input-group mb-3">
                 <label for="student_LRN" class="col-sm-4 col-form-label">LRN (if available): </label>
                 @if($studentApplication->information->LRN!= null)

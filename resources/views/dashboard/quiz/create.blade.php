@@ -18,6 +18,7 @@
 
 
 @section('main-content')
+@include('navbar/navbar_inside', ['courseId' => Request::getRequestUri()[strlen(Request::getRequestUri())-1] ])
     <div class="form-content">
         <form class="row g-3">
             <div class="col-md-6">

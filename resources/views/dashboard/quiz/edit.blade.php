@@ -36,7 +36,7 @@
 @stop
 
 @section('main-content')
-@include('navbar/navbar_inside')
+@include('navbar/navbar_inside', ['courseId' => Request::getRequestUri()[strlen(Request::getRequestUri())-1] ])
     @if(app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName() == 'topic.view')
         <a href="{{ URL::previous() }}">
             < Back to Topic

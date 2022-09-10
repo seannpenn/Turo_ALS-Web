@@ -13,11 +13,13 @@
     <script src="{!! url('assets/tinymce/js/tinymce.min.js') !!}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
     @yield('import-scripts')
     <title>Turo</title>
     <script>
         
         @yield('script-area')
+        
     </script>
     <style>
         @yield('css-style');

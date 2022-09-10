@@ -31,19 +31,29 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: white; border-bottom:1px solid orange">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: white; border-bottom:1px solid orange; ">
   <div class="container-fluid">
     <!-- <a class="navbar-brand" href="#">Create Course</a> -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <div class="collapse navbar-collapse" id="navbarText" >
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="width: 100%; text-align: center; justify-content:center; justify-items:center;">
       @auth
           @if(Auth::user()->userType == '1')
-          <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
-          <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage')}}">Quizzes</a>
-          <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
+            @if(Route::currentRouteName() == 'course.all' || Route::currentRouteName() == 'students.all')
+
+              <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
+            
+            @elseif(Route::currentRouteName() != 'course.all')
+              <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('course.showInfo', request()->route('id') )}}">Course Home</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('course.displayAll', $courseId)}}">Content</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage', $courseId)}}">Quizzes</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
+
+            @endif
             
           @endif
       @endauth

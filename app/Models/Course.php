@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\CourseContent;
 use App\Models\Teacher;
 use App\Models\Programs;
+use App\Models\Quiz;
 class Course extends Model
 {
     use HasFactory;
@@ -24,7 +25,7 @@ class Course extends Model
     ];
 
     public static function getAllCourses(){
-        return self::get()->toArray();
+        return self::get();
     }
     
     public function filter($prog_id)
@@ -40,6 +41,10 @@ class Course extends Model
     // This COURSE has many coursecontent/modules.
     public function coursecontent(){
         return $this->hasMany(CourseContent::class, 'course_id', 'course_id');
+    }
+
+    public function quiz(){
+        return $this->hasMany(Quiz::class, 'course_id', 'course_id');
     }
     
 

@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\TopicContent;
 use App\Models\Topic;
 use App\Models\Quiz;
+use App\Models\Teacher;
+use App\Models\Course;
 use Validator;
+use Response;
 use Illuminate\Support\Facades\Auth;
 class TopicContentController extends Controller
 {
@@ -70,12 +73,15 @@ class TopicContentController extends Controller
         }
     }
 
-    public function viewTopicContent($topicContentId){
+    public function viewTopicContent($courseId, $topicContentId){
+        $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
+        $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
 
         $selectedTopicContent = TopicContent::where('topic_content_id',$topicContentId)->get()->first();
         $file_path = 'storage/files/'.$selectedTopicContent->file;
-        return view('dashboard.courses.view_topic_content')->with(compact('selectedTopicContent', 'file_path'));
-
+        // return view('dashboard.courses.view_topic_content')->with(compact('selectedTopicContent', 'file_path'));
+        // return view('dashboard.content.display')->with(compact('selectedTopicContent', 'file_path', 'courseCollection'));
+        return Response::json([$selectedTopicContent]);
     }
     
     public function update(Request $request, $id){

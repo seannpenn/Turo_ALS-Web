@@ -12,7 +12,7 @@
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">Topic Title</label>
                     <input type="text" name="topic_title" class="form-control" id="recipient-name">
-                    <input type="text" name="content_id" class="form-control" id="recipient-name" value="@yield('content-id')" hidden>
+                    <input type="text" name="content_id" class="form-control" id="recipient-name" value="@yield('content-id')" >
                 </div>
                 
                     <div class="form-group">

@@ -9,9 +9,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" style="justify-content:center; text-align:center;">
-        <button class="btn btn-primary"><a href="@yield('html_create')" style="color:white; text-decoration: none;">HTML Document</a></button>
-        <button class="btn btn-primary"><a href="@yield('file_create')" style="color:white; text-decoration: none;">File</a></button>
-        <button class="btn btn-primary"><a href="@yield('link_create')" style="color:white; text-decoration: none;">Quiz</a></button>
+        <button class="btn btn-warning"><a href="@yield('html_create')" style="color:white; text-decoration: none;">HTML Document</a></button>
+        <button class="btn btn-warning"><a href="@yield('file_create')" style="color:white; text-decoration: none;">File</a></button>
+        <button class="btn btn-warning"><a href="@yield('link_create')" style="color:white; text-decoration: none;">Quiz</a></button>
       </div>
     </div>
   </div>

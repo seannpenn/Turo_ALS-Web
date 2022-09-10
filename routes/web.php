@@ -53,7 +53,8 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     // For create courses
     Route::post('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/course/all', [CourseController::class, 'showOwnedCourses'])->name('course.all');
-    Route::get('/course/{id}', [CourseController::class,'showCourse'])->name('course.showInfo');
+    Route::get('/course/{id}/content', [CourseController::class, 'showAll'])->name('course.displayAll');
+    Route::get('/course/{id}/home', [CourseController::class,'showCourse'])->name('course.showInfo');
     Route::post('/course/{id}/update', [CourseController::class, 'update'])->name('course.update');
     Route::get('/course/{id}/delete', [CourseController::class,'delete'])->name('course.delete');
 
@@ -72,7 +73,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
 
     Route::get('/course/content/topic/content/{id}/delete', [TopicContentController::class, 'delete'])->name('topicContent.delete');
     Route::post('/course/content/topic/content/create', [TopicContentController::class, 'create'])->name('topicContent.create');
-    Route::get('/course/content/topic/content/view/{id}', [TopicContentController::class, 'viewTopicContent'])->name('topicContent.view');
+    Route::get('/course/{id}/content/view/{contentid}', [TopicContentController::class, 'viewTopicContent'])->name('topicContent.view');
     Route::post('/course/content/topic/content/{id}/update', [TopicContentController::class, 'update'])->name('topicContent.update');
     Route::get('/course/content/topic/content/{id}/create/html', [TopicContentController::class, 'createHtml'])->name('html.create');
     Route::get('/course/content/topic/content/{id}/create/file', [TopicContentController::class, 'createFile'])->name('file.create');
@@ -90,7 +91,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::get('/quiz/edit/{id}', [QuizController::class, 'edit'])->name('quiz.edit');
     Route::post('/quiz/update/{id}', [QuizController::class, 'update'])->name('quiz.update');
     Route::post('/quiz/store', [QuizController::class, 'create'])->name('quiz.store');
-    Route::get('/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
+    Route::get('/course/{id}/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
     // ^
     //for question
     Route::post('/quiz/question/create', [QuestionController::class, 'create'])->name('question.create');

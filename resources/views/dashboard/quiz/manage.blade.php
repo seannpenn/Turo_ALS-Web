@@ -49,10 +49,13 @@
 @stop
 
 @section('main-content')
-@include('navbar/navbar_inside')
+@include('navbar/navbar_inside', ['courseId' => request()->route('id') ])
 
     <div class="upper-left-header">
         <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#quizModal" data-bs-whatever="@fat">Create Quiz</button>
+        @section('course_id')
+            {{request()->route('id')}}
+        @stop
     </div>
     <div class="layout">
     @if($quizCollection->count() != 0)

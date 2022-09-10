@@ -1,5 +1,5 @@
 @extends('main')
-@extends('dashboard/courses/createCourse_modal')
+@extends('dashboard/courses/create')
 @extends('modalslug')
 
 @section('modal-content')
@@ -87,29 +87,6 @@
         font-size: 18px;
     }
 
-    <!-- .collapsible {
-    background-color: #777;
-    color: white;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
-    }
-
-    .collapsible:hover {
-    background-color: #555;
-    }
-
-    .collapsible:after {
-    content: '\002B';
-    color: white;
-    font-weight: bold;
-    float: right;
-    margin-left: 5px;
-    } -->
 
 @stop
 
@@ -132,9 +109,9 @@
     </div>
     
     <!-- <button class="collapsible">Open Collapsible</button> -->
-    <div class="content">
+    <div class = "d-flex justify-content-center">
         @if(count($ownedCourses) != 0)
-            <div class="d-flex flex-wrap" style="width: 100%; padding: 20px; gap: 10px;">
+            <div class="d-flex flex-wrap" style="width: 50%; padding: 20px; gap: 10px;">
                 @foreach($ownedCourses as $course)
                     
                         <div class="card" id="card" style="width: 300px; height: 200;" class="btn btn-primary" data-bs-toggle="modal" >

@@ -31,7 +31,7 @@ class QuizController extends Controller
 
             $quiz->teacher_id = Auth::user()->teacher->teacher_id;
             $quiz->quiz_title = $request->quiz_title;
-            
+            $quiz->course_id = $request->course_id;
             $quiz->save();
 
             return back();

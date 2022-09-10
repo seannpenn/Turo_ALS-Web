@@ -1,4 +1,4 @@
-@extends('main')
+@extends('content_view_layout')
 
 @section('css-style')
     .layout{
@@ -25,7 +25,6 @@
 @stop
 
 @section('main-content')
-@include('navbar/navbar_inside')
 <!-- <a href="{{route('course.showInfo', $selectedTopicContent->topic_id)}}">< Back to module</a> -->
     <div class="layout">
         @if($selectedTopicContent->type == 'quiz')

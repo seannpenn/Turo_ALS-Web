@@ -20,6 +20,7 @@ class Quiz extends Model
     protected $fillable = [
         'topic_id',
         'quiz_title',
+        'course_id',
     ];
 
     public static function getAllQuizByTopic($topicId){
