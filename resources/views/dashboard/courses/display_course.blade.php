@@ -109,7 +109,6 @@
         </div> -->
     </div>
     
-    <!-- <button class="collapsible">Open Collapsible</button> -->
     <div class="d-flex justify-content-center">
         @if(count($ownedCourses) != 0)
                         
@@ -130,7 +129,6 @@
                                         <td class="icons"><a href ="{{ route('course.delete', $course['course_id']) }}" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
                                     </div>
                                 </div>
-                                
                             @endforeach
                         </div>
         @else
