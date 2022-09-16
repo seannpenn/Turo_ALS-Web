@@ -95,8 +95,4 @@ class CourseController extends Controller
         
         return view('dashboard.content.display')->with(compact('courseCollection'));
     }
-    
-    
-    
-    
 }

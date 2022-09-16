@@ -15,7 +15,7 @@
             <td>{{ $user->username }}</td>
             <td>{{ $user->email }}</td>
             <td class="icons"><a href="{{ route('user.delete',$user->id) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a></td>
-            <td class="icons"><a href="{{ route('user.delete',$user->id) }}" title="Delete Module"><button type="button" class="btn btn-primary">View Details</button></a></td>
+            <td class="icons"><a href="" title="View Profile"><button type="button" class="btn btn-primary">View Profile</button></a></td>
         </tr>
     @endforeach
 </table>

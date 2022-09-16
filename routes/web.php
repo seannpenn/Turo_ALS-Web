@@ -12,7 +12,7 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TopicContentController;
-
+use App\Http\Controllers\AnnouncementController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +29,10 @@ Route::view('/', 'landing')->name('home');
 Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::get('/users/all', [UserController::class, 'showAllUsers'])->name('users.all');
     Route::view('/', 'home.admin_home')->name('admin.home');
+
+    // for announcements
+    Route::get('announcement/all', [AnnouncementController::class, 'view'])->name('announcement.all');
+    Route::post('announcement/create', [AnnouncementController::class, 'create'])->name('announcement.create');
 });
 
 Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
@@ -101,8 +105,6 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     
 });
 
-
-
 //for login and register routes
 Route::view('/teacher', 'login.teacher_login')->name('t-login');
 Route::view('/student/login', 'login.student_login')->name('s-login');
@@ -125,7 +127,6 @@ Route::middleware('auth')->group(function(){
     Route::view('/student/home', 'home.student_home')->name('student.home');
     Route::view('/student/profile', 'profile.student_profile')->name('student.profile');
     Route::get('user/{id}/delete',[UserController::class,'delete'])->name('user.delete');
-    Route::view('/teacher/profile', 'profile.teacher_profile')->name('teacher.profile');
     // Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.delete');
-    
 });
+
