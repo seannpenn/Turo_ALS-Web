@@ -12,9 +12,11 @@ class UserController extends Controller
     public function showAllUsers(){
         $userModel = new User();
         $userCollection = $userModel->getAllUsers();
-        return view('dashboard.allusers')->with(compact('userCollection'));
+        return view('admin.allusers')->with(compact('userCollection'));
     }
-
+    // public function viewProfile($id){
+    //     $userData = User::where('id', $id)->get();  
+    // }
     public function delete($id){
         $selectedUser = User::findOrFail($id);
         $selectedUser->delete();

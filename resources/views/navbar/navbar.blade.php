@@ -28,6 +28,10 @@
       .container-fluid a{
         font-size: 20px;
       }
+
+      .nav-item{
+        margin-right: 15px;
+      }
     </style>
 </head>
 <body>
@@ -80,6 +84,9 @@
           @else
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{route('users.all')}}" style="color:white;">Manage Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{route('announcement.all')}}" style="color:white;">Announcement</a>
             </li>
           @endif
         @endauth
