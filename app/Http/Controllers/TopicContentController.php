@@ -78,15 +78,16 @@ class TopicContentController extends Controller
         $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
 
         $selectedTopicContent = TopicContent::where('topic_content_id',$topicContentId)->get()->first();
-        $file_path = 'storage/files/'.$selectedTopicContent->file;
+        // $file_path = 'storage/files/'.$selectedTopicContent->file;
         // return view('dashboard.courses.view_topic_content')->with(compact('selectedTopicContent', 'file_path'));
         // return view('dashboard.content.display')->with(compact('selectedTopicContent', 'file_path', 'courseCollection'));
+
         return Response::json([$selectedTopicContent]);
     }
     
-    public function update(Request $request, $id){
+    public function update(Request $request){
 
-        
+        dd($request);
        
         $rules = [
             'topic_content_title' => 'required',
@@ -106,12 +107,16 @@ class TopicContentController extends Controller
             $course = $topic->coursecontent->course;
             if($request->type == 'html'){
                 
-                $updateTopicContent = TopicContent::where('topic_content_id',$id);
+                $updateTopicContent = TopicContent::where('topic_content_id',$request->$topic_content_id);
                 $updateTopicContent->update([
                     'topic_content_title' => $request->topic_content_title,
                     'html' => $request->html,
                 ]);
-                return redirect()->route('course.showInfo', $course->course_id);
+                // return redirect()->back();
+                return response()->json([
+                    "status" => true,
+                    "data" => $topic
+                ]);
             }
         }
     }

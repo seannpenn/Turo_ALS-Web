@@ -43,12 +43,12 @@
     .action{
         position: absolute;
         bottom: 0px;
-        right: 0px;
+        right: 20px;
     }
     .action-delete{
         position: absolute;
     bottom: 0px;
-    right: 30px;
+    right: 50px;
     }
     .header{
         display:flex;
@@ -71,12 +71,13 @@
         box-shadow: 0px 0px 0px 0px;
     }
     .create-button{
-        width: 150px;
-        line-height:50px;
+        width: 125px;
+        padding: 2px;
+        line-height:30px;
         background-color:orange;
         color: white;
         border: 0;
-        border-radius: 10px;
+        border-radius: 5px;
         
     }
     .create-button:hover{
@@ -109,31 +110,29 @@
     </div>
     
     <!-- <button class="collapsible">Open Collapsible</button> -->
-    <div class = "d-flex justify-content-center">
+    <div class="d-flex justify-content-center">
         @if(count($ownedCourses) != 0)
-            <div class="d-flex flex-wrap" style="width: 50%; padding: 20px; gap: 10px;">
-                @foreach($ownedCourses as $course)
-                    
-                        <div class="card" id="card" style="width: 300px; height: 200;" class="btn btn-primary" data-bs-toggle="modal" >
-                            <div class="card-body">
-                                <div class="card-content" >
-                                    <h5 class="card-title">{{$course['course_title']}}</h5>
-                                    <p class="card-text">{{$course['course_description']}}</p>
+                        
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                            @foreach($ownedCourses as $course)
+                                <div class="col">
+                                    <div class="card h-100">
+                                    <img src="..." class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{$course['course_title']}}</h5>
+                                        <p class="card-text">{{$course['course_description']}}</p>
+                                    </div>
+                                    </div>
+                                    <div class="action">
+                                        <td class="icons"><a href="{{route('course.showInfo', $course['course_id'])}}" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
+                                    </div>
+                                    <div class="action-delete" style="margin:2px;">
+                                        <td class="icons"><a href ="{{ route('course.delete', $course['course_id']) }}" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
+                                    </div>
                                 </div>
                                 
-                                <div class="action">
-                                    <td class="icons"><a href="{{route('course.showInfo', $course['course_id'])}}" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
-                                </div>
-                                <div class="action-delete" style="margin:2px;">
-                                    <td class="icons"><a href ="{{ route('course.delete', $course['course_id']) }}" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
-                    
-                        
-                @endforeach
-                
-            </div>
         @else
             <div class="empty-course">
                 <h1>You dont have any courses posted.</h1>

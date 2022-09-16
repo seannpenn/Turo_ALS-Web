@@ -32,18 +32,16 @@
         
     }
     .create-button:hover{
-        width: 155px;
-        line-height:55px;
+        line-height:50px;
         background-color:orange;
         color: white;
         border: 0;
         border-radius: 10px;
-        font-size: 18px;
     }
     
     img {
-           height: 30px;
-           width: 30px; 
+           height: 20px;
+           width: 20px; 
         } 
 
 @stop
@@ -73,7 +71,7 @@
                         <td>{{ $quiz->quiz_title }}</td>
                         <td>{{ $quiz->status }}</td>
                         <td>
-                            <a href="{{ route('quiz.edit', $quiz->quiz_id) }}" title="Edit Quiz"><button class="btn btn-warning">Edit</button></a>
+                            <a href="{{ route('quiz.edit', $quiz->quiz_id) }}" title="Edit Quiz"><button class="btn btn-warning"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
                         </td>
                     </tr>
 

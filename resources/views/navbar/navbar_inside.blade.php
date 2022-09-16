@@ -14,7 +14,7 @@
       .inner-nav-link{
         
         font-size: 18px;
-        color:orange;
+        color:white;
         line-height: 40px;
         text-decoration:none;
         font-weight: bold;
@@ -25,13 +25,13 @@
       .inner-nav-link:hover {
         
           text-decoration:none;
-          color:white;
+          color: grey;
           text-shadow: 2px 2px orange;
       }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: white; border-bottom:1px solid orange; ">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: orange; border-bottom:1px solid white; ">
   <div class="container-fluid">
     <!-- <a class="navbar-brand" href="#">Create Course</a> -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
