@@ -5,7 +5,7 @@
 @extends('modalslug')
 @extends('dashboard/modals/createTopic_modal')
 @extends('dashboard/topic_content/choices_modal')
-
+@include('dashboard/topic_content/chooseQuiz')
 @section('modal-content')
     <span id="modalContent"> Deleting this course would also remove all of its contents. Are you sure you want to proceed?</span>
 @stop
@@ -194,7 +194,6 @@
                                             </tr>
                                             <tr>
                                                 <div class="content">
-
                                                     @foreach($module->topic as $topic)
                                                         <button class="topic" value="{{$topic->topic_title}}">
                                                             <label for="">
@@ -412,28 +411,5 @@
         
     </script>
 
-    
-@stop
-
-@section('script-area')
-
-        $(document).ready(function () {
-            $('.ckeditor').ckeditor();
-        });
-    
-    function showTopicInput(id){
-        if(document.getElementById('topic-form').classList.contains('d-none')){
-            document.getElementById('topic-form').classList.remove('d-none');
-        }
-        else{
-            document.getElementById('topic-form').classList.add('d-none');
-        }
-        document.getElementById('ModuleId').value = id;
-        console.log(id);
-    }
-
-   function getModuleId(id){
-        return id;
-   }
     
 @stop

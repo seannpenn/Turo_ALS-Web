@@ -5,6 +5,7 @@
 @extends('modalslug')
 @extends('dashboard/modals/createTopic_modal')
 @extends('dashboard/topic_content/choices_modal')
+
 @section('modal-content')
     <span id="modalContent"> Deleting this course would also remove all of its contents. Are you sure you want to proceed?</span>
 @stop
