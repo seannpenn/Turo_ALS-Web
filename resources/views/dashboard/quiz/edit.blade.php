@@ -26,7 +26,8 @@
         color: white;
         border: 0;
         border-radius: 10px;
-        
+        border: 2px solid white;
+        margin-bottom: 5px;
     }
     .create-button:hover{
         background-color:white;
@@ -60,7 +61,7 @@
                     <input type="text" class="form-control" name="quiz_title" id="staticEmail2" value="{{$quiz->quiz_title}}">
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3">Update title</button>
+                    <button type="submit" class="btn mb-3" style="background-color: orange; color:white;">Update title</button>
                 </div>
                 
             </form>
@@ -87,8 +88,8 @@
                         <td>{{ $question->question }}</td>
                         <td>{{ $question->answer }}</td>
                         <td>
-                            <a title="Edit Question"><button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editquestionModal">Edit</button></a>
-                            <a title="Delete Question"><button class="btn btn-danger" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</button></a>
+                            <a title="Edit Question"><button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editquestionModal"><img src="{{ asset('images/edit.png') }}" alt="" width="20" height="20"></button></a>
+                            <a title="Delete Question"><button class="btn btn-danger" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/delete.png') }}" alt="" width="20" height="20"></button></a>
                         </td>
                     </tr>
                     <!-- for updating the question -->

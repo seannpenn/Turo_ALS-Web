@@ -92,7 +92,7 @@ class CourseController extends Controller
     public function showAll($id){
         $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
         $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
-        $selectedTopicContent = null;
-        return view('dashboard.content.display')->with(compact('courseCollection', 'selectedTopicContent'));
+        
+        return view('dashboard.content.display')->with(compact('courseCollection'));
     }
 }

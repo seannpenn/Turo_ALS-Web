@@ -24,10 +24,13 @@
     img:hover{
         cursor:pointer;
     }
-
+    .card{
+        transition: transform 250ms;
+    }
     .card:hover{
         cursor:pointer;
-        border-color: orange;
+        transform: translateY(-5px);
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     }
     .course-header{
     
@@ -52,7 +55,7 @@
         margin: 0 auto;
         width: 645px;
         padding: 10px;
-        border: 2px solid orange;
+        
         border-radius: 10px;
     }
     .create-button{
@@ -137,66 +140,30 @@
                     @else
                         <h4>Add modules....</h4>
                     @endif
-                    <div class="d-flex flex-wrap" >
                         @foreach($chosenCourse as $course)
-                            @foreach($course->coursecontent as $content)
-                            <tr>
                                 
-                                    <div class="card" id="card" style="width: 300px; height: 200; margin: 5px;" class="btn btn-primary" data-bs-toggle="modal" >
-                                        <div class="card-body">
-                                            <div class="card-content" >
-                                                <a href="{{ route('course.displayAll', 6) }}">
-                                                    <h4 class="card-title">{{$content['content_title']}}</h4>
-                                                </a>
-                                                <h5 class="card-text">{{$content['content_description']}}</h5>
-                                            </div>
-                                        </div>
+                                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                                        @foreach($course->coursecontent as $content)
+                                            <div class="col">
+                                                <div class="card h-100">
+                                                    <img src="..." class="card-img-top" alt="...">
+                                                    <div class="card-body">
+                                                        <a href="{{ route('course.displayAll', $content['content_id']) }}">
+                                                            <h5 class="card-title">{{$content['content_title']}}</h5>
+                                                        </a>
+                                                        <p class="card-text">{{$content['content_description']}}</p>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        @endforeach
                                     </div>
-                               
-                            </tr>
-                            @endforeach
+                                
                         @endforeach
-                    </div>
                 </div>
 
-                <div class="view-topic" id="view-topic">
-                
-                    @include('dashboard.courses.view_topictest')
-                </div>
         </div>
     </div>
 
-    <script>
-        
-    </script>
-
     
 @stop
 
-
-@section('script-area')
-
-        $(document).ready(function () {
-            $('.ckeditor').ckeditor();
-        });
-    
-    function showTopicInput(id){
-        if(document.getElementById('topic-form').classList.contains('d-none')){
-            document.getElementById('topic-form').classList.remove('d-none');
-        }
-        else{
-            document.getElementById('topic-form').classList.add('d-none');
-        }
-        document.getElementById('ModuleId').value = id;
-        console.log(id);
-    }
-
-   function getModuleId(id){
-        return id;
-   }
-    
-@stop
-
-<script>
-    
-</script>
