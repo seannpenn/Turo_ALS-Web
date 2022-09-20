@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use Validator;
 use App\Models\Teacher;
+use App\Models\Student;
 use App\Models\Course;
 use App\Models\Programs;
+use App\Models\Enrollment;
 use App\Models\CourseContent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -82,7 +84,6 @@ class CourseController extends Controller
         $ownedCourses = Course::where('teacher_id', $teacherId->teacher_id)->get();
 
         return view('dashboard.courses.display_course')->with(compact('ownedCourses' ));
-        
     }
     // viewing of course created.
     public function showCourse($id){
@@ -94,5 +95,20 @@ class CourseController extends Controller
         $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
         
         return view('dashboard.content.display')->with(compact('courseCollection'));
+    }
+
+    //display courses in students page
+    public function studentShowAll(){
+        $studentId = Student::where('user_id', Auth::id())->get()->first();
+        $EnrolledStudent = Enrollment::where('student_id', $studentId->student_id)->get()->first();
+        $teacher = Teacher::getTeacherByLocProg($EnrolledStudent->loc_id, $EnrolledStudent->prog_id);
+
+        $courseCollection = $teacher->course;
+        return view('student.student_dashboard')->with(compact('courseCollection'));
+    }
+
+    public function studentShowCourse($id){
+        $studentChosenCourse = Course::where('course_id',$id)->get();
+        return view('student.student_coursecontent')->with(compact('studentChosenCourse'));  
     }
 }

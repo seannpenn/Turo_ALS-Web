@@ -52,7 +52,7 @@ class RegisterController extends Controller
         if(Auth::attempt($loginCredentials)){
             
             $request->session()->regenerate();
-            return redirect()->intended('/admin/course/all');
+            return redirect()->intended('teacher/course/all');
         }
 
         return redirect()->to('teacher.registration');

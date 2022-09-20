@@ -132,3 +132,8 @@ Route::middleware('auth')->group(function(){
     // Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.delete');
 });
 
+
+//for students course content page
+// Route::view('/student/dashboard', 'student.student_dashboard')->name('student.dashboard');
+Route::get('/student/courses', [CourseController::class, 'studentShowAll'])->name('student.course');
+Route::get('/student/course/{id}', [CourseController::class,'studentShowCourse'])->name('student.student_coursecontent');

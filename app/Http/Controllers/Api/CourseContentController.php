@@ -49,9 +49,6 @@ class CourseContentController extends Controller
      */
     public function show($courseID)
     {
-
-        
-        
         $selectedCourse = Course::findOrFail($courseID);
         $moduleCollection = $selectedCourse->coursecontent->toArray();
     
