@@ -1,10 +1,6 @@
 @extends('main')
-@extends('dashboard/courses/create')
-@extends('dashboard/module/create')
 @extends('dashboard/courses/update_course_modal')
 @extends('modalslug')
-@extends('dashboard/modals/createTopic_modal')
-@extends('dashboard/topic_content/choices_modal')
 
 @section('modal-content')
     <span id="modalContent"> Deleting this course would also remove all of its contents. Are you sure you want to proceed?</span>
@@ -83,7 +79,7 @@
 
 @section('main-content')
     @include('dashboard.courses.create_course')
-    @include('navbar/navbar_inside', ['courseId' =>  request()->route('id')  ])
+    @include('navbar/navbar_inside', ['courseId' =>  '', 'topiccontentid' => '' ])
 
     <div class="layout">
         <a href="{{route('course.all')}}">
@@ -147,9 +143,9 @@
                                         @foreach($course->coursecontent as $content)
                                             <div class="col">
                                                 <div class="card h-100">
-                                                    <img src="..." class="card-img-top" alt="...">
+                                                    <!-- <img src="..." class="card-img-top" alt="..."> -->
                                                     <div class="card-body">
-                                                        <a href="{{ route('course.displayAll', $content['content_id']) }}">
+                                                        <a href="{{ route('course.displayAll', $course['course_id'] ) }}">
                                                             <h5 class="card-title">{{$content['content_title']}}</h5>
                                                         </a>
                                                         <p class="card-text">{{$content['content_description']}}</p>
