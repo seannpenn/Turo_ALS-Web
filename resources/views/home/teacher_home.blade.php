@@ -1,12 +1,5 @@
 @extends('main')
 @extends('dashboard/courses/createCourse_modal')
-<!--//for outer navbar//-->
-
-<!--//for inner navbar//-->
-
-
-<!--//for inner navbar//-->
-
 @section('main-content')
     @include('navbar.navbar_inside')
     @include('dashboard.courses.create_course')

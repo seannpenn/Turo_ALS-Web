@@ -85,4 +85,12 @@ class CourseContentController extends Controller
     //     return view('dashboard.coursecontent.view_module')->with(compact('selectedModule'));
     // }
 
+    //viewing of course content
+    // public function studentCourseContent($id){
+
+    //     $selectedModule = CourseContent::where('content_id', $id)->get();
+
+    //     return view('student.student_coursecontent')->with(compact('selectedModule'));
+    // }
+
 }

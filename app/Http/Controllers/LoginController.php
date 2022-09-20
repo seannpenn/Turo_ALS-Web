@@ -46,7 +46,7 @@ class LoginController extends Controller
                 Auth::logout();
                 return redirect()->to('/student/login');
             }
-            return redirect()->to(route('student.home'));
+            return redirect()->to('/student/courses');
         }
 
         return back()->withErrors([
