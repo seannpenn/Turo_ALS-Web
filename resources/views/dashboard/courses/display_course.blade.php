@@ -93,7 +93,7 @@
 
 @section('main-content')
 @include('dashboard.courses.create_course')
-@include('navbar/navbar_inside')
+@include('navbar/navbar_inside', ['courseId' =>  request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid') ])
 
         @if(session('message'))
             <div class="altert alert-success">{{ session('message') }}</div>
@@ -116,7 +116,7 @@
                             @foreach($ownedCourses as $course)
                                 <div class="col">
                                     <div class="card h-100">
-                                    <img src="..." class="card-img-top" alt="...">
+                                    <!-- <img src="..." class="card-img-top" alt="..."> -->
                                     <div class="card-body">
                                         <h5 class="card-title">{{$course['course_title']}}</h5>
                                         <p class="card-text">{{$course['course_description']}}</p>

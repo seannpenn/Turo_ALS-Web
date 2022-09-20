@@ -31,7 +31,7 @@ h1{
 <div class="row g-4">
     <div class="col-3">
         <div class="p-3 border bg-light" id="announcementBox" style="">
-            <p = id="ATitle">{{ $data->announcement_title }}</p>
+            <p id="ATitle">{{ $data->announcement_title }}</p>
             {{ $data->date }}
             <br><br><br>
             {{ $data->announcement_description }}

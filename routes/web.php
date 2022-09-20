@@ -44,7 +44,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
 
     // For teacher 
 
-    // Route::view('/teacher/profile', 'profile.teacher_profile')->name('teacher.profile');
+    Route::view('/teacher/profile', 'profile.teacher_profile')->name('teacher.profile');
 
     // For students
     Route::get('/students/records', [StudentController::class, 'showAllStudents'])->name('students.all');
@@ -57,8 +57,8 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     // For create courses
     Route::post('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/course/all', [CourseController::class, 'showOwnedCourses'])->name('course.all');
-    Route::get('/course/{id}/content', [CourseController::class, 'showAll'])->name('course.displayAll');
-    Route::get('/course/{id}/home', [CourseController::class,'showCourse'])->name('course.showInfo');
+    Route::get('/course/{courseid}/content', [CourseController::class, 'showAll'])->name('course.displayAll');
+    Route::get('/course/{courseid}/home', [CourseController::class,'showCourse'])->name('course.showInfo');
     Route::post('/course/{id}/update', [CourseController::class, 'update'])->name('course.update');
     Route::get('/course/{id}/delete', [CourseController::class,'delete'])->name('course.delete');
 
@@ -69,7 +69,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::post('/course/content/{id}/update', [CourseContentController::class, 'update'])->name('content.update');
 
     // for create content topic
-    Route::post('/course/content/topic', [TopicController::class, 'create'])->name('topic.create');
+    Route::post('/course/content/{contentid}/topic', [TopicController::class, 'create'])->name('topic.create');
     Route::get('/course/content/topic/{topicid}/delete', [TopicController::class, 'delete'])->name('topic.delete');
     
 
@@ -77,8 +77,10 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
 
     Route::get('/course/content/topic/content/{id}/delete', [TopicContentController::class, 'delete'])->name('topicContent.delete');
     Route::post('/course/content/topic/content/create', [TopicContentController::class, 'create'])->name('topicContent.create');
-    Route::get('/course/{id}/content/view/{contentid}', [TopicContentController::class, 'viewTopicContent'])->name('topicContent.view');
+    Route::get('/course/{courseid}/content/view/{topiccontentid}', [TopicContentController::class, 'viewTopicContent'])->name('topicContent.view');
+    // Route::get('/course/{courseid}/content/view/{topiccontentid}', [TopicContentController::class, 'retainTopicContent'])->name('topicContent.retain');
     Route::post('/course/content/topic/content/{contentid}/update', [TopicContentController::class, 'update'])->name('topicContent.update');
+    Route::get('/course/{courseid}/content/{contentid}/topic/{topicid}/content/create', [TopicContentController::class, 'topicChoices'])->name('topicContent.choices');
     Route::get('/course/content/topic/content/{id}/create/html', [TopicContentController::class, 'createHtml'])->name('html.create');
     Route::get('/course/content/topic/content/{id}/create/file', [TopicContentController::class, 'createFile'])->name('file.create');
     Route::get('/course/content/topic/content/{id}/create/link', [TopicContentController::class, 'createLink'])->name('link.create');
