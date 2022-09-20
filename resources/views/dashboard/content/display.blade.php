@@ -4,7 +4,6 @@
 @extends('dashboard/courses/update_course_modal')
 @extends('modalslug')
 @extends('dashboard/modals/createTopic_modal')
-@extends('dashboard/topic_content/choices_modal')
 @include('dashboard/topic_content/chooseQuiz')
 @section('modal-content')
     <span id="modalContent"> Deleting this course would also remove all of its contents. Are you sure you want to proceed?</span>
@@ -134,7 +133,7 @@
     .view-topic{
         width: 1000px;
         height: 670px;
-        padding-left: 10px;
+        padding: 10px;
         overflow:hidden;
         overflow-y: scroll;
     }
@@ -169,15 +168,16 @@
     .control-area{
         justify-content: center;
     }
-    
 @stop
 
 @section('main-content')
     @include('dashboard.courses.create_course')
-    @include('navbar/navbar_inside', ['courseId' => request()->route('id') ])
-    <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#moduleModal" data-bs-whatever="@fat">Create Module</button>
+    @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')  ])
+            <div class="d-flex justify-content-start" style="width: 1350px; margin: 0 auto;">
+                <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#moduleModal" data-bs-whatever="@fat">Create Module</button>
+            </div>
             <div class="d-flex justify-content-center">
-                <div class="d-flex flex-row mb-3" style="max-height: 730px; max-width: 350px; overflow-y: scroll;">
+                <div class="d-flex flex-row mb-3" style="max-height: 730px; width: 350px; overflow-y: scroll;">
                     <div class="w-100 p-3">
                         <table>
                             @foreach($courseCollection as $course)
@@ -186,32 +186,21 @@
                                 @stop
                                     @foreach($course->coursecontent as $module)
                                             <tr>
-                                                <button type="button" class="collapsible" value="{{$module->content_title}}"><b>{{$module->content_title}}</b></button>
+                                                <button type="button" class="collapsible" data-topic-value="{{$module->content_id}}" value="{{$module->content_id}}"><b>{{$module->content_title}}</b></button>
                                                 <!-- For topic create modal  -->
-                                                @section('content-id')
-                                                    {{$module->content_id}}
-                                                @stop
+
                                             </tr>
                                             <tr>
                                                 <div class="content">
                                                     @foreach($module->topic as $topic)
-                                                        <button class="topic" value="{{$topic->topic_title}}">
+                                                        <div class="topic" data-value="{{$topic->topic_id}}" value="{{$topic->topic_title}}" onclick="getTopicId({{$topic->topic_id}})">
                                                             <label for="">
                                                                 {{$topic->topic_title}}
                                                             </label>
                                                             <div class="icon" style="display: flex; margin-left: 210px; right: 0;">
                                                                 <a href="{{route('topic.delete', $topic->topic_id)}}" onclick="return confirm('Are you sure you want to delete this topic?')"><img src="{{ asset('images/delete.png') }}" alt=""></a>                                                                                    
                                                             </div>
-                                                            @section('html_create')
-                                                                {{route('html.create', $topic->topic_id)}}
-                                                            @stop
-                                                            @section('file_create')
-                                                                {{route('file.create', $topic->topic_id)}}
-                                                            @stop
-                                                            @section('link_create')
-                                                                {{route('link.create', $topic->topic_id)}}
-                                                            @stop
-                                                        </button>
+                                                        </div>
                                                         <div class="topic-content-list">
                                                             @foreach($topic->topiccontent as $topiccontent)
                                                                     <div class="topic-content" id="topic-content" onclick="getId({{$topiccontent->topic_content_id}})">
@@ -238,76 +227,82 @@
                         </table>
                     </div>
                 </div>
-                <div class="d-inline p-2 text-bg-dark">
+                <div class="d-inline p-2 text-bg-dark align-items-center">
                     <div class="control-area" id="control-area">
                         {{request()->route('id')}}
                     </div>
-                    <div class="grid" style="--bs-columns: 12;">
-                        <div class="view-topic" id="view-topic">
-                            
-                        </div>
+
+                    <div class="view-topic" id="view-topic">
+                        
                     </div>
                 </div>
             </div>
-
+           
     <script type="text/javascript">
+
+        
         
 
         var y;
         var topicContentId = document.getElementById("topic-content").value;
-        var contentId;
+        var contentId, topicId;
         var view = document.getElementById("view-topic");
         var control = document.getElementById("control-area");
         var editor = document.getElementById("editor");
-
+        
         function getId(id){
             contentId = id;
         }
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+        function getTopicId(id){
+            topicId = id;
+        }
+        
+        $(document).ready(function () {
+
             $(".topic-content").click(function(e){
                 var routeURL = '{{Request::getRequestUri()}}' + '/view/' + contentId;
-                var route = "{{route('topicContent.view', [ ":id", ":contentId" ])}}";
                 var routeUpdate = "{{ route('topicContent.update', ":contentId") }}";
                 routeUpdate = routeUpdate.replace(':contentId', contentId);
-                route = route.replace(':id', '{{request()->route('id')}}');
-                route = route.replace(':contentId', contentId);
                 // history.pushState(null, null, route);
-
                 // view content
+                e.preventDefault();
 
-                
                 $.ajax({
                     type: "GET",
                     url: routeURL,
                     dataType: 'json',
                     success: function(data){
-                        ClassicEditor
-                        console.log(routeURL);
                         if(data[0].type == 'html'){
                             console.log(routeUpdate);
                             view.innerHTML = `<h1> ${data[0].topic_content_title} </h1><hr>`;
-                            view.innerHTML += `<div class="text-content">
+                            view.innerHTML += `<div class="text-content" >
                                                     <div class="col-auto">
-                                                    <div class="card-body">
-                                                    {{csrf_field()}}
-                                                        <div class="mb-3">
-                                                            <label for="recipient-name" class="col-form-label">Topic Title</label>
-                                                            <input type="text" name="topic_content_title" class="form-control" id="topic_content_title" value="${data[0].topic_content_title}">
-                                                            <input type="text" name="type" class="form-control" id="type" value="html" hidden>
-                                                            <input type="text" name="topic_id" class="form-control" id="topic_id" value="${data[0].topic_id}" hidden>
-                                                        </div>
-                                                            <div class="form-group">
-                                                                <textarea class="form-control mt-5" name="html" id="editor" rows="20" >${data[0].html}</textarea>
+                                                        <form>
+                                                            <div class="card-body">
+                                                                
+                                                                    {{csrf_field()}}
+                                                                        <div class="mb-3">
+                                                                            <label for="recipient-name" class="col-form-label">Topic Title</label>
+                                                                            <input type="text" name="topic_content_title" class="form-control" id="topic_content_title" value="${data[0].topic_content_title}">
+                                                                            <input type="text" name="type" class="form-control" id="type" value="html" hidden>
+                                                                            <input type="text" name="topic_id" class="form-control" id="topic_id" value="${data[0].topic_id}" hidden>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <textarea class="form-control mt-5" name="html" id="editor" rows="20" >${data[0].html}</textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                
                                                             </div>
                                                             <div class="modal-footer">  
                                                                 <button type="submit" id="update" class="btn btn-warning">Update</button>
                                                             </div>
-                                                </div>`;
-
+                                                        </form>
+                                                    <br><br>
+                                                    
+                                                </div>
+                                                
+                                                `;
                             ClassicEditor
                                 .create( document.querySelector( '#editor' ) )
                                 .then( editor => {
@@ -316,37 +311,58 @@
                                 .catch( error => {
                                     console.error( error );
                                 } );
-                                
+
                                 $("#update").click(function(e){
-                                        var topicId = $('#topic_id').val();
-                                        var topicContentTitle = $('#topic_content_title').val();
-                                        var type = $('#type').val();
-                                        var editor = $('#editor').val();
-                                    var routeUpdate = "{{ route('topicContent.update', ":contentId") }}";
-                                    routeUpdate = routeUpdate.replace(':contentId', contentId);
-                                    $.ajax({
-                                        url: routeUpdate,
-                                        type: 'post',
-                                        data: {_token: '{{csrf_token()}}', topic_id: topicId, topic_content_id: contentId, topic_content_title: topicContentTitle,type: type, html: editor},
-                                        dataType: 'json',
-                                        success: function(response){
-                                            alert(response);
-                                        },
-                                        error: function(data){
-                                            console.log(routeUpdate);
-                                            console.log(data);
-                                        }
-                                    });
+                                        $.ajaxSetup({
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            }
+                                        });
+                                            var topicId = $('#topic_id').val();
+                                            var topicContentTitle = $('#topic_content_title').val();
+                                            var type = $('#type').val();
+                                            var editor = $('#editor').val();
+                                        
+                                        $.ajax({
+                                            url: routeUpdate,
+                                            type: 'POST',
+                                            data: {
+                                                topic_id: topicId, 
+                                                topic_content_id: contentId, 
+                                                topic_content_title: topicContentTitle,
+                                                type: type, 
+                                                html: editor,
+                                            },
+                                            dataType: 'json',
+                                            success: function(response){
+                                                alert('Update done.');
+                                                console.log(response);
+                                            },
+                                            error: function(data){
+                                                console.log(data);
+                                            }
+                                        });
                                 });
                         }
                         else if(data[0].type == 'quiz'){
+
+                            var route = "{{route('quiz.edit', ":id")}}";
+                            route = route.replace(':id', data[0].link);
+
                             view.innerHTML = `<h1> ${data[0].topic_content_title} </h1><hr>`;
-                            view.innerHTML = `
-                                <h1>View and edit this quiz in the quiz tab</h1>
-                                    
-                                <div class="col-auto">
-                                    <a href=""><button type="submit" class="btn btn-primary">Go to Quiz</button></a>
+                            view.innerHTML += `
+                            <div class="container text-center" style=" margin: 200px auto;">
+                                <div class="row">
+                                    <div class="col align-self-center">
+                                        <h1>View and edit this quiz in the quiz tab</h1>
+                                    </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col align-self-center">
+                                    <a href="${route}"><button type="submit" class="btn btn-warning">Go to Quiz</button></a>
+                                    </div>
+                                </div>
+                            </div>
                             `;
                         }
                         console.log(data); 
@@ -356,7 +372,7 @@
                     }
                 });
             });
-
+        });
             
 
         
@@ -365,17 +381,28 @@
         const topic = document.getElementsByClassName("topic");
         for (i = 0; i < coll.length; i++) {
             coll[i].addEventListener("click", function() {
-                control.innerHTML = `<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                        <button 
-                                            type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#topicCreate" 
-                                            data-bs-whatever="@fat">Create Topic
-                                        </button>
-                                    </div>
+                const dataValue = this.getAttribute("data-topic-value");
+                var contentId = coll.value;
+                var routeTopicCreate = "{{route('topic.create', ":contentId")}}";
+                var routeCreateTopic = "http://localhost:8000/teacher/course/content/" + dataValue +"/topic";
 
-                `;
+                routeTopicCreate = routeTopicCreate.replace(':contentId', dataValue);
+
                 view.innerHTML = `<h2 style="margin-left:20px;"> ${this.value}</h2>
                                     <hr>
                 `;
+                
+                control.innerHTML = `@section('topic_id') (${dataValue}) @stop
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <button 
+                                            type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#topicCreate" data-contentId="5"
+                                            data-bs-whatever="@fat">Create Topic
+                                        </button>
+                                    </div>
+                `;
+                
+                
+
                 this.classList.toggle("active");
                 var content = this.nextElementSibling;
                 if (content.style.display === "block") {
@@ -387,18 +414,39 @@
         }
         for (z = 0; z < topic.length; z++) {
             topic[z].addEventListener("click", function() {
-                
-                control.innerHTML = `<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                dataValue = this.getAttribute("data-value");
+                var routeHtml = "{{route('html.create', ":id")}}";
+                var routeFile = "{{route('file.create', ":id")}}";
+                var routeLink = "{{route('link.create', ":id")}}";
+                routeHtml = routeHtml.replace(':id', dataValue);
+                routeFile = routeFile.replace(':id', dataValue);
+                routeLink = routeLink.replace(':id', dataValue);
+                var contentChoices = "{{ route('topicContent.choices', [":courseid", ":topicid", ":contentid"] )}}";
+                contentChoices = contentChoices.replace(':contentid', dataValue);
+                contentChoices = contentChoices.replace(':courseid', dataValue);
+                contentChoices = contentChoices.replace(':topicid', dataValue);
+                console.log(routeHtml);
+                console.log(routeFile);
+                console.log(routeLink);
+
+                control.innerHTML = `
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                                   
                                         <button 
-                                            type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#topicChoices" 
-                                            data-bs-whatever="@fat">Create Resource
+                                            type="button" id="create-button" class="create-button" data-bs-toggle="modal" 
+                                            data-bs-whatever="@fat" value="${dataValue}">Create Resource 
                                         </button>
                                     </div>
                 `;
-
+                var resourceButton = document.getElementById("create-button");
+                resourceButton.addEventListener("click", function() {
+                    window.location.href = contentChoices;
+                });
                 view.innerHTML = `<h2 style="margin-left:20px;"> ${this.value}</h2>
                                     <hr>
                 `;
+
+                
                 var topiccontent = this.nextElementSibling;
                 if (topiccontent.style.display === "block") {
                     topiccontent.style.display = "none";

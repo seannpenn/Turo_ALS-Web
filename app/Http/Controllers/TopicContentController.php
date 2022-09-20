@@ -78,36 +78,28 @@ class TopicContentController extends Controller
         $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
 
         $selectedTopicContent = TopicContent::where('topic_content_id',$topicContentId)->get()->first();
-        // $file_path = 'storage/files/'.$selectedTopicContent->file;
+        $file_path = 'storage/files/'.$selectedTopicContent->file;
         // return view('dashboard.courses.view_topic_content')->with(compact('selectedTopicContent', 'file_path'));
         // return view('dashboard.content.display')->with(compact('selectedTopicContent', 'file_path', 'courseCollection'));
 
-        return Response::json([$selectedTopicContent]);
+        return Response::json([$selectedTopicContent, $file_path]);
+    }
+    public function retainTopicContent($courseId, $topicContentId){
+        $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
+        $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
+
+        $selectedTopicContent = TopicContent::where('topic_content_id',$topicContentId)->get()->first();
+        $file_path = 'storage/files/'.$selectedTopicContent->file;
+
+        return view('dashboard.content.display')->with(compact('selectedTopicContent', 'file_path', 'courseCollection'));
     }
     
-    public function update(Request $request){
+    public function update(Request $request, $id){
 
-        dd($request);
-       
-        $rules = [
-            'topic_content_title' => 'required',
-        ];
-        
-        $messages = [
-            'topic_content_title.required' => 'Please input a topic title',
-        ];
-
-        $validation = Validator::make($request->input(), $rules, $messages);
-
-        if($validation->fails()){
-            return redirect()->back()->withInput()->withErrors($validation);
-        }
-        else{
             $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
-            $course = $topic->coursecontent->course;
             if($request->type == 'html'){
                 
-                $updateTopicContent = TopicContent::where('topic_content_id',$request->$topic_content_id);
+                $updateTopicContent = TopicContent::where('topic_content_id',$id);
                 $updateTopicContent->update([
                     'topic_content_title' => $request->topic_content_title,
                     'html' => $request->html,
@@ -118,7 +110,6 @@ class TopicContentController extends Controller
                     "data" => $topic
                 ]);
             }
-        }
     }
     public function delete($id){
         $selectedTopicContent = TopicContent::findOrFail($id);
@@ -126,6 +117,10 @@ class TopicContentController extends Controller
         return redirect()->back();
     }
 
+    public function topicChoices($topic_id){
+        
+        return view('dashboard.topic_content.content_choices')->with(compact('topic_id'));
+    }
     public function createHtml($id){
         $topic_id = $id;
         return view('dashboard.topic_content.html_create')->with(compact('topic_id'));

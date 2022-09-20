@@ -7,12 +7,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="post" action="{{route('topic.create')}}" enctype="multipart/form-data">
+        
+        <form method="post" action="{{route('topic.create', 5)}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">Topic Title</label>
                     <input type="text" name="topic_title" class="form-control" id="recipient-name">
-                    <input type="text" name="content_id" class="form-control" id="recipient-name" value="@yield('content-id')" >
+                    <input type="text" name="content_id" class="form-control" id="content_id" value = "@yield('topic_id')">
                 </div>
                 
                     <div class="form-group">

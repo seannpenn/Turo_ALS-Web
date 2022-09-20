@@ -90,7 +90,7 @@ class CourseController extends Controller
         $chosenCourse = Course::where('course_id',$id)->get();
         return view('dashboard.courses.view_course')->with(compact('chosenCourse'));  
     }
-    public function showAll($id){
+    public function showAll($courseid){
         $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
         $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
         

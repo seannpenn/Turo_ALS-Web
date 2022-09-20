@@ -12,7 +12,7 @@ use Validator;
 class TopicController extends Controller
 {
     // create topics inside modules
-    public function create(Request $request){
+    public function create($contentId, Request $request){
         
         $rules = [
             'topic_title' => 'required',
@@ -30,7 +30,7 @@ class TopicController extends Controller
         }
         else{
                 Topic::create([
-                    "content_id" => $request->content_id,
+                    "content_id" => $contentId,
                     "topic_title" => $request->topic_title,
                     "topic_description" => $request->topic_description,
                 ]);

@@ -36,18 +36,18 @@
     <div class="collapse navbar-collapse" id="navbarText" >
       <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="width: 100%; text-align: center; justify-content:center; justify-items:center;">
       @auth
-        @if(Auth::user()->userType == '1')
-          @if(Route::currentRouteName() == 'course.all' || Route::currentRouteName() == 'students.all')
-          <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
-          <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
-          
-          @elseif(Route::currentRouteName() != 'course.all')
-          <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
-          <a class="inner-nav-link" aria-current="page" href="{{route('course.showInfo', request()->route('id') )}}">Course Home</a>
-          <a class="inner-nav-link" aria-current="page" href="{{route('course.displayAll', $courseId)}}">Content</a>
-          <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage', $courseId)}}">Quizzes</a>
-          <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
-          @endif
+          @if(Auth::user()->userType == '1')
+            @if(Route::currentRouteName() == 'course.all' || Route::currentRouteName() == 'students.all')
+
+              <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
+            
+            @elseif(Route::currentRouteName() != 'course.all')
+              <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('course.showInfo', request()->route('courseid') )}}">Course Home</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('course.displayAll', $courseId)}}">Content</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage', $courseId)}}">Quizzes</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
 
         @elseif(Auth::user()->userType == '2')
           @if(Route::currentRouteName() == 'content.view' || Route::currentRouteName() == 'students.all')
