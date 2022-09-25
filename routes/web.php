@@ -57,7 +57,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     // For create courses
     Route::post('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/course/all', [CourseController::class, 'showOwnedCourses'])->name('course.all');
-    Route::get('/course/{courseid}/content', [CourseController::class, 'showAll'])->name('course.displayAll');
+    Route::get('/course/{courseid}/content', [CourseController::class, 'showAll'])->name('course.displayAll'); //important
     Route::get('/course/{courseid}/home', [CourseController::class,'showCourse'])->name('course.showInfo');
     Route::post('/course/{id}/update', [CourseController::class, 'update'])->name('course.update');
     Route::get('/course/{id}/delete', [CourseController::class,'delete'])->name('course.delete');
@@ -65,23 +65,23 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     // for create course content
     Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.create');
     Route::get('/course/content/{id}/delete', [CourseContentController::class, 'delete'])->name('content.delete');
-    Route::get('/course/content/{id}', [CourseContentController::class, 'viewModule'])->name('content.view');
+    Route::get('/course/{courseid}/content/{contentid}', [CourseContentController::class, 'viewModule'])->name('content.view'); //important
     Route::post('/course/content/{id}/update', [CourseContentController::class, 'update'])->name('content.update');
 
     // for create content topic
-    Route::post('/course/content/{contentid}/topic', [TopicController::class, 'create'])->name('topic.create');
+    Route::post('/course/topic/create', [TopicController::class, 'create'])->name('topic.create');
     Route::get('/course/content/topic/{topicid}/delete', [TopicController::class, 'delete'])->name('topic.delete');
-    
+    Route::get('course/{courseid}/topic/{topicid}', [TopicController::class, 'viewTopic'])->name('topic.view'); //important
 
     // for create topic content
 
     Route::get('/course/content/topic/content/{id}/delete', [TopicContentController::class, 'delete'])->name('topicContent.delete');
     Route::post('/course/content/topic/content/create', [TopicContentController::class, 'create'])->name('topicContent.create');
-    Route::get('/course/{courseid}/content/view/{topiccontentid}', [TopicContentController::class, 'viewTopicContent'])->name('topicContent.view');
-    // Route::get('/course/{courseid}/content/view/{topiccontentid}', [TopicContentController::class, 'retainTopicContent'])->name('topicContent.retain');
+    Route::get('/course/{courseid}/topiccontent/{topiccontentid}', [TopicContentController::class, 'viewTopicContent'])->name('topicContent.view'); //important
+    Route::get('/course/{courseid}/content/{contentid}/topic/{topicid}/content/{topiccontentid}', [TopicContentController::class, 'retainTopicContent'])->name('topicContent.retain');//important
     Route::post('/course/content/topic/content/{contentid}/update', [TopicContentController::class, 'update'])->name('topicContent.update');
-    Route::get('/course/{courseid}/content/{contentid}/topic/{topicid}/content/create', [TopicContentController::class, 'topicChoices'])->name('topicContent.choices');
-    Route::get('/course/content/topic/content/{id}/create/html', [TopicContentController::class, 'createHtml'])->name('html.create');
+    Route::get('/course/{courseid}/topic/{topicid}/topicContent/choices', [TopicContentController::class, 'topicChoices'])->name('topicContent.choices');
+    Route::get('/course/content/topic/content/{id}/create/html',     [TopicContentController::class, 'createHtml'])->name('html.create');
     Route::get('/course/content/topic/content/{id}/create/file', [TopicContentController::class, 'createFile'])->name('file.create');
     Route::get('/course/content/topic/content/{id}/create/link', [TopicContentController::class, 'createLink'])->name('link.create');
     Route::post('/course/content/topic/content/{id}/link', [TopicContentController::class, 'linkContent'])->name('topicContent.link');
@@ -91,20 +91,21 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     // Route::get('file/upload',[TopicController::class, 'uploadFiles'])->name('topic.upload');
     Route::post('file/upload', [TopicController::class, 'storeUploadedFiles'])->name('topic.store');
 
-
     // for quiz make
     Route::view('/quiz/create', 'dashboard.quiz.create')->name('quiz.create');
-    Route::get('/quiz/edit/{id}', [QuizController::class, 'edit'])->name('quiz.edit');
-    Route::post('/quiz/update/{id}', [QuizController::class, 'update'])->name('quiz.update');
+    Route::get('/course/{courseid}/quiz/edit/{quizid}', [QuizController::class, 'edit'])->name('quiz.edit');
+    Route::post('/quiz/edit/{quizid}/update', [QuizController::class, 'update'])->name('quiz.update');
     Route::post('/quiz/store', [QuizController::class, 'create'])->name('quiz.store');
-    Route::get('/course/{id}/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
+    Route::get('/course/{courseid}/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
+    Route::get('/course/{courseid}/quiz/all',[QuizController::class, 'getAllQuizzes'])->name('quiz.all');
     // ^
     //for question
     Route::post('/quiz/question/create', [QuestionController::class, 'create'])->name('question.create');
     Route::get('/quiz/question/delete/{id}', [QuestionController::class, 'delete'])->name('question.delete');
     Route::post('/quiz/question/update/{id}', [QuestionController::class, 'update'])->name('question.update');
 
-    
+    //for testing
+
 });
 
 //for login and register routes
@@ -137,3 +138,4 @@ Route::middleware('auth')->group(function(){
 // Route::view('/student/dashboard', 'student.student_dashboard')->name('student.dashboard');
 Route::get('/student/courses', [CourseController::class, 'studentShowAll'])->name('student.course');
 Route::get('/student/course/{id}', [CourseController::class,'studentShowCourse'])->name('student.student_coursecontent');
+

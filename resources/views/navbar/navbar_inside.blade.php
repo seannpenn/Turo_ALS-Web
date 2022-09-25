@@ -48,7 +48,7 @@
               <a class="inner-nav-link" aria-current="page" href="{{route('course.displayAll', $courseId)}}">Content</a>
               <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage', $courseId)}}">Quizzes</a>
               <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
-
+            @endif
         @elseif(Auth::user()->userType == '2')
           @if(Route::currentRouteName() == 'content.view' || Route::currentRouteName() == 'students.all')
  

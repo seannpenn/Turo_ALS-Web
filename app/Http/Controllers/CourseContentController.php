@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CourseContent;
+use App\Models\Teacher;
+use App\Models\Course;
 use App\Models\Topic;
+use App\Models\TopicContent;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 class CourseContentController extends Controller
@@ -78,12 +81,13 @@ class CourseContentController extends Controller
         return redirect()->to(route('course.showInfo', $selectedCourseContent->course_id));
     }
     // viewing of course content
-    // public function viewModule($id){
+    public function viewModule($courseid, $contentId){
 
-    //     $selectedModule = CourseContent::where('content_id', $id)->get();
+        $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
+        $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
 
-    //     return view('dashboard.coursecontent.view_module')->with(compact('selectedModule'));
-    // }
+        return view('dashboard.content.display')->with(compact('courseCollection'));
+    }
 
     //viewing of course content
     // public function studentCourseContent($id){

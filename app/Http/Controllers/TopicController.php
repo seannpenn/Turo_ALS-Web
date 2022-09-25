@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Teacher;
+use App\Models\Course;
 use App\Models\Topic;
 use App\Models\Quiz;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +14,7 @@ use Validator;
 class TopicController extends Controller
 {
     // create topics inside modules
-    public function create($contentId, Request $request){
+    public function create(Request $request){
         
         $rules = [
             'topic_title' => 'required',
@@ -30,7 +32,7 @@ class TopicController extends Controller
         }
         else{
                 Topic::create([
-                    "content_id" => $contentId,
+                    "content_id" => $request->content_id,
                     "topic_title" => $request->topic_title,
                     "topic_description" => $request->topic_description,
                 ]);
@@ -42,6 +44,14 @@ class TopicController extends Controller
         $selectedTopic = Topic::findOrFail($topicId);
         $selectedTopic->delete();
         return redirect()->back();
+    }
+
+    public function viewTopic($courseid, $topicId){
+
+        $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
+        $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
+
+        return view('dashboard.content.display')->with(compact('courseCollection'));
     }
 
     // viewing of topics.
