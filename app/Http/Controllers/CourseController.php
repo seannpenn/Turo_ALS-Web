@@ -90,7 +90,7 @@ class CourseController extends Controller
         $chosenCourse = Course::where('course_id',$id)->get();
         return view('dashboard.courses.view_course')->with(compact('chosenCourse'));  
     }
-    public function showAll($courseid){
+    public function showAll(){
         $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
         $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
         
@@ -98,7 +98,7 @@ class CourseController extends Controller
     }
 
     //display courses in students page
-    public function studentShowAll(){
+    public function studentDisplayCourse(){
         $studentId = Student::where('user_id', Auth::id())->get()->first();
         $EnrolledStudent = Enrollment::where('student_id', $studentId->student_id)->get()->first();
         $teacher = Teacher::getTeacherByLocProg($EnrolledStudent->loc_id, $EnrolledStudent->prog_id);
@@ -107,8 +107,23 @@ class CourseController extends Controller
         return view('student.student_dashboard')->with(compact('courseCollection'));
     }
 
-    public function studentShowCourse($id){
-        $studentChosenCourse = Course::where('course_id',$id)->get();
-        return view('student.student_coursecontent')->with(compact('studentChosenCourse'));  
+    public function studentDisplayModule($id){
+        $chosenCourse = Course::where('course_id',$id)->get();
+        return view('student.student_viewmodule')->with(compact('chosenCourse'));  
+    }
+
+    // public function studentDisplayContent($id){
+    //     $chosenCourse = CourseContent::where('content_id',$id)->get();
+    //     return view('student.student_viewcontent')->with(compact('chosenCourse', 'courseCollection'));  
+    // }
+
+    public function studentDisplayContent(){
+        $studentId = Student::where('user_id', Auth::id())->get()->first();
+        $EnrolledStudent = Enrollment::where('student_id', $studentId->student_id)->get()->first();
+        $teacher = Teacher::getTeacherByLocProg($EnrolledStudent->loc_id, $EnrolledStudent->prog_id);
+
+        $courseCollection = $teacher->course;
+        
+        return view('student.student_viewcontent')->with(compact('courseCollection'));
     }
 }

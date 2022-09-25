@@ -7,6 +7,7 @@ use App\Models\CourseContent;
 use App\Models\Teacher;
 use App\Models\Course;
 use App\Models\Topic;
+use App\Models\Course;
 use App\Models\TopicContent;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -80,6 +81,7 @@ class CourseContentController extends Controller
         $selectedCourseContent->delete();
         return redirect()->to(route('course.showInfo', $selectedCourseContent->course_id));
     }
+
     // viewing of course content
     public function viewModule($courseid, $contentId){
 

@@ -78,7 +78,7 @@
       @auth
         @if(Auth::user()->userType == '2')
         <li class="nav-item">
-          <a class="nav-link active" style="color: orange;" aria-current="page" href="{{route('student.course')}}">My Courses</a>
+          <a class="nav-link active" style="color: orange;" aria-current="page" href="{{route('student.course')}}">Dashboard</a>
         </li>
         
         <li class="nav-item">

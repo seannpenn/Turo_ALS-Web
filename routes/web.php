@@ -136,6 +136,13 @@ Route::middleware('auth')->group(function(){
 
 //for students course content page
 // Route::view('/student/dashboard', 'student.student_dashboard')->name('student.dashboard');
+Route::get('/student/courses', [CourseController::class, 'studentDisplayCourse'])->name('student.course');
+Route::get('/student/course/module/{courseid}', [CourseController::class,'studentDisplayModule'])->name('student.student_viewmodule');
+Route::get('/student/course/content/{courseid}', [CourseController::class,'studentDisplayContent'])->name('student.student_viewcontent');
+
+//for students announcement page
+Route::get('/student/announcement', [AnnouncementController::class,'showAnnouncement'])->name('student.student_dashboard');
+
 Route::get('/student/courses', [CourseController::class, 'studentShowAll'])->name('student.course');
 Route::get('/student/course/{id}', [CourseController::class,'studentShowCourse'])->name('student.student_coursecontent');
 

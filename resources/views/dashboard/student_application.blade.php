@@ -37,7 +37,7 @@
 @stop  
 
 @section('main-content')
-@include('navbar/navbar_inside')
+@include('navbar/navbar_inside', ['courseid' => '' ])
     <section id="application-form">
         <br>
         <h2>Student Application</h2>
