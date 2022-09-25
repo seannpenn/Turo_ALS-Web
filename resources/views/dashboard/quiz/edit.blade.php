@@ -51,17 +51,16 @@
     <div class="layout">
         
         @foreach($selectedQuiz as $quiz)
-            <form class="row g-3" action="{{route('quiz.update', $quiz->quiz_id)}}" method="post">
+            <form>
             {{ csrf_field() }}
-
                 <div class="col-auto">
                     <label for="staticEmail2" >Quiz title: </label>
                 </div>
                 <div class="col-auto">
-                    <input type="text" class="form-control" name="quiz_title" id="staticEmail2" value="{{$quiz->quiz_title}}">
+                    <input type="text" class="form-control" name="quiz_title" id="quiz_title" value="{{$quiz->quiz_title}}">
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn mb-3" style="background-color: orange; color:white;">Update title</button>
+                    <button type="submit" id="update" class="btn mb-3" style="background-color: orange; color:white;">Update title</button>
                 </div>
                 
             </form>
@@ -142,6 +141,35 @@
     </div>
 @stop
 
-@section('script-area')
+<script type="text/javascript">
+    var quizUpdate = '/quiz/edit/' + {{$selectedQuiz[0]->quiz_id}} + '/update';
+                                $(document).ready(function () {
+                                    
+                                    $("#update").click(function(e){
+                                        console.log(quizUpdate);
+                                        $.ajaxSetup({
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            }
+                                        });
+                                            var quizTitle = $('#quiz_title').val();
 
-@stop
+                                        $.ajax({
+                                            url: quizUpdate,
+                                            type: 'POST',
+                                            data: {
+                                                quiz_title: quizTitle,
+                                            },
+                                            dataType: 'json',
+                                            success: function(response){
+                                                alert('Update done.');
+                                                console.log(response);
+                                            },
+                                            error: function(data){
+                                                console.log(data);
+                                                console.log(quizUpdate);
+                                            }
+                                        });
+                                    });
+                                });
+</script>

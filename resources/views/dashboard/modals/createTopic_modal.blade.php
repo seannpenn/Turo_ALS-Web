@@ -8,17 +8,17 @@
       </div>
       <div class="modal-body">
         
-        <form method="post" action="{{route('topic.create', 5)}}" enctype="multipart/form-data">
+        <form method="post" action="{{route('topic.create')}}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">Topic Title</label>
                     <input type="text" name="topic_title" class="form-control" id="recipient-name">
-                    <input type="text" name="content_id" class="form-control" id="content_id" value = "@yield('topic_id')">
+                    <input type="text" name="content_id" class="form-control" id="content_id" value = "" hidden>
                 </div>
                 
                     <div class="form-group">
                       <label for="recipient-name" class="col-form-label">Topic Description</label>
-                        <textarea class="form-control mt-5" name="topic_description"></textarea>
+                        <textarea class="form-control mt-1" name="topic_description"></textarea>
                     </div>
                     <div class="modal-footer">  
                         <button type="reset" class="btn btn-warning">Reset</button>
