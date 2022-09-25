@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
+use Response;
 use App\Models\Quiz;
 use App\Models\Question;
 use App\Models\Topic;
@@ -38,7 +39,7 @@ class QuizController extends Controller
         }
     }
     // editing of quiz
-    public function edit($id){
+    public function edit($courseid, $id){
         $selectedQuiz = Quiz::where('quiz_id',$id)->get();
             
         return view('dashboard.quiz.edit')->with(compact('selectedQuiz'));
@@ -67,14 +68,20 @@ class QuizController extends Controller
             $topic->update([
                 'topic_title' => $request->quiz_title,
             ]);
-            
-            return back();
+            return response()->json([
+                "status" => true,
+                
+            ]);
         }
     }
     // manage all quizzes created by the teacher
     public function manage(){
         $quizCollection = Quiz::where('teacher_id', Auth::user()->teacher->teacher_id)->get();
         return view('dashboard.quiz.manage')->with(compact('quizCollection'));  
+    }
+    public function getAllQuizzes($courseid){
+        $quizCollection = Quiz::where('course_id', $courseid)->get();
+        return Response::json($quizCollection);
     }
 
 }

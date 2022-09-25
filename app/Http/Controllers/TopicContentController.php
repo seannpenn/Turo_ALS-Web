@@ -49,14 +49,13 @@ class TopicContentController extends Controller
 
             if($request->type == 'quiz'){
                 $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
-                $course = $topic->coursecontent->course;
                 TopicContent::insertGetId([
                     'topic_id' => $request['topic_id'],
                     'type' => $request->type,
                     'topic_content_title' => $request['topic_content_title'],
                     'link' =>$request['link'],
                 ]);
-                return redirect()->route('course.showInfo', $course);
+                return redirect()->back();
             }
             
     }
@@ -117,9 +116,9 @@ class TopicContentController extends Controller
         return redirect()->back();
     }
 
-    public function topicChoices($topic_id){
+    public function topicChoices($courseid, $topicid){
         
-        return view('dashboard.topic_content.content_choices')->with(compact('topic_id'));
+        return view('dashboard.topic_content.content_choices')->with(compact('topicid'));
     }
     public function createHtml($id){
         $topic_id = $id;

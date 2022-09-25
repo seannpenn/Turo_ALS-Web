@@ -4,7 +4,9 @@
 @extends('dashboard/courses/update_course_modal')
 @extends('modalslug')
 @extends('dashboard/modals/createTopic_modal')
+@extends('dashboard/topic_content/choices_modal')
 @include('dashboard/topic_content/chooseQuiz')
+
 @section('modal-content')
     <span id="modalContent"> Deleting this course would also remove all of its contents. Are you sure you want to proceed?</span>
 @stop
@@ -49,7 +51,7 @@
     }
     .create-button{
         width: 150px;
-        line-height:30px;
+        line-height:35px;
         background-color:orange;
         color: white;
         border: 2px solid orange;
@@ -168,6 +170,20 @@
     .control-area{
         justify-content: center;
     }
+    .quiz-select{
+        padding: 10px;
+        border-radius: 5px;
+        border:none;
+        border-bottom: 0.5px solid lightgray;
+        width: 100%;
+        height: 75px;
+        background-color: white;
+        text-align: left;
+        gap:0;
+    }
+    .quiz-select:hover{
+        background-color: lightgrey;
+    }
 @stop
 
 @section('main-content')
@@ -175,7 +191,9 @@
     @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')  ])
             <div class="d-flex justify-content-start" style="width: 1350px; margin: 0 auto;">
                 <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#moduleModal" data-bs-whatever="@fat">Create Module</button>
+                
             </div>
+                                            
             <div class="d-flex justify-content-center">
                 <div class="d-flex flex-row mb-3" style="max-height: 730px; width: 350px; overflow-y: scroll;">
                     <div class="w-100 p-3">
@@ -186,14 +204,14 @@
                                 @stop
                                     @foreach($course->coursecontent as $module)
                                             <tr>
-                                                <button type="button" class="collapsible" data-topic-value="{{$module->content_id}}" value="{{$module->content_id}}"><b>{{$module->content_title}}</b></button>
+                                            <button type="button" class="collapsible" id="collapsible" data-topic-value="{{$module->content_id}}" value="{{$module->content_title}}"><b>{{$module->content_title}}</b>
+                                            </button>
                                                 <!-- For topic create modal  -->
-
-                                            </tr>
+                                            </tr>   
                                             <tr>
                                                 <div class="content">
                                                     @foreach($module->topic as $topic)
-                                                        <div class="topic" data-value="{{$topic->topic_id}}" value="{{$topic->topic_title}}" onclick="getTopicId({{$topic->topic_id}})">
+                                                        <div class="topic" data-value="{{$topic->topic_id}}" data-title="{{$topic->topic_title}}" onclick="getTopicId({{$topic->topic_id}})">
                                                             <label for="">
                                                                 {{$topic->topic_title}}
                                                             </label>
@@ -203,7 +221,7 @@
                                                         </div>
                                                         <div class="topic-content-list">
                                                             @foreach($topic->topiccontent as $topiccontent)
-                                                                    <div class="topic-content" id="topic-content" onclick="getId({{$topiccontent->topic_content_id}})">
+                                                                    <div class="topic-content" id="topic-content" onclick="getTopicContentId({{$topiccontent->topic_content_id}})">
                                                                         @if($topiccontent->type == 'html')
                                                                             <img src="{{ asset('images/text.jpg') }}" alt=""> 
                                                                         @elseif($topiccontent->type == 'quiz')
@@ -233,25 +251,21 @@
                     </div>
 
                     <div class="view-topic" id="view-topic">
-                        
+                    
                     </div>
                 </div>
             </div>
            
     <script type="text/javascript">
 
-        
-        
-
         var y;
-        var topicContentId = document.getElementById("topic-content").value;
         var contentId, topicId;
         var view = document.getElementById("view-topic");
         var control = document.getElementById("control-area");
         var editor = document.getElementById("editor");
         
-        function getId(id){
-            contentId = id;
+        function getTopicContentId(id){
+            topicContentId = id;
         }
         function getTopicId(id){
             topicId = id;
@@ -260,10 +274,10 @@
         $(document).ready(function () {
 
             $(".topic-content").click(function(e){
-                var routeURL = '{{Request::getRequestUri()}}' + '/view/' + contentId;
+                var routeURL = '/teacher/course/' + '{{request()->route('courseid')}}' +  '/topiccontent/'+ topicContentId;
                 var routeUpdate = "{{ route('topicContent.update', ":contentId") }}";
-                routeUpdate = routeUpdate.replace(':contentId', contentId);
-                // history.pushState(null, null, route);
+                routeUpdate = routeUpdate.replace(':contentId', topicContentId);
+                // history.pushState(null, null, '/course/' + '{{request()->route('courseid')}}' +  '/topiccontent/'+ topicContentId);
                 // view content
                 e.preventDefault();
 
@@ -346,8 +360,9 @@
                         }
                         else if(data[0].type == 'quiz'){
 
-                            var route = "{{route('quiz.edit', ":id")}}";
-                            route = route.replace(':id', data[0].link);
+                            var route = "{{route('quiz.edit', [":courseid" ,":id"])}}";
+                            route = route.replace(':courseid', {{request()->route('courseid')}});
+                            route = route.replace(':id', data[0].link); 
 
                             view.innerHTML = `<h1> ${data[0].topic_content_title} </h1><hr>`;
                             view.innerHTML += `
@@ -365,7 +380,20 @@
                             </div>
                             `;
                         }
-                        console.log(data); 
+                        else{
+
+                            var asset = "{{ asset(":fileDirectory") }}";
+                            asset = asset.replace(':fileDirectory', data[1]);
+                            console.log(asset);
+                            console.log(data[1]);
+                            view.innerHTML = `<h1> ${data[0].topic_content_title} </h1><hr>`;
+                            view.innerHTML += `
+                            <div class="container text-center" style=" margin: 200px auto;">
+                                <embed src="${asset}" />
+                            </div>
+                            `;
+                        }
+                        console.log(data);
                     },
                     error: function(data){
                         console.log(data);
@@ -381,71 +409,121 @@
         const topic = document.getElementsByClassName("topic");
         for (i = 0; i < coll.length; i++) {
             coll[i].addEventListener("click", function() {
-                const dataValue = this.getAttribute("data-topic-value");
-                var contentId = coll.value;
+                contentid = this.getAttribute("data-topic-value");
+                state = 'http://{{Request::getHttpHost()}}/teacher/course/' + '{{request()->route('courseid')}}/content/' + contentid;
+                if('{{Request::url()}}' !== state)
+                {
+                    // history.replaceState("object or string", "Title", state);
+                    // location.reload();
+                }
+                    
+                
+                
                 var routeTopicCreate = "{{route('topic.create', ":contentId")}}";
-                var routeCreateTopic = "http://localhost:8000/teacher/course/content/" + dataValue +"/topic";
+                var routeCreateTopic = "http://localhost:8000/teacher/course/content/" + contentid +"/topic";
 
-                routeTopicCreate = routeTopicCreate.replace(':contentId', dataValue);
+                routeTopicCreate = routeTopicCreate.replace(':contentId', contentid);
 
-                view.innerHTML = `<h2 style="margin-left:20px;"> ${this.value}</h2>
+                view.innerHTML = `<h2 style="margin-left:20px;"> ${this.value} ${contentid}</h2>
                                     <hr>
                 `;
                 
-                control.innerHTML = `@section('topic_id') (${dataValue}) @stop
+                control.innerHTML = `
+                
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                         <button 
-                                            type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#topicCreate" data-contentId="5"
-                                            data-bs-whatever="@fat">Create Topic
+                                            type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#topicCreate{{request()->route('contentid')}}">Create Topic
                                         </button>
                                     </div>
                 `;
+                $('.create-button').click(function(e){
+                        $("#content_id").val(contentid);
+                });
                 
                 
-
                 this.classList.toggle("active");
                 var content = this.nextElementSibling;
                 if (content.style.display === "block") {
-                content.style.display = "none";
+                    content.style.display = "none";
                 } else {
-                content.style.display = "block";
+                    content.style.display = "block";
                 }
+                
             });
         }
         for (z = 0; z < topic.length; z++) {
             topic[z].addEventListener("click", function() {
-                dataValue = this.getAttribute("data-value");
-                var routeHtml = "{{route('html.create', ":id")}}";
-                var routeFile = "{{route('file.create', ":id")}}";
-                var routeLink = "{{route('link.create', ":id")}}";
-                routeHtml = routeHtml.replace(':id', dataValue);
-                routeFile = routeFile.replace(':id', dataValue);
-                routeLink = routeLink.replace(':id', dataValue);
-                var contentChoices = "{{ route('topicContent.choices', [":courseid", ":topicid", ":contentid"] )}}";
-                contentChoices = contentChoices.replace(':contentid', dataValue);
-                contentChoices = contentChoices.replace(':courseid', dataValue);
-                contentChoices = contentChoices.replace(':topicid', dataValue);
-                console.log(routeHtml);
-                console.log(routeFile);
-                console.log(routeLink);
-
+                
+                topicId = this.getAttribute("data-value");
+                topicTitle = this.getAttribute("data-title");
+                state = 'http://{{Request::getHttpHost()}}/teacher/course/' + '{{request()->route('courseid')}}/topic/' + topicId;
+                if('{{Request::url()}}' !== state)
+                {
+                    // history.replaceState(null, null, state);
+                    // location.reload();
+                    
+                }
+        
+                view.innerHTML = `<h2 style="margin-left:20px;">${topicTitle} ${topicId}</h2>
+                                    <hr>
+                `;
+                
                 control.innerHTML = `
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                                                   
                                         <button 
-                                            type="button" id="create-button" class="create-button" data-bs-toggle="modal" 
-                                            data-bs-whatever="@fat" value="${dataValue}">Create Resource 
+                                            type="button" id="topicChoices" class="create-button" data-bs-toggle="modal" 
+                                            data-bs-whatever="@fat" data-bs-target="#topicChoices">Create Resource
                                         </button>
                                     </div>
                 `;
-                var resourceButton = document.getElementById("create-button");
-                resourceButton.addEventListener("click", function() {
-                    window.location.href = contentChoices;
+                // assigning of topic id to adding of resources
+                $('#html-choice-button').click(function(e){
+                    $("#html_topic_id").val(topicId);
                 });
-                view.innerHTML = `<h2 style="margin-left:20px;"> ${this.value}</h2>
-                                    <hr>
-                `;
+                $('#file-choice-button').click(function(e){
+                    $("#file_topic_id").val(topicId);
+                });
+                // get all course quizzes for quiz display
+                $(document).ready(function () {
+                    $('#quiz-choice-button').one('click',function(e){
+                        var getQuizRoute = "{{ route('quiz.all', ":courseid") }}";
+                        getQuizRoute = getQuizRoute.replace(':courseid', '{{request()->route('courseid')}}');
 
+                        e.preventDefault();
+
+                        $.ajax({
+                                type: "GET",
+                                url: getQuizRoute,
+                                dataType: 'json',
+                                success: function(data){
+                                    console.log(data);
+                                    var listQuizzes = document.getElementById("list-quizzes");
+                                    var a;
+                                    for(a=0;a<data.length; a++){
+
+                                        listQuizzes.innerHTML += `
+                                        <form action="{{route('topicContent.create')}}" method="post">
+                                        {{ csrf_field() }}
+                                                <div>
+                                                    <input type="text" class="form-control" name="type" id="recipient-name" value="quiz" hidden>
+                                                    <input type="text" name="topic_content_title" class="form-control" value="${data[a].quiz_title}" hidden>
+                                                    <input type="text" name="link" class="form-control" value="${data[a].quiz_id}" hidden>
+                                                    <input type="text" name="topic_id" class="form-control" value="${topicId}" hidden>
+                                                    <button class="quiz-select" type="submit">${data[a].quiz_title} - ${data[a].quiz_title}</button>
+                                                    
+                                                </div>
+                                        </form>`;
+                                    }
+                                },
+                                error: function(data){
+                                    console.log(getQuizRoute);
+                                    console.log('hello');
+                                    console.log(data);
+                                }
+                        });
+                    });
+                });
+                
                 
                 var topiccontent = this.nextElementSibling;
                 if (topiccontent.style.display === "block") {
