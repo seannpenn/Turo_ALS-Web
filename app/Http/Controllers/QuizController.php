@@ -44,7 +44,7 @@ class QuizController extends Controller
             
         return view('dashboard.quiz.edit')->with(compact('selectedQuiz'));
     }
-    public function update(Request $request, $id){
+    public function update($id, Request $request){
         $rules = [
             'quiz_title' => 'required',
         ];
@@ -68,10 +68,7 @@ class QuizController extends Controller
             $topic->update([
                 'topic_title' => $request->quiz_title,
             ]);
-            return response()->json([
-                "status" => true,
-                
-            ]);
+            return back();
         }
     }
     // manage all quizzes created by the teacher

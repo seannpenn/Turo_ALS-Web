@@ -48,6 +48,8 @@ class QuestionController extends Controller
             'question' => 'required',
             'choice_a' => 'required',
             'choice_b' => 'required',
+            'choice_c' => 'required',
+            'choice_d' => 'required',
             'answer' => 'required'
         ];
 

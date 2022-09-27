@@ -113,7 +113,7 @@ class TopicContentController extends Controller
     public function delete($id){
         $selectedTopicContent = TopicContent::findOrFail($id);
         $selectedTopicContent->delete();
-        return redirect()->back();
+        return back();
     }
 
     public function topicChoices($courseid, $topicid){

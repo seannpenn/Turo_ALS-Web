@@ -11,14 +11,13 @@
             <input type="text" class="form-control" name="quiz_id" value="@yield('quiz_id')" hidden>
             <div class="col-12">
                 <label for="inputAddress" class="form-label">Question</label>
-                <input type="text" name="question" class="form-control" id="inputAddress" placeholder="Input question...">
+                <input type="text" name="question" class="form-control" id="inputAddress" placeholder="Input question..." value="Untitled Question">
             </div>
             <div class="col-md-6">
                 <label for="inputEmail4" class="form-label">Option A</label>
                 <div class="input-group-text">
                     <input type="radio" value="A" aria-label="Radio button for following text input" name="answer" id="radio-button-a" style="margin: 5px;">
                     <input type="text" name="choice_a" class="form-control" aria-label="Text input with radio button" id="input1">
-
                 </div>
             </div>
             <div class="col-md-6">
