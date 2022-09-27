@@ -20,7 +20,7 @@
         padding: 10px;
     }
     img{
-        height: 20px;
+        height:20px;
         width: 20px; 
         
     } 
@@ -134,7 +134,7 @@
     }
     .view-topic{
         width: 1000px;
-        height: 670px;
+        height: 740px;
         padding: 10px;
         overflow:hidden;
         overflow-y: scroll;
@@ -230,11 +230,11 @@
                                                                             <img src="{{ asset('images/pdf.png') }}" alt="">
                                                                         @endif
                                                                         {{$topiccontent->topic_content_title}}
-                                                                        
                                                                         <div class="icon" style="display: flex; margin-left: 180px; right: 0;">
-                                                                            <a href="{{route('topicContent.delete', $topiccontent->topic_content_id)}}" onclick="return confirm('Are you sure you want to delete this content?')"><img src="{{ asset('images/delete.png') }}" alt=""></a>                                                                                    
+                                                                        <a href="{{route('topicContent.delete', $topiccontent->topic_content_id)}}" onclick="return confirm('Are you sure you want to delete this content? {{$topiccontent->topic_content_id}}')"><img src="{{ asset('images/delete.png') }}" alt=""></a>                                                                                    
                                                                         </div>
                                                                     </div>
+                                                                    
                                                             @endforeach
                                                         </div>
                                                     @endforeach
@@ -245,14 +245,9 @@
                         </table>
                     </div>
                 </div>
-                <div class="d-inline p-2 text-bg-dark align-items-center">
-                    <div class="control-area" id="control-area">
-                        {{request()->route('id')}}
-                    </div>
-
-                    <div class="view-topic" id="view-topic">
-                    
-                    </div>
+                <div class="d-inline p-1 text-bg-dark align-items-center">
+                    <div class="control-area" id="control-area"></div>
+                    <div class="view-topic" id="view-topic"></div>
                 </div>
             </div>
            
@@ -271,8 +266,6 @@
             topicId = id;
         }
         
-        $(document).ready(function () {
-
             $(".topic-content").click(function(e){
                 var routeURL = '/teacher/course/' + '{{request()->route('courseid')}}' +  '/topiccontent/'+ topicContentId;
                 var routeUpdate = "{{ route('topicContent.update', ":contentId") }}";
@@ -288,12 +281,11 @@
                     success: function(data){
                         if(data[0].type == 'html'){
                             console.log(routeUpdate);
-                            view.innerHTML = `<h1> ${data[0].topic_content_title} </h1><hr>`;
-                            view.innerHTML += `<div class="text-content" >
+                            control.innerHTML = ``;
+                            view.innerHTML = `<div class="text-content" >
                                                     <div class="col-auto">
                                                         <form>
                                                             <div class="card-body">
-                                                                
                                                                     {{csrf_field()}}
                                                                         <div class="mb-3">
                                                                             <label for="recipient-name" class="col-form-label">Topic Title</label>
@@ -317,7 +309,8 @@
                                                 </div>
                                                 
                                                 `;
-                            ClassicEditor
+
+                                ClassicEditor
                                 .create( document.querySelector( '#editor' ) )
                                 .then( editor => {
                                     console.log( editor );
@@ -326,27 +319,23 @@
                                     console.error( error );
                                 } );
 
-                                $("#update").click(function(e){
+                                    $("#update").click(function(e){
                                         $.ajaxSetup({
                                             headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                                             }
                                         });
+                                        
                                             var topicId = $('#topic_id').val();
                                             var topicContentTitle = $('#topic_content_title').val();
                                             var type = $('#type').val();
                                             var editor = $('#editor').val();
-                                        
                                         $.ajax({
-                                            url: routeUpdate,
-                                            type: 'POST',
-                                            data: {
                                                 topic_id: topicId, 
                                                 topic_content_id: contentId, 
                                                 topic_content_title: topicContentTitle,
                                                 type: type, 
                                                 html: editor,
-                                            },
                                             dataType: 'json',
                                             success: function(response){
                                                 alert('Update done.');
@@ -356,17 +345,17 @@
                                                 console.log(data);
                                             }
                                         });
-                                });
+                                    });
                         }
-                        else if(data[0].type == 'quiz'){
+                        else if(data[0].type == 'quiz'){ //ok
 
                             var route = "{{route('quiz.edit', [":courseid" ,":id"])}}";
                             route = route.replace(':courseid', {{request()->route('courseid')}});
                             route = route.replace(':id', data[0].link); 
-
-                            view.innerHTML = `<h1> ${data[0].topic_content_title} </h1><hr>`;
-                            view.innerHTML += `
-                            <div class="container text-center" style=" margin: 200px auto;">
+                            control.innerHTML = ``;
+                            view.style.overflow = "scroll";
+                            view.innerHTML = `
+                            <div class="container text-center" style=" margin: 250px auto;">
                                 <div class="row">
                                     <div class="col align-self-center">
                                         <h1>View and edit this quiz in the quiz tab</h1>
@@ -381,15 +370,15 @@
                             `;
                         }
                         else{
-
                             var asset = "{{ asset(":fileDirectory") }}";
                             asset = asset.replace(':fileDirectory', data[1]);
                             console.log(asset);
                             console.log(data[1]);
-                            view.innerHTML = `<h1> ${data[0].topic_content_title} </h1><hr>`;
-                            view.innerHTML += `
-                            <div class="container text-center" style=" margin: 200px auto;">
-                                <embed src="${asset}" />
+                            control.innerHTML = ``;
+                            view.style.overflow = "scroll";
+                            view.innerHTML = `
+                            <div class="container text-center" >
+                                <embed src="${asset}" height="700" width="950"/>
                             </div>
                             `;
                         }
@@ -400,7 +389,6 @@
                     }
                 });
             });
-        });
             
 
         
@@ -416,30 +404,27 @@
                     // history.replaceState("object or string", "Title", state);
                     // location.reload();
                 }
-                    
-                
-                
+
                 var routeTopicCreate = "{{route('topic.create', ":contentId")}}";
                 var routeCreateTopic = "http://localhost:8000/teacher/course/content/" + contentid +"/topic";
 
                 routeTopicCreate = routeTopicCreate.replace(':contentId', contentid);
-
-                view.innerHTML = `<h2 style="margin-left:20px;"> ${this.value} ${contentid}</h2>
-                                    <hr>
-                `;
                 
                 control.innerHTML = `
-                
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                         <button 
                                             type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#topicCreate{{request()->route('contentid')}}">Create Topic
                                         </button>
                                     </div>
+                                    <h2 style="margin-left:20px;"> ${this.value} ${contentid}</h2>
+                                    <hr>
                 `;
+                view.style.overflow = "hidden";
+                view.innerHTML = ``;
+
                 $('.create-button').click(function(e){
                         $("#content_id").val(contentid);
                 });
-                
                 
                 this.classList.toggle("active");
                 var content = this.nextElementSibling;
@@ -464,9 +449,8 @@
                     
                 }
         
-                view.innerHTML = `<h2 style="margin-left:20px;">${topicTitle} ${topicId}</h2>
-                                    <hr>
-                `;
+                view.style.overflow = "hidden";
+                view.innerHTML = ``;
                 
                 control.innerHTML = `
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -475,7 +459,10 @@
                                             data-bs-whatever="@fat" data-bs-target="#topicChoices">Create Resource
                                         </button>
                                     </div>
+                                    <h2 style="margin-left:20px;">${topicTitle} ${topicId}</h2>
+                                    <hr>
                 `;
+
                 // assigning of topic id to adding of resources
                 $('#html-choice-button').click(function(e){
                     $("#html_topic_id").val(topicId);
@@ -483,47 +470,44 @@
                 $('#file-choice-button').click(function(e){
                     $("#file_topic_id").val(topicId);
                 });
+
                 // get all course quizzes for quiz display
                 $(document).ready(function () {
                     $('#quiz-choice-button').one('click',function(e){
                         var getQuizRoute = "{{ route('quiz.all', ":courseid") }}";
                         getQuizRoute = getQuizRoute.replace(':courseid', '{{request()->route('courseid')}}');
-
-                        e.preventDefault();
-
-                        $.ajax({
-                                type: "GET",
-                                url: getQuizRoute,
-                                dataType: 'json',
-                                success: function(data){
-                                    console.log(data);
-                                    var listQuizzes = document.getElementById("list-quizzes");
-                                    var a;
-                                    for(a=0;a<data.length; a++){
-
-                                        listQuizzes.innerHTML += `
-                                        <form action="{{route('topicContent.create')}}" method="post">
-                                        {{ csrf_field() }}
-                                                <div>
-                                                    <input type="text" class="form-control" name="type" id="recipient-name" value="quiz" hidden>
-                                                    <input type="text" name="topic_content_title" class="form-control" value="${data[a].quiz_title}" hidden>
-                                                    <input type="text" name="link" class="form-control" value="${data[a].quiz_id}" hidden>
-                                                    <input type="text" name="topic_id" class="form-control" value="${topicId}" hidden>
-                                                    <button class="quiz-select" type="submit">${data[a].quiz_title} - ${data[a].quiz_title}</button>
-                                                    
-                                                </div>
-                                        </form>`;
+                            $.ajax({
+                                    type: "GET",
+                                    url: getQuizRoute,
+                                    dataType: 'json',
+                                    success: function(data){
+                                        console.log(data);
+                                        var listQuizzes = document.getElementById("list-quizzes");
+                                        var a;
+                                        for(a=0;a<data.length; a++){
+                                            listQuizzes.innerHTML += `
+                                            <form action="{{route('topicContent.create')}}" method="post">
+                                            {{ csrf_field() }}
+                                                    <div>
+                                                        <input type="text" class="form-control" name="type" id="recipient-name" value="quiz" hidden>
+                                                        <input type="text" name="topic_content_title" class="form-control" value="${data[a].quiz_title}" hidden>
+                                                        <input type="text" name="link" class="form-control" value="${data[a].quiz_id}" hidden>
+                                                        <input type="text" name="topic_id" class="form-control" value="${topicId}" hidden>
+                                                        <button class="quiz-select" type="submit">${data[a].quiz_title} - ${data[a].quiz_title}</button>
+                                                        
+                                                    </div>
+                                            </form>`;
+                                        }
+                                    },
+                                    error: function(data){
+                                        console.log(getQuizRoute);
+                                        console.log('hello');
+                                        console.log(data);
                                     }
-                                },
-                                error: function(data){
-                                    console.log(getQuizRoute);
-                                    console.log('hello');
-                                    console.log(data);
-                                }
-                        });
+                            
+                            });
                     });
                 });
-                
                 
                 var topiccontent = this.nextElementSibling;
                 if (topiccontent.style.display === "block") {
@@ -533,8 +517,6 @@
                 }
             });
         }
-
-        
     </script>
 
     

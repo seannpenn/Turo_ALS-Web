@@ -70,24 +70,16 @@
     nav{
         box-shadow: 0px 0px 0px 0px;
     }
-    .create-button{
-        width: 125px;
-        padding: 2px;
-        line-height:30px;
-        background-color:orange;
-        color: white;
-        border: 0;
-        border-radius: 5px;
-        
+    
+    #create-button{
+        transition: transform 250ms;
     }
-    .create-button:hover{
-        background-color:orange;
-        color: white;
-        border: 0;
-        border-radius: 10px;
-        font-size: 18px;
+    #create-button:hover{
+        cursor:pointer;
+        transform: translateY(-5px);
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     }
-
+    
 
 @stop
 
@@ -96,11 +88,17 @@
 @include('navbar/navbar_inside', ['courseId' =>  request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid') ])
 
         @if(session('message'))
-            <div class="altert alert-success">{{ session('message') }}</div>
+            
+            <div class="alert alert-success d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                <div>
+                {{ session('message') }}
+                </div>
+            </div>
         @endif
 
     <div class="upper-left-header">
-        <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Course</button>
+        <!-- <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Course</button> -->
         <!-- <div class="header">
             <label class="col-sm-3 col-form-label">Show courses for: </label>
             <select class="courseCategory" aria-label="Default select example" name="courseCategory" id="courseCategory" onchange="getId(this)">
@@ -109,18 +107,28 @@
         </div> -->
     </div>
     
-    <div class="d-flex justify-content-center">
-        @if(count($ownedCourses) != 0)
+    <div class="justify-content-center" style="width: 1000px; background-color: yellow; margin: 0 auto; padding: 5px;">
                         
-                        <div class="row row-cols-1 row-cols-md-3 g-4">
-                            @foreach($ownedCourses as $course)
+        @if(count($ownedCourses) != 0)
+                        <div class="row row-cols-1 row-cols-md-3 g-2">
                                 <div class="col">
-                                    <div class="card h-100">
-                                    <!-- <img src="..." class="card-img-top" alt="..."> -->
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{$course['course_title']}}</h5>
-                                        <p class="card-text">{{$course['course_description']}}</p>
+                                    <div class="card" style="border: none;">
+                                        <div class="card text-center" id="create-button" >
+                                            <div class="card-body">
+                                                <a title="Add course" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat"><img style="width: 100px; height: 100px; margin: 50px auto;" src="{{ asset('images/add-icon.png') }}" alt="" ></a>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                            @foreach($ownedCourses as $course)
+                                
+                                <div class="col">
+                                    <div class="card">
+                                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                                        <div class="card-body" style="height: 15em;">
+                                            <h5 class="card-title">{{$course['course_title']}}</h5>
+                                            <p class="card-text">{{$course['course_description']}}</p>
+                                        </div>
                                     </div>
                                     <div class="action">
                                         <td class="icons"><a href="{{route('course.showInfo', $course['course_id'])}}" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>

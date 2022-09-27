@@ -101,8 +101,8 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     // ^
     //for question
     Route::post('/quiz/question/create', [QuestionController::class, 'create'])->name('question.create');
-    Route::get('/quiz/question/delete/{id}', [QuestionController::class, 'delete'])->name('question.delete');
-    Route::post('/quiz/question/update/{id}', [QuestionController::class, 'update'])->name('question.update');
+    Route::get('/quiz/question/delete/{questionid}', [QuestionController::class, 'delete'])->name('question.delete');
+    Route::post('/quiz/question/update/{questionid}', [QuestionController::class, 'update'])->name('question.update');
 
     //for testing
 
@@ -143,6 +143,6 @@ Route::get('/student/course/content/{courseid}', [CourseController::class,'stude
 //for students announcement page
 Route::get('/student/announcement', [AnnouncementController::class,'showAnnouncement'])->name('student.student_dashboard');
 
-Route::get('/student/courses', [CourseController::class, 'studentShowAll'])->name('student.course');
+// Route::get('/student/courses', [CourseController::class, 'studentShowAll'])->name('student.course');
 Route::get('/student/course/{id}', [CourseController::class,'studentShowCourse'])->name('student.student_coursecontent');
 
