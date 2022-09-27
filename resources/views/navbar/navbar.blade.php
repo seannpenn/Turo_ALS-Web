@@ -96,7 +96,7 @@
           </li>
           
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{route('announcement.all')}}" style="color:white;">Announcement</a>
+            <a class="nav-link active" aria-current="page" href="{{route('announcement.all')}}">Announcement</a>
           </li>
         @endif
       @endauth
