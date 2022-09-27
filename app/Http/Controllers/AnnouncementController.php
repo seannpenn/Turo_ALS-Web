@@ -13,7 +13,6 @@ class AnnouncementController extends Controller
     {
         $announcementCollection = Announcement::getAllAnnouncements();
         return view('admin.announcement')->with(compact('announcementCollection'));
-        
     }
 
     public function create(Request $request){
@@ -33,7 +32,6 @@ class AnnouncementController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         }
         else{
-    
             $announcement = new Announcement();
 
             $announcement->date = $currentTime;
@@ -45,9 +43,44 @@ class AnnouncementController extends Controller
         }
     }
 
-    //display for students
-    public function showAnnouncement(){
+    //for students announcements
+    public function announcement(){
         $announcementCollection = Announcement::getAllAnnouncements();
-        return view('student.student_dashboard')->with(compact('announcementCollection'));  
+        return view('student.student_dashboard')->with(compact('announcementCollection'));
+    }
+    
+    //edit announcement
+    public function update(Request $request){
+        $rules = [
+            'announcement_title' => 'required',
+            'announcement_description' => 'required',
+        ];
+
+        $messages = [
+            'announcement_title.required' => 'Please input announcement title.',
+            'announcement_description.required' => 'Please input announcement description.',
+        ];
+
+        $validation = Validator::make($request->input(), $rules, $messages);
+
+
+        if($validation->fails()){
+            return redirect()->back()->withInput()->withErrors($validation);
+        }
+        else{
+            $updateCourse = Announcement::where('announcement_id',$request->announcement_id);
+            $updateCourse->update([
+                'announcement_title' => $request->announcement_title,
+                'announcement_description' => $request->announcement_description,
+            ]);
+            
+            return back();
+        }
+    }   
+
+    public function delete($id){
+        $announcement = Announcement::findOrFail($id);
+        $announcement->delete();
+        return redirect()->to(route('announcement.all', $announcement->announcement_id));
     }
 }
