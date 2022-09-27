@@ -33,6 +33,8 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     // for announcements
     Route::get('announcement/all', [AnnouncementController::class, 'view'])->name('announcement.all');
     Route::post('announcement/create', [AnnouncementController::class, 'create'])->name('announcement.create');
+    Route::get('/announcement/{id}/delete', [AnnouncementController::class,'delete'])->name('announcement.delete');
+    Route::post('/announcement/update', [AnnouncementController::class, 'update'])->name('announcement.update');
 });
 
 Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
@@ -142,7 +144,7 @@ Route::get('/student/course/content/{courseid}', [CourseController::class,'stude
 
 //for students announcement page
 Route::get('/student/announcement', [AnnouncementController::class,'showAnnouncement'])->name('student.student_dashboard');
-
 Route::get('/student/courses', [CourseController::class, 'studentShowAll'])->name('student.course');
 Route::get('/student/course/{id}', [CourseController::class,'studentShowCourse'])->name('student.student_coursecontent');
+
 
