@@ -76,8 +76,8 @@
     }
     #create-button:hover{
         cursor:pointer;
-        transform: translateY(-5px);
-        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        transform: translateY(-1px);
+        box-shadow: 0 1px 5px rgb(0 0 0 / 0.2);
     }
     
 
@@ -87,37 +87,34 @@
 @include('dashboard.courses.create_course')
 @include('navbar/navbar_inside', ['courseId' =>  request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid') ])
 
+    <div class="justify-content-center" style="width: 500px; margin: 0 auto;">
         @if(session('message'))
-            
-            <div class="alert alert-success d-flex align-items-center" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                <div>
-                {{ session('message') }}
+            <div class="alert alert-success align-items-center" role="alert" style="margin: 0 auto;">
+                <div class="d-flex justify-content-between">
+                    <div></div>
+                    <div>
+                        {{ session('message') }}
+                    </div>
+                    <div>
+                        <button type="button" class="btn-close btn-close-black me-2 m-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </div>
+                
             </div>
         @endif
-
-    <div class="upper-left-header">
-        <!-- <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Create Course</button> -->
-        <!-- <div class="header">
-            <label class="col-sm-3 col-form-label">Show courses for: </label>
-            <select class="courseCategory" aria-label="Default select example" name="courseCategory" id="courseCategory" onchange="getId(this)">
-                @yield('option')
-            </select>
-        </div> -->
     </div>
-    
-    <div class="justify-content-center" style="width: 1000px; background-color: yellow; margin: 0 auto; padding: 5px;">
-                        
+    <div class="justify-content-center" style="width: 1000px; margin: 0 auto; padding: 5px;">
         @if(count($ownedCourses) != 0)
                         <div class="row row-cols-1 row-cols-md-3 g-2">
                                 <div class="col">
                                     <div class="card" style="border: none;">
-                                        <div class="card text-center" id="create-button" >
-                                            <div class="card-body">
-                                                <a title="Add course" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat"><img style="width: 100px; height: 100px; margin: 50px auto;" src="{{ asset('images/add-icon.png') }}" alt="" ></a>
+                                        <a title="Add course" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">
+                                            <div class="card text-center" id="create-button" style="border: none;">
+                                                <div class="card-body">
+                                                    <img style="width: 100px; height: 100px; margin: 50px auto;" src="{{ asset('images/add-icon.png') }}" alt="" >
+                                                </div>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
                             @foreach($ownedCourses as $course)
@@ -148,18 +145,8 @@
 
 @stop
 
-<script>
-    let id;
-    console.log(id);
-    function getId($id){
-        id = $id.value;
-        alert($id.value);
-    }
 
-    function returnId(){
-        return id;
-    }
-    
+<script>
 </script>
 
 

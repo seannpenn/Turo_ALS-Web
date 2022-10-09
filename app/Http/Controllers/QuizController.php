@@ -8,6 +8,7 @@ use Response;
 use App\Models\Quiz;
 use App\Models\Question;
 use App\Models\Topic;
+use App\Models\QuestionType;
 use Illuminate\Support\Facades\Auth;
 class QuizController extends Controller
 {
@@ -41,9 +42,11 @@ class QuizController extends Controller
     // editing of quiz
     public function edit($courseid, $id){
         $selectedQuiz = Quiz::where('quiz_id',$id)->get();
-            
-        return view('dashboard.quiz.edit')->with(compact('selectedQuiz'));
+        $types = QuestionType::getAllType();
+        
+        return view('dashboard.quiz.edit')->with(compact(['selectedQuiz', 'types']));
     }
+
     public function update($id, Request $request){
         $rules = [
             'quiz_title' => 'required',
@@ -71,6 +74,7 @@ class QuizController extends Controller
             return back();
         }
     }
+
     // manage all quizzes created by the teacher
     public function manage(){
         $quizCollection = Quiz::where('teacher_id', Auth::user()->teacher->teacher_id)->get();

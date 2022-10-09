@@ -148,13 +148,14 @@
         text-align: left;
     }
     .topic-content{
+        background-color: white;
         font-size: 10px;
-        width: 220px;
+        width: 225px;
         border: 1px solid white;
         border-radius: 5px;
         border-bottom: 0.5px solid lightgray;
         padding: 10px;
-        margin-left: 30px;
+        margin-left: 20px;
         justify-content:start;
     }
     .topic-content:hover{
@@ -191,7 +192,6 @@
     @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')  ])
             <div class="d-flex justify-content-start" style="width: 1350px; margin: 0 auto;">
                 <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#moduleModal" data-bs-whatever="@fat">Create Module</button>
-                
             </div>
                                             
             <div class="d-flex justify-content-center">
@@ -211,17 +211,17 @@
                                             <tr>
                                                 <div class="content">
                                                     @foreach($module->topic as $topic)
-                                                        <div class="topic" data-value="{{$topic->topic_id}}" data-title="{{$topic->topic_title}}" onclick="getTopicId({{$topic->topic_id}})">
+                                                        <button class="topic" data-value="{{$topic->topic_id}}" data-title="{{$topic->topic_title}}" onclick="getTopicId({{$topic->topic_id}})">
                                                             <label for="">
                                                                 {{$topic->topic_title}}
                                                             </label>
                                                             <div class="icon" style="display: flex; margin-left: 210px; right: 0;">
                                                                 <a href="{{route('topic.delete', $topic->topic_id)}}" onclick="return confirm('Are you sure you want to delete this topic?')"><img src="{{ asset('images/delete.png') }}" alt=""></a>                                                                                    
                                                             </div>
-                                                        </div>
+                                                        </button>
                                                         <div class="topic-content-list">
                                                             @foreach($topic->topiccontent as $topiccontent)
-                                                                    <div class="topic-content" id="topic-content" onclick="getTopicContentId({{$topiccontent->topic_content_id}})">
+                                                                    <button class="topic-content" id="topic-content" onclick="getTopicContentId({{$topiccontent->topic_content_id}})">
                                                                         @if($topiccontent->type == 'html')
                                                                             <img src="{{ asset('images/text.jpg') }}" alt=""> 
                                                                         @elseif($topiccontent->type == 'quiz')
@@ -233,7 +233,7 @@
                                                                         <div class="icon" style="display: flex; margin-left: 180px; right: 0;">
                                                                         <a href="{{route('topicContent.delete', $topiccontent->topic_content_id)}}" onclick="return confirm('Are you sure you want to delete this content? {{$topiccontent->topic_content_id}}')"><img src="{{ asset('images/delete.png') }}" alt=""></a>                                                                                    
                                                                         </div>
-                                                                    </div>
+                                                                    </button>
                                                                     
                                                             @endforeach
                                                         </div>
@@ -247,10 +247,12 @@
                 </div>
                 <div class="d-inline p-1 text-bg-dark align-items-center">
                     <div class="control-area" id="control-area"></div>
-                    <div class="view-topic" id="view-topic"></div>
+                    <div class="view-topic" id="view-topic">
+                    
+                    </div>
                 </div>
             </div>
-           
+            
     <script type="text/javascript">
 
         var y;
@@ -282,6 +284,7 @@
                         if(data[0].type == 'html'){
                             console.log(routeUpdate);
                             control.innerHTML = ``;
+                            
                             view.innerHTML = `<div class="text-content" >
                                                     <div class="col-auto">
                                                         <form>
@@ -294,7 +297,7 @@
                                                                             <input type="text" name="topic_id" class="form-control" id="topic_id" value="${data[0].topic_id}" hidden>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <textarea class="form-control mt-5" name="html" id="editor" rows="20" >${data[0].html}</textarea>
+                                                                            <textarea class="form-control mt-5" name="html" id="editor" rows="20">${data[0].html}</textarea>
                                                                         </div>
                                                                     </div>
                                                                     
@@ -307,18 +310,9 @@
                                                     <br><br>
                                                     
                                                 </div>
-                                                
                                                 `;
 
-                                ClassicEditor
-                                .create( document.querySelector( '#editor' ) )
-                                .then( editor => {
-                                    console.log( editor );
-                                } )
-                                .catch( error => {
-                                    console.error( error );
-                                } );
-
+                                                
                                     $("#update").click(function(e){
                                         $.ajaxSetup({
                                             headers: {
@@ -428,6 +422,7 @@
                 
                 this.classList.toggle("active");
                 var content = this.nextElementSibling;
+                console.log(content);
                 if (content.style.display === "block") {
                     content.style.display = "none";
                 } else {
@@ -518,6 +513,4 @@
             });
         }
     </script>
-
-    
 @stop

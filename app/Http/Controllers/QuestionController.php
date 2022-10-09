@@ -3,23 +3,22 @@
 namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
+use Response;
 use App\Models\Question;
+use App\Models\Option;
+// use App\Events\Questions;
+use App\Models\Quiz;
 class QuestionController extends Controller
 {
     // creation of question
     public function create(Request $request){
+        
         $rules = [
             'question' => 'required',
-            'choice_a' => 'required',
-            'choice_b' => 'required',
-            'answer' => 'required'
         ];
 
         $messages = [
             'question.required' => 'Please input question.',
-            'choice_a.required' => 'Please input a choice.',
-            'choice_b.required' => 'Please input a choice.',
-            'answer.required' => 'Please set an answer for this question.',
         ];
 
         $validation = Validator::make($request->input(), $rules, $messages);
@@ -27,37 +26,28 @@ class QuestionController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         }
         else{
-            $questionModel = new Question();
 
-            $questionModel->quiz_id = $request['quiz_id'];
-            $questionModel->question = $request['question'];
-            $questionModel->choice_a = $request['choice_a'];
-            $questionModel->choice_b = $request['choice_b'];
-            $questionModel->choice_c = $request['choice_c'];
-            $questionModel->choice_d = $request['choice_d'];
-            $questionModel->answer = $request['answer'];
-            $questionModel->save();
+            $questionId = Question::insertGetId([
+                'quiz_id' => $request['quiz_id'],
+                'question' => $request['question'],
+            ]);
             
+            Option::create([
+                'question_id' => $questionId,
+                'option' => "Untitled option",
+            ]);
             
-            return back();
+            return redirect()->back();
         }
     }
     // updating of question
     public function update(Request $request, $id){
         $rules = [
             'question' => 'required',
-            'choice_a' => 'required',
-            'choice_b' => 'required',
-            'choice_c' => 'required',
-            'choice_d' => 'required',
-            'answer' => 'required'
         ];
 
         $messages = [
             'question.required' => 'Please input question.',
-            'choice_a.required' => 'Please input a choice.',
-            'choice_b.required' => 'Please input a choice.',
-            'answer.required' => 'Please set an answer for this question.',
         ];
 
         $validation = Validator::make($request->input(), $rules, $messages);
@@ -69,16 +59,27 @@ class QuestionController extends Controller
             $updateQuestion = Question::where('question_id',$id);
             $updateQuestion->update([
                 'question' => $request->question,
-                'choice_a' => $request->choice_a,
-                'choice_b' => $request->choice_b,
-                'choice_c' => $request->choice_c,
-                'choice_d' => $request->choice_d,
-                'answer' => $request->answer,
-                
+                'type' => $request->type
             ]);
             return back();
         }
     }
+
+    // get all questions
+
+    public function getAllQuestions($id){
+        $selectedQuiz = Quiz::where('course_id', $courseid)->get();
+        $questionCollection = $selectedQuiz->question;
+        return Response::json($questionCollection);
+    }
+
+    // get single question
+
+    public function getQuestion($id){
+        $selectedQuiz = Question::where('question_id', $id)->get();
+        return Response::json($selectedQuiz);
+    }
+
     // deleting of question
     public function delete($id){
         

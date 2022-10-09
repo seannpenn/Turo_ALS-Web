@@ -13,6 +13,8 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TopicContentController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\OptionController;
+use App\Events\Questions;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -100,28 +102,33 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::post('/quiz/store', [QuizController::class, 'create'])->name('quiz.store');
     Route::get('/course/{courseid}/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
     Route::get('/course/{courseid}/quiz/all',[QuizController::class, 'getAllQuizzes'])->name('quiz.all');
+    Route::get('/course/{courseid}/quiz/get/{quizid}', [QuizController::class, 'getSelectedQuiz'])->name('quiz.get');
     // ^
     //for question
-    Route::post('/quiz/question/create', [QuestionController::class, 'create'])->name('question.create');
+    Route::post('/quiz/question/create', [QuestionController::class, 'create'])->name('question.create'); //for event
+    Route::get('/quiz/question/{questionid}', [QuestionController::class, 'getQuestion'])->name('question.get');
     Route::get('/quiz/question/delete/{questionid}', [QuestionController::class, 'delete'])->name('question.delete');
     Route::post('/quiz/question/update/{questionid}', [QuestionController::class, 'update'])->name('question.update');
 
-    //for testing
+    // for question option
+    Route::post('/quiz/option/update/{optionid}', [OptionController::class, 'update'])->name('option.update');
+    Route::post('/quiz/question/option/create', [OptionController::class, 'create'])->name('option.create');
+    Route::get('/quiz/question/option/delete/{optionid}', [OptionController::class, 'delete'])->name('option.delete');
 
 });
 
 //for login and register routes
-Route::view('/teacher', 'login.teacher_login')->name('t-login');
-Route::view('/student/login', 'login.student_login')->name('s-login');
-Route::post('/teacher/login', [LoginController::class, 'teacherLogin'])->name('teacher.login');
-Route::post('/student/login', [LoginController::class, 'studentLogin'])->name('student.login');
-Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
+    Route::view('/teacher', 'login.teacher_login')->name('t-login');
+    Route::view('/student/login', 'login.student_login')->name('s-login');
+    Route::post('/teacher/login', [LoginController::class, 'teacherLogin'])->name('teacher.login');
+    Route::post('/student/login', [LoginController::class, 'studentLogin'])->name('student.login');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
 
-Route::get('/register/teacher', [RegisterController::class,'teacherRegistration'])->name('teacher.registration');
-Route::get('/register/student', [RegisterController::class,'studentRegistration'])->name('student.registration');
+    Route::get('/register/teacher', [RegisterController::class,'teacherRegistration'])->name('teacher.registration');
+    Route::get('/register/student', [RegisterController::class,'studentRegistration'])->name('student.registration');
 
-Route::post('/teacher/register', [RegisterController::class, 'teacherRegister'])->name('teacher.register');
-Route::post('/student/register', [RegisterController::class, 'studentRegister'])->name('student.register');
+    Route::post('/teacher/register', [RegisterController::class, 'teacherRegister'])->name('teacher.register');
+    Route::post('/student/register', [RegisterController::class, 'studentRegister'])->name('student.register');
 
 
 

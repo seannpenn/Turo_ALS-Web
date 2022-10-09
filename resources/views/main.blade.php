@@ -18,7 +18,12 @@
     @yield('import-scripts')
     
     <script>
-        
+
+        ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
         @yield('script-area')
         
     </script>
@@ -65,18 +70,6 @@
         @yield('main-content')
         
     @endauth
-
-    <script>
-        
-        ClassicEditor
-            .create( document.querySelector( '#editor' ) )
-            .then( editor => {
-                console.log( editor );
-            } )
-            .catch( error => {
-                console.error( error );
-            } );
-    </script>
         
     
 </body>

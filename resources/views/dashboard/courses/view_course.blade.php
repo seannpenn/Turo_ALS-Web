@@ -82,10 +82,16 @@
     @include('navbar/navbar_inside', ['courseId' =>  request()->route('courseid'), 'topiccontentid' => '' ])
 
     <div class="layout">
-        <a href="{{route('course.all')}}">
+        <!-- <a href="{{route('course.all')}}">
                 < Back to courses
-                
-        </a>
+        </a> -->
+        
+        <nav aria-label="breadcrumb" >
+            <ol class="breadcrumb" style="background-color:white;">
+                <li class="breadcrumb-item"><a href="{{route('course.all')}}">Courses</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Home</li>
+            </ol>
+        </nav>
         <div class="course-header">
             @foreach($chosenCourse as $course)
             <div class = "d-flex justify-content-center">
