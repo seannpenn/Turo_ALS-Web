@@ -71,7 +71,7 @@ class QuizController extends Controller
             $topic->update([
                 'topic_title' => $request->quiz_title,
             ]);
-            return back();
+            return Response::json($updateQuiz);
         }
     }
 

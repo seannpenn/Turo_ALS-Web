@@ -20,7 +20,9 @@ class Option extends Model
         'isCorrect',
 
     ];
-    
+    public static function getAllOption($questionId){
+        return self::get()->where('question_id', $questionId);
+    }
     public function question(){
         return $this->belongsTo(Question::class, 'question_id', 'question_id');
     }

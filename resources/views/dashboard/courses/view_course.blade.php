@@ -155,11 +155,10 @@
                                                             <h5 class="card-title">{{$content['content_title']}}</h5>
                                                         </a>
                                                         <p class="card-text">{{$content['content_description']}}</p>
-                                                        <div class="progress">
+                                                        <!-- <div class="progress">
                                                             <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                                            
                                                         </div>
-                                                        <h6>5 of 5</h6>
+                                                        <h6>5 of 5</h6> -->
                                                     </div>
                                                 </div>
                                             </div> 

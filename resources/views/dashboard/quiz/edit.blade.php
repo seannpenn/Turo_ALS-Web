@@ -66,6 +66,7 @@
 
 @section('main-content')
 @include('navbar/navbar_inside', ['courseId' => request()->route('courseid')])
+
     @if(app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName() == 'topic.view')
         <a href="{{ URL::previous() }}">
             < Back to Topic
@@ -75,7 +76,7 @@
             < Back to Quiz Management
         </a>
     @endif
-
+    
     <div class="layout">
         
         @foreach($selectedQuiz as $quiz)
@@ -85,8 +86,8 @@
                     <label for="staticEmail2" >Quiz title: </label>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" name="quiz_title" id="quiz_title" value="{{$quiz->quiz_title}}">
+                    <div class="col-sm-12">
+                        <input type="text" style="height:50px;" class="form-control" name="quiz_title" id="quiz_title" value="{{$quiz->quiz_title}}">
                     </div>
                 </div>
             </form>
@@ -104,63 +105,96 @@
             <div class="questions" id="questions">
                 @foreach($selectedQuiz[0]->question as $key => $question)
                         <div class="card text-center questionContainer" id="question-container" style="width: 50%; margin: 0 auto; margin-bottom: 20px;" question-id="{{$question->question_id}}" tabindex='1'>
-                            <div class="card-header">
+                            <div class="card-header" style="background-color: orange;">
                                 question id: {{ $question->question_id }}
                             </div>
-                            <div class="card-body">
-                                <form class="row g-3">
+                            <div class="card-body " >
+                                <div class="row g-3 optionArea">
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control question_id" id="question_id" placeholder="Question" aria-label="Question" value="{{ $question->question_id }}" hidden>
-                                        <input type="text" class="form-control question" id="question" placeholder="Question" aria-label="Question" value="{{ $question->question }}" question-id="{{$question->question_id}}">
+                                        <input type="text" style="height:45px;" class="form-control question" id="question" placeholder="Question" aria-label="Question" value="{{ $question->question }}" question-id="{{$question->question_id}}">
                                     </div>
-                                    <select id="questionType" class="form-select questionType" style="width: 200px;">
-
-                                    @php
-                                        $count = 1;
-                                    @endphp
-                                    @foreach($types as $type)
-                                        @if(($count == 1) and ($question->type === $type->type_id))
-                                            <option value="{{ $question->type }}" selected>{{ $type->type_name }}</option>
-                                        @else
-                                            <option value="{{ $type->type_id }}">{{ $type->type_name  }}</option>
-                                        @endif
+                                    <div class="col-sm-3">
+                                        <select id="questionType" class="form-select questionType">
                                         @php
-                                            $count++;
+                                            $count = 1;
                                         @endphp
-                                    @endforeach
-                                    </select>
+                                        @foreach($types as $type)
+                                            @if(($count == 1) and ($question->type <> $type->type_id))
+                                                <option value="{{ $type->type_id }}" selected>{{ $type->type_name }}</option>
+                                            @elseif($question->type == $type->type_id)  
+                                                <option value="{{ $type->type_id }}" selected>{{ $type->type_name }}</option>
+                                            @else
+                                                <option value="{{ $type->type_id }}">{{ $type->type_name  }}</option>
+                                            @endif
+                                            @php
+                                                $count++;
+                                            @endphp
+                                        @endforeach
+                                        </select>
+                                    </div>
                                     <div class ="questionChoices" id="questionChoices">
                                         <form>
-                                            <div class="row g-3">
                                             @foreach($question->option as $option)
-                                                    <div class="col-sm-9" style="text-align:left;">
-                                                        <div class="form-check" id="radio-row">
-                                                            <input class="form-check-input" type="radio" name="gridRadios" id="radio" value="option1" disabled>
-                                                            <input type="text" class="form-control option" id="option" placeholder="Question" aria-label="Question" option-id = "{{$option->option_id}}" value="{{$option->option}}">
+
+                                            <div class="input-group mb-3">
+                                                <div class="input-group flex-nowrap " id="optionArea">
+                                                    @if($option->isCorrect == 1)
+                                                        <span class="input-group-text" style="color:green; background-color:transparent;border-style: hidden;">
+                                                            <img src="{{ asset('images/correct.png') }}"  alt="" width="20" height="20">
+                                                        </span>
+                                                    @endif
+                                                    @if($question->type != 2)
+                                                        <span class="input-group-text" id="addon-wrapping">
+                                                            @if($question->type == 1)
+                                                                <input type="radio" value="{{$option->option_id}}" href="" aria-label="Checkbox for following text input" disabled>
+                                                            @elseif($question->type == 3)
+                                                                <input type="checkbox" value="{{$option->option_id}}" aria-label="Checkbox for following text input" disabled>
+                                                            @endif
+
+                                                        </span>
+                                                        <input type="text" class="form-control option" id="option" placeholder="Question" aria-label="Question" option-id = "{{$option->option_id}}" value="{{$option->option}}">
+                                                    @endif
+
+                                                    @if($question->type == 2)
+                                                        <div class="col-sm-5">
+                                                            <input type="text" style="border-top-style: hidden; border-right-style: hidden;border-left-style: hidden;" placeholder="Short answer text" class="form-control" aria-label="Question" value="">
                                                         </div>
-                                                    </div>
-                                                    <div class="col-sm">
-                                                        <button type="button" class="form-check-label deleteOption" value="{{$option->option_id}}" title="Delete Option" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/delete.png') }}" alt="" width="20" height="20"></button>
-                                                        
-                                                    </div>
-                                            @endforeach
+                                                    @endif
+
+                                                    
+                                                    @if($question->type != 2)
+                                                    <span class="input-group-text" style="background-color: transparent; ">
+                                                        @if($option->isCorrect == 1)
+                                                            <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer" checked>
+                                                        @else
+                                                        <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer" >
+                                                        @endif
+                                                    </span>
+                                                    <span class="input-group-text">
+                                                        <button type="button" class="form-check-label deleteOption" style="border:none;" value="{{$option->option_id}}" title="Delete Option" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/close.png') }}" alt="" width="20" height="20"></button>
+                                                    </span>
+                                                    @endif
+                                                </div>
                                             </div>
+                                            @endforeach
                                             <div class="row g-3">
                                                     <div class="col-sm-9" style="text-align:left;">
                                                         <div class="form-check">
-                                                            <button type="button" class="addOptionButton" value="{{ $question->question_id }}"><img src="{{ asset('images/add.png') }}" alt="" width="20" height="20">Add option</button>
-                                                            <!-- <a class="link-secondary" title="add option"><img src="{{ asset('images/add.png') }}" alt="" width="20" height="20">Add option</a> -->
+                                                        @if($question->type != 2)
+                                                            <button type="button" style="border:none; background-color: transparent;" class="addOptionButton" value="{{ $question->question_id }}"><img src="{{ asset('images/add.png') }}" alt="" width="20" height="20">Add option</button>
+                                                        @endif
                                                         </div>
                                                     </div>
                                             </div>
                                         </form>
                                     </div>
-                                </form>
+                                </div>
                                 <hr>
                                 <div class="d-flex justify-content-end">
                                     <div class="d-flex justify-content-evenly" style="width: 200px;">
-                                        <button class="question-button deleteQuestion" value="{{ $question->question_id }}" title="Delete Question" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/delete.png') }}" alt="" width="20" height="20"></button>
-                                        <a class="question-button" title="Delete Question"><img src="{{ asset('images/answer.png') }}" alt="" width="20" height="20"> Set answer</a>
+                                        <a class="setAnswer" title="Set Answer" value="{{ $question->question_id }}"><img src="{{ asset('images/answer.png') }}"  alt="" width="20" height="20"> Set answer</a>
+                                        <button class="question-button deleteQuestion" value="{{ $question->question_id }}" title="Delete Question" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border:none;"><img src="{{ asset('images/delete.png') }}" alt="" width="20" height="20"></button>
                                     </div>
                                 </div>
                             </div>
@@ -190,10 +224,35 @@
 @stop
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+    
         $(document).ready(function(){
+            $(window).on('load', 
+                deleteQuestion(),
+                deleteOption(),
+                getQuestion(),
+                
+            );
 
-            // get question
+            var isCorrect = document.getElementsByClassName('isCorrect');
+
+            for(var i = 0; i < isCorrect.length; i++) {
+            (function(index) {
+                isCorrect[index].addEventListener("click", function() {
+                    if(this.checked == false){
+                        alert('gwapo ko');
+                        setAnswer(this.value, 0);
+                    }
+                    else{
+                        alert('gwapo ko again');
+                        setAnswer(this.value, 1);
+                    }
+                    
+                })
+            })(i);
+            }
             
+            // get question
+            function getQuestion(){
                 const question = document.getElementsByClassName("questionContainer");
                 var x;
                 for(x=0;x<question.length;x++){
@@ -216,40 +275,50 @@
                             }
                         });
                     });
-                    
                 }
-            
+            }
             
             // delete question
-            var deleteQuestionRoute = "{{route('question.delete', ":questionid")}}";
-            const deleteQuestion = document.getElementsByClassName("deleteQuestion");
-            var b;
-            for(b=0;b<deleteQuestion.length;b++){
-                $(deleteQuestion[b]).click(function(e){
-                    var question_id = this.value;
-                    deleteQuestionRoute = deleteQuestionRoute.replace(':questionid', question_id);
-                    console.log(question_id);
-                    $("#confirmTask").click(function(e){
-                        window.location.href = deleteQuestionRoute;
+            function deleteQuestion(){
+                var deleteQuestionRoute = "{{route('question.delete', ":questionid")}}";
+                const deleteQuestion = document.getElementsByClassName("deleteQuestion");
+                var b;
+                for(b=0;b<deleteQuestion.length;b++){
+                    $(deleteQuestion[b]).click(function(e){
+                        var question_id = this.value;
+                        deleteQuestionRoute = deleteQuestionRoute.replace(':questionid', question_id);
+                        console.log(question_id);
+                        $("#confirmTask").click(function(e){
+                            window.location.href = deleteQuestionRoute;
+                        });
                     });
-                });
+                }
             }
 
 
             // delete option
-            var deleteOptionRoute = "{{route('option.delete', ":optionid")}}";
-            const deleteOption = document.getElementsByClassName("deleteOption");
-            var a;
-            for(a=0;a<deleteOption.length;a++){
-                $(deleteOption[a]).click(function(e){
-                    var option_id = this.value;
-                    deleteOptionRoute = deleteOptionRoute.replace(':optionid', option_id);
-                    console.log(option_id);
-                    $("#confirmTask").click(function(e){
-                        window.location.href = deleteOptionRoute;
-                    });
-                });
-            }
+                function deleteOption(){
+                    var deleteOptionRoute = "{{route('option.delete', ":optionid")}}";
+                    const deleteOption = document.getElementsByClassName("deleteOption");
+                    var a;
+                    for(a=0;a<deleteOption.length;a++){
+                        $(deleteOption[a]).click(function(e){
+                            var option_id = this.value;
+                            deleteOptionRoute = deleteOptionRoute.replace(':optionid', option_id);
+                            console.log(option_id);
+                            $("#confirmTask").click(function(e){
+                                window.location.href = deleteOptionRoute;
+                            });
+                        });
+                    }
+                }
+
+                function deleteAllOption(questionId){
+                    var deleteAllOption = "{{route('option.deleteAll', ":questionid")}}";
+                    deleteAllOption = deleteAllOption.replace(':questionid', questionId);
+                    window.location.href = deleteAllOption;
+                }
+            
             
 
             //create question
@@ -275,6 +344,7 @@
                         dataType: 'json',
                         success: function(response){
                             console.log(response);
+                            console.log(response);
                         },
                         error: function(data){
                             console.log(data);
@@ -290,7 +360,7 @@
 
             //update quiz
             var quizId = "{{request()->route('quizid')}}";
-            var quizUpdateRoute = "{{route('quiz.update', ":quizid")}}";
+            var quizUpdateRoute = "{{route('quiz.update', ":quizid") }}";
             quizUpdateRoute = quizUpdateRoute.replace(':quizid', quizId);
 
                 $("#quiz_title").change(function(e){
@@ -347,7 +417,6 @@
                                 dataType: 'json',
                                 success: function(response){
                                     // $("#question-table").load(location.href + " #question-table");
-                                    alert('Update done.');
                                     console.log(response);
                                 },
                                 error: function(data){
@@ -357,6 +426,8 @@
                     });
                     $(questionType[a]).change(function(e){
                         // var questionId = this.getAttribute("question-id");
+                        
+                        
                         questionUpdateRoute = questionUpdateRoute.replace(':questionid', data.question_id);
                         $.ajaxSetup({
                         headers: {
@@ -373,49 +444,82 @@
                                 dataType: 'json',
                                 success: function(response){
                                     // $("#question-table").load(location.href + " #question-table");
-                                    alert('Update done.');
                                     console.log(response);
                                 },
+                        });
+                        if(this.value == "2"){
+                            deleteAllOption(data.question_id);
+                            addOption(data.question_id);
+                        }
+                        $(document).ajaxStop(function(){
+                            
+                            window.location.reload();
                         });
                     });
                     
                 }
             }
             
-            
+            // option update
             const option = document.getElementsByClassName("option");
-            var updateOptionRoute = "{{route('option.update', ":optionid")}}";
+            
             var a;
             for(a=0;a<option.length;a++){
-                $(option[a]).change(function(e){
+                $(option[a]).on("click change", function(e){
                     var option_id = this.getAttribute("option-id");
+                    var updateOptionRoute = "{{route('option.update', ":optionid")}}";
                     updateOptionRoute = updateOptionRoute.replace(':optionid', option_id);
                     console.log(option_id);
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    $.ajax({
-                        type: "POST",
-                        url: updateOptionRoute,
-                        data: {
-                            option: this.value,
-                        },
-                        dataType: "json",
-                        success: function (response) {
-                            console.log(response);
-                            console.log('hello');
-                        },
-                        error: function(response){
-                            console.log(response);
-                        }
-                    });
-                    
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: updateOptionRoute,
+                            data: {
+                                option: this.value,
+                            },
+                            dataType: "json",
+                            success: function (response) {
+                                console.log(response);
+                            },
+                            error: function(response){
+                                console.log(response);
+                            }
+                        });
                 });
             }
-            
+
+            // set question answer
+            function setAnswer(option_id, isCorrect){
+                var setAnswer = "{{route('option.setAnswer', ":optionid")}}";
+                setAnswer = setAnswer.replace(':optionid', option_id);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: setAnswer,
+                    data: {
+                        isCorrect: isCorrect,
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        console.log('success');
+                    },
+                    error: function(response){
+                        console.log(response);
+                    },
+                });
+                $(document).ajaxStop(function(){
+                    window.location.reload();
+                });
+            }
 
             // Choose question type
             // const questionType = document.getElementsByClassName("questionType");
@@ -424,7 +528,6 @@
             for(x=0;x<questionType.length;x++){
                 questionType[x].addEventListener("change", function() {
                     console.log(quizUpdateRoute);
-                    alert('hello');
                 
                     var choice = this.nextElementSibling;
                         if(this.value == "True or false"){
@@ -460,41 +563,45 @@
                 });
             }
 
-            const optionButton = document.getElementsByClassName("addOptionButton");
-            var index;
-            var optionCreateRoute = "{{route('option.create')}}";
-            console.log(optionCreateRoute);
-            for(index = 0; index < optionButton.length; index++){
-                $(optionButton[index]).click(function(e){
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        }
-                    });
-                    $.ajax({
-                        url: optionCreateRoute,
-                        type: 'POST',
-                        data: {
-                            question_id: this.value,
-                            option: 'Untitled option',
-                        },
-                        dataType: 'json',
-                        success: function(data){
-                            console.log('Option added');
-                            console.log(data);
-                        },
-                        error: function(data){
-                            console.log(data);
-                            console.log('error');
-                        },
-                    });
-                    $(document).ajaxStop(function(){
-                        window.location.reload();
-                    });
-                });
+            // add Option
+
+            function addOption(questionId){
+                $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }
+                        });
+                        $.ajax({
+                            url: optionCreateRoute,
+                            type: 'POST',
+                            data: {
+                                question_id: questionId,
+                                option: 'Untitled option',
+                            },
+                            dataType: 'json',
+                            success: function(data){
+                                console.log('Option added');
+                                console.log(data);
+                            },
+                            error: function(data){
+                                console.log(data);
+                                console.log('error');
+                            },
+                        });
+                        $(document).ajaxStop(function(){
+                            window.location.reload();
+                        });
             }
-
-
+            
+                const optionButton = document.getElementsByClassName("addOptionButton");
+                var index;
+                var optionCreateRoute = "{{route('option.create')}}";
+                console.log(optionCreateRoute);
+                for(index = 0; index < optionButton.length; index++){
+                    $(optionButton[index]).click(function(e){
+                        addOption(this.value);
+                    });
+                }
         });
         
 </script>

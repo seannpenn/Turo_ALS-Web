@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
 use App\Models\Option;
+use Response;
 class OptionController extends Controller
 {
     //
@@ -28,10 +29,9 @@ class OptionController extends Controller
 
             $optionModel->question_id = $request['question_id'];
             $optionModel->option = $request['option'];
-
             $optionModel->save();
             
-            return redirect()->back();
+            return Response::json($optionModel);
         }
     }
 
@@ -54,8 +54,9 @@ class OptionController extends Controller
             $updateOption = Option::where('option_id',$id);
             $updateOption->update([
                 'option' => $request->option,
+                // 'isCorrect' => $request->isCorrect,
             ]);
-            return back();
+            return Response::json($updateOption);
         }
     }
 
@@ -65,5 +66,22 @@ class OptionController extends Controller
             
         $selectedOption->delete();
         return redirect()->back();
+    }
+    public function deleteAll($id){
+        $optionModel = new Option;
+        $OptionCollection = $optionModel->getAllOption($id);
+        foreach ($OptionCollection as $option) {
+            $option->delete();
+        }
+        return redirect()->back();
+        // return Response::json('Deleted');
+    }
+    public function setAnswer(Request $request, $id){
+        $updateOption = Option::where('option_id',$id);
+        
+            $updateOption->update([
+                'isCorrect' => $request->isCorrect,
+            ]);
+            return Response::json($updateOption);
     }
 }

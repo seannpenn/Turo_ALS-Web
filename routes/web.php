@@ -114,6 +114,8 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::post('/quiz/option/update/{optionid}', [OptionController::class, 'update'])->name('option.update');
     Route::post('/quiz/question/option/create', [OptionController::class, 'create'])->name('option.create');
     Route::get('/quiz/question/option/delete/{optionid}', [OptionController::class, 'delete'])->name('option.delete');
+    Route::get('/quiz/question/{questionid}/option/delete/all', [OptionController::class, 'deleteAll'])->name('option.deleteAll');
+    Route::post('/quiz/question/option/{optionid}/setAnswer', [OptionController::class, 'setAnswer'])->name('option.setAnswer');
 
 });
 

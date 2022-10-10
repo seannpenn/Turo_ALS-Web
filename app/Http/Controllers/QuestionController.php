@@ -61,7 +61,7 @@ class QuestionController extends Controller
                 'question' => $request->question,
                 'type' => $request->type
             ]);
-            return back();
+            return Response::json($updateQuestion);
         }
     }
 
