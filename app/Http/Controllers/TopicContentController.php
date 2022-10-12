@@ -8,6 +8,8 @@ use App\Models\Topic;
 use App\Models\Quiz;
 use App\Models\Teacher;
 use App\Models\Course;
+use App\Models\Enrollment;
+use App\Models\Student;
 use Validator;
 use Response;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +85,7 @@ class TopicContentController extends Controller
 
         return Response::json([$selectedTopicContent, $file_path]);
     }
+
     public function retainTopicContent($courseId, $topicContentId){
         $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
         $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
@@ -132,5 +135,13 @@ class TopicContentController extends Controller
         $topic_id = $id;
         $quizCollection = Quiz::where('teacher_id', Auth::user()->teacher->teacher_id)->get();
         return view('dashboard.topic_content.chooseQuiz')->with(compact('topic_id', 'quizCollection'));
+    }
+
+    //students view
+    public function studentViewTopicContent($courseId, $topicContentId){
+        $selectedTopicContent = TopicContent::where('topic_content_id',$topicContentId)->get()->first();
+        $file_path = 'storage/files/'.$selectedTopicContent->file;
+
+        return Response::json([$selectedTopicContent, $file_path]);
     }
 }

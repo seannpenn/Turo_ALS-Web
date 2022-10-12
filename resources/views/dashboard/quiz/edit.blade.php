@@ -251,7 +251,7 @@
                 if(this.value == "True or false"){
                     alert("This is true or false");
                 }
-                else if(this.value == "Multiple Choice")
+                // else if(this.value == "Multiple Choice")
                 // $.ajaxSetup({
                 //     headers: {
                 //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),

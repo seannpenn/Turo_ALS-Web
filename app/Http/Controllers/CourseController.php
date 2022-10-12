@@ -117,7 +117,7 @@ class CourseController extends Controller
     //     return view('student.student_viewcontent')->with(compact('chosenCourse', 'courseCollection'));  
     // }
 
-    public function studentDisplayContent(){
+    public function studentDisplayContent($id){
         $studentId = Student::where('user_id', Auth::id())->get()->first();
         $EnrolledStudent = Enrollment::where('student_id', $studentId->student_id)->get()->first();
         $teacher = Teacher::getTeacherByLocProg($EnrolledStudent->loc_id, $EnrolledStudent->prog_id);
