@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Quiz;
+use App\Models\Option;
 class Question extends Model
 {
     use HasFactory;
 
-    protected $table = 'questions';
+    protected $table = 'question';
     protected $primaryKey = 'question_id';
     // protected $keyType = '';
     public $incrementing = false;
@@ -17,15 +18,15 @@ class Question extends Model
 
     protected $fillable = [
         'quiz_id',
+        'type',
         'question',
-        'choice_a',
-        'choice_b',
-        'choice_c',
-        'choice_d',
-        'answer',
+
     ];
     // This QUESTION/S belongs to a specific quiz.
     public function quiz(){
         return $this->belongsTo(Quiz::class, 'quiz_id', 'quiz_id');
+    }
+    public function option(){
+        return $this->hasMany(Option::class, 'question_id', 'question_id');
     }
 }

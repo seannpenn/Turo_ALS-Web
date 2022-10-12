@@ -32,8 +32,10 @@
   }
   </style>
 </head>
-<body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>  
 
+<body>
+<!-- Option 1: Bootstrap Bundle with Popper -->
 
 <nav class="navbar navbar-expand-lg" >
   <div class="container-fluid" id="container-outer">
@@ -128,6 +130,31 @@
             <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
           </ul>
         </li>
+
+        
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{Auth::user()->username}}
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{route('student.profile')}}">Profile</a></li>
+              <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
+            </ul>
+          </li>
+        @elseif(Auth::user()->userType == '1')
+        
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{Auth::user()->username}}
+            </a>
+            
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{route('teacher.profile')}}">Profile</a></li>
+              <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
+            </ul>
+          </li>
+          <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
+
         @endif
 
         @if(Auth::user()->userType == '0')

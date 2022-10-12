@@ -43,8 +43,6 @@
                     <label for="recipient-name" class="col-form-label">Title</label>
                     <input type="text" name="topic_content_title" class="form-control" id="recipient-name">
                     <input type="text" id= "html_topic_id" name="topic_id" class="form-control" value="" readonly>
-
-                    <input type="text" name="type" class="form-control" value="html" hidden>
                 </div>
                 <div class="form-group">
                     <textarea class="form-control mt-5" name="html" id="editor" rows="20" ></textarea>
