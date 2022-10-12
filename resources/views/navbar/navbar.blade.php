@@ -1,37 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"> -->
-    <script src= "{{ asset('js/bootstrap.js') }}" ></script>
-    
-    <style>
-      .nav-link {
-        color:orange;
-      }
-      a{
-        text-decoration: none;
-        color:orange;
-      }
-      nav{
-        /* box-shadow: 2px 1px 5px 2px lightgrey; */
-        /* border-bottom: 2px solid white; */
-        background-color: white;
-      }
-      .navbar-brand{
-        color:orange;
-      }
-      .container-fluid a{
-        font-size: 20px;
-      }
-      .nav-item{
-        margin-right: 15px;
-      #container-outer{
-        width: 1500px;
-      }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <script src= "{{ asset('js/bootstrap.js') }}" ></script>
+  
+  <style>
+  .nav-link {
+    color:orange;
+  }
+  a{
+    text-decoration: none;
+    color:orange;
+  }
+  nav{
+    background-color: white;
+  }
+  .navbar-brand{
+    color:orange;
+  }
+  .container-fluid a{
+    font-size: 20px;
+  }
+  .nav-item{
+    margin-right: 15px;
+  }
+  #container-outer{
+    width: 1500px;
+  }
+  </style>
 </head>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>  
 
@@ -78,29 +77,29 @@
       </li> -->
 
       @auth
-        @if(Auth::user()->userType == '2')
-        <li class="nav-item">
-          <a class="nav-link active" style="color: orange;" aria-current="page" href="{{route('student.course')}}">Dashboard</a>
-        </li>
+      @if(Auth::user()->userType == '2')
+      <li class="nav-item">
+        <a class="nav-link active" style="color: orange;" aria-current="page" href="{{route('student.course')}}">Dashboard</a>
+      </li>
         
-        <li class="nav-item">
-          <a class="nav-link active" style="color: orange;" aria-current="page" href="{{route('student.enrollment_page')}}">Enrollment</a>
-        </li>
+      <li class="nav-item">
+        <a class="nav-link active" style="color: orange;" aria-current="page" href="{{route('student.enrollment_page')}}">Enrollment</a>
+      </li>
             
-        @elseif(Auth::user()->userType == '1')
-        <li class="nav-item">
-          <a class="nav-link active" style="color: orange;" aria-current="page" href="{{route('course.all')}}">Dashboard</a>
-        </li>
+      @elseif(Auth::user()->userType == '1')
+      <li class="nav-item">
+        <a class="nav-link active" style="color: orange;" aria-current="page" href="{{route('course.all')}}">Dashboard</a>
+      </li>
             
-        @else
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Manage Users</a>
-          </li>
+      @else
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{route('users.all')}}">Manage Users</a>
+      </li>
           
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{route('announcement.all')}}">Announcement</a>
-          </li>
-        @endif
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{route('announcement.all')}}">Announcement</a>
+      </li>
+      @endif
       @endauth
     @yield('left-side-nav')
     </ul>
@@ -110,6 +109,28 @@
     <ul class="navbar-nav">
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         @if(Auth::user()->userType == '2')
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{Auth::user()->username}}
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{route('student.profile')}}">Profile</a></li>
+            <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
+          </ul>
+        </li>
+        @endif
+
+        @if(Auth::user()->userType == '1')
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{Auth::user()->username}}
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{route('teacher.profile')}}">Profile</a></li>
+            <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
+          </ul>
+        </li>
+
         
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -133,7 +154,21 @@
             </ul>
           </li>
           <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
+
         @endif
+
+        @if(Auth::user()->userType == '0')
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{Auth::user()->username}}
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{route('teacher.profile')}}">Profile</a></li>
+            <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
+          </ul>
+        </li>
+        @endif
+        
       </div>
     </ul>
     @endauth
