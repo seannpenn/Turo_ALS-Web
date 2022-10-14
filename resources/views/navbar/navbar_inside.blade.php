@@ -33,8 +33,8 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarText" >
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="width: 100%; text-align: center; justify-content:center; justify-items:center;">
+    <div class="collapse navbar-collapse" id="navbarText" style="width: 1200px;">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin: 0 auto; width: 1200px;text-align: left; justify-content:left;">
       @auth
           @if(Auth::user()->userType == '1')
             @if(Route::currentRouteName() == 'course.all' || Route::currentRouteName() == 'students.all' || Route::currentRouteName() == 'student.application')

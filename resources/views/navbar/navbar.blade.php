@@ -143,17 +143,6 @@
     @auth
     <ul class="navbar-nav">
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        @if(Auth::user()->userType == '2')
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{Auth::user()->username}}
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{route('student.profile')}}">Profile</a></li>
-            <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
-          </ul>
-        </li>
-        @endif
 
         @if(Auth::user()->userType == '1')
         <li class="nav-item dropdown">
@@ -165,18 +154,7 @@
             <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
           </ul>
         </li>
-
-        
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{Auth::user()->username}}
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{route('student.profile')}}">Profile</a></li>
-              <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
-            </ul>
-          </li>
-        @elseif(Auth::user()->userType == '1')
+        @elseif(Auth::user()->userType == '2')
         
           <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

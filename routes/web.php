@@ -146,6 +146,10 @@ Route::middleware('auth')->group(function(){
     Route::view('/student/home', 'home.student_home')->name('student.home');
     Route::view('/student/profile', 'profile.student_profile')->name('student.profile');
     Route::get('user/{id}/delete',[UserController::class,'delete'])->name('user.delete');
+
+
+    Route::get('/student/announcement', [AnnouncementController::class,'showAnnouncement'])->name('student.student_dashboard');
+    Route::get('/student/course/{id}', [CourseController::class,'studentShowCourse'])->name('student.student_coursecontent');
 });
 
 
@@ -158,6 +162,5 @@ Route::get('/student/course/{courseid}/content', [CourseController::class,'stude
 // Route::get('/student/course/{courseid}/content/{contentid}/topic/{topicid}/content/{topiccontentid}', [TopicContentController::class, 'retainTopicContent'])->name('topicContent.retain');
 
 //for students announcement page
-Route::get('/student/announcement', [AnnouncementController::class,'showAnnouncement'])->name('student.student_dashboard');
-Route::get('/student/course/{id}', [CourseController::class,'studentShowCourse'])->name('student.student_coursecontent');
+
 
