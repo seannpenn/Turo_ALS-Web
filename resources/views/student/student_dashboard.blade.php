@@ -1,30 +1,33 @@
 @extends('main')
 
 @section('css-style')
-    #courseRow{
-        width: 50%;
-        height:50;
-        margin: auto;
+    .layout{
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color:yellow;
     }
-    .card-body{
-        background-color: orange;
-        border-radius: 0px 0px 10px 10px;
+    .header{
+        <!-- margin:15px; -->
     }
-    h3{
-        color: black;
+    .upper-area{
+        margin-bottom: 10px;
+    }
+    .bottom-area{
+        width: 1200px;
+        margin: 0 auto;
+        <!-- padding: 5px; -->
+    }
+    .courses-area{
+        <!-- margin: 5px; -->
+        width: 800px;
+        
+    }
+    .announcement-area{
+        <!-- margin: 5px; -->
+        <!-- width: 300px; -->
     }
     .card{
-        border-radius: 10px;
-    }
-    .announcementBox{
-        background-color: #ffebd2;
-        margin-left: 25%;
-        margin-right: 25%;
-        margin-bottom: 50px;
-        text-align: center;
-        height: auto;
-        padding: 30px;
-        border-radius: 5px;
+        <!-- width: 25em; -->
     }
 @stop
 
@@ -32,21 +35,76 @@
 @include('navbar/navbar_inside')
 
     @if(!empty($courseCollection))
-    <div class="announcementBox" style="margin-top: 30px;">
-        Announcements here
-    </div>
-    <div class="row row-cols-1 row-cols-md-3 g-1" id="courseRow">
-        @foreach($courseCollection as $course)
-        <a href="{{route('student.student_viewmodule', $course['course_id'])}}">
-        <div class="card" style="width: 18rem;">
-            <img src=".../assets/images/IMG_20220511_175528.jpg" class="card-img-top">
-                <div class="card-body" style="color: black;">
-                    <h3 class="card-title">{{$course['course_title']}}</h3>
-                    <p class="card-text">{{$course['course_description']}}</p>
-                </div>
+    
+    <div class="d-flex flex-column mb-3 layout">
+        <div class="upper-area">
+            <div class="shadow p-3 mb-2 bg-body rounded header">
+                <h1>What to put?</h1>
+            </div>
         </div>
-        @endforeach
+
+        <div class="d-flex justify-content-between gap-2 bottom-area">
+            <div class="shadow p-3 mb-2 bg-body rounded courses-area">
+                <div class="container text-center" style="width: 800px; height: 600px;">
+                    <!-- <h2>My Courses</h2> -->
+                    <div class="row row-cols-2 g-4">
+                        @foreach($courseCollection as $course)
+                            <div class="col">
+                                <div class="card">
+                                    <svg class="bd-placeholder-img card-img-top" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" 
+                                    role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
+
+                                    <div class="card-body">
+                                        <a href=""><h3><p class="text-start">{{$course['course_title']}}</p></h3></a>
+                                        <!-- <h3 class="card-title">{{$course['course_title']}}</h3> -->
+                                        <p class="card-text">{{$course['course_description']}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <svg class="bd-placeholder-img card-img-top" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" 
+                                    role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
+
+                                    <div class="card-body">
+                                        <a href=""><h3><p class="text-start">{{$course['course_title']}}</p></h3></a>
+                                        <!-- <h3 class="card-title">{{$course['course_title']}}</h3> -->
+                                        <p class="card-text">{{$course['course_description']}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <svg class="bd-placeholder-img card-img-top" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" 
+                                    role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#868e96"></rect><text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
+
+                                    <div class="card-body">
+                                        <a href=""><h3><p class="text-start">{{$course['course_title']}}</p></h3></a>
+                                        <!-- <h3 class="card-title">{{$course['course_title']}}</h3> -->
+                                        <p class="card-text">{{$course['course_description']}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="shadow p-3 mb-2 bg-body rounded announcement-area">
+                <div class="container text-center">
+                    <h2>Announcements</h2>
+                    <p>Testing announcements</p>
+                    <p>Testing announcements</p>
+                    <p>Testing announcements</p>
+                    <p>Testing announcements</p>
+                    <p>Testing announcements</p>
+                </div>
+            </div>
+        </div>
     </div>
+    
     @else
         <h1> Courses Unavailable.</h1>
     @endif
