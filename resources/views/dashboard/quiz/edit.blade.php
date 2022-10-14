@@ -613,6 +613,34 @@
                         addOption(this.value);
                     });
                 }
+                // else if(this.value == "Multiple Choice")
+                // $.ajaxSetup({
+                //     headers: {
+                //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                //     }
+                // });
+                // $.ajax({
+                //         url: questionUpdateRoute,
+                //         type: 'POST',
+                //         data: {
+                //             question: updatedQuestion,
+                //             choice_a: 'Option 1',
+                //             choice_b: 'Option 2',
+                //             choice_c: 'Option 3',
+                //             choice_d: 'Option 4',
+                //             answer: 'C',
+                //         },
+                //         dataType: 'json',
+                //         success: function(response){
+                //             $("#question-table").load(location.href + " #question-table");
+                //             alert('Update done.');
+                //             console.log(response);
+                //         },
+                //         error: function(data){
+                //             console.log(data);
+                //         }
+                // });
+            });
         });
         
 </script>

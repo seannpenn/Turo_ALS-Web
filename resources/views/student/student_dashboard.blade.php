@@ -29,8 +29,10 @@
 @stop
 
 @section('main-content')
+@include('navbar/navbar_inside')
+
     @if(!empty($courseCollection))
-    <div class="announcementBox">
+    <div class="announcementBox" style="margin-top: 30px;">
         Announcements here
     </div>
     <div class="row row-cols-1 row-cols-md-3 g-1" id="courseRow">
