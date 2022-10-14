@@ -75,7 +75,10 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     // for create content topic
     Route::post('/course/topic/create', [TopicController::class, 'create'])->name('topic.create');
     Route::get('/course/content/topic/{topicid}/delete', [TopicController::class, 'delete'])->name('topic.delete');
+    Route::post('course/topic/update/test', [TopicController::class, 'update'])->name('topic.update');
+    
     Route::get('course/{courseid}/topic/{topicid}', [TopicController::class, 'viewTopic'])->name('topic.view'); //important
+    
 
     // for create topic content
 
@@ -107,6 +110,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     //for question
     Route::post('/quiz/question/create', [QuestionController::class, 'create'])->name('question.create'); //for event
     Route::get('/quiz/question/{questionid}', [QuestionController::class, 'getQuestion'])->name('question.get');
+    Route::get('/quiz/question/all/{quizid}', [QuestionController::class, 'getAllQuestions'])->name('question.getAll');
     Route::get('/quiz/question/delete/{questionid}', [QuestionController::class, 'delete'])->name('question.delete');
     Route::post('/quiz/question/update/{questionid}', [QuestionController::class, 'update'])->name('question.update');
 

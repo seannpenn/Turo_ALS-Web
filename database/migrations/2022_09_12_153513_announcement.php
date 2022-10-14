@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('announcement', function (Blueprint $table) {
             $table->increments('announcement_id');
             $table->DateTime('date');
-            $table->string('announcement_title', 45);
-            $table->string('announcement_description', 45)->nullable();
+            $table->string('announcement_title');
+            $table->string('announcement_description')->nullable();
         });
     }
 

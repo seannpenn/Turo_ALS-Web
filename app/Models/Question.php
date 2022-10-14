@@ -22,6 +22,9 @@ class Question extends Model
         'question',
 
     ];
+    public function getAll($quizId){
+        return self::where('quiz_id',$quizId)->get();
+    }
     // This QUESTION/S belongs to a specific quiz.
     public function quiz(){
         return $this->belongsTo(Quiz::class, 'quiz_id', 'quiz_id');

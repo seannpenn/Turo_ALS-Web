@@ -10,7 +10,7 @@
 @section('css-style')
     .layout{
         margin: 0 auto;
-        width: 1000px;
+        width: 50em;
         padding: 50px;
     }
     table {
@@ -75,6 +75,7 @@
                             <td>{{ $quiz->status }}</td>
                             <td>
                                 <a href="{{ route('quiz.edit',[ request()->route('courseid') ,$quiz->quiz_id]) }}" title="Edit Quiz"><button class="btn btn-warning"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
+                                <a href="{{ route('quiz.edit',[ request()->route('courseid') ,$quiz->quiz_id]) }}" title="Edit Quiz"><button class="btn btn-danger"><img src="{{ asset('images/delete.png') }}" alt="" ></button></a>
                             </td>
                         </tr>
 

@@ -39,6 +39,32 @@ class TopicController extends Controller
                 return redirect()->back();
         }
     }
+    public function update(Request $request){
+        $rules = [
+            'topic_title' => 'required',
+        ];
+        
+        $messages = [
+            'topic_title.required' => 'Please input a topic title',
+        ];
+
+        $validation = Validator::make($request->input(), $rules, $messages);
+
+
+        if($validation->fails()){
+            return redirect()->back()->withInput()->withErrors($validation);
+        }
+        else{
+
+            $updateTopic = Topic::where('topic_id',$request->topic_id);
+            $updateTopic->update([
+                'topic_title' => $request->topic_title,
+                'topic_description' => $request->topic_description,
+            ]);
+
+            return redirect()->back();
+        }
+    }
     // deleting a topic
     public function delete($topicId){
         $selectedTopic = Topic::findOrFail($topicId);

@@ -43,7 +43,7 @@ button{
 
 @section('main-content')
 <div class="addButton">
-    <button type="button" id="announcementCreateId" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#announcementCreate" data-bs-whatever="@fat" style="width: 300px; height: 50px; font-size: 15px">Add Announcement</button>  
+    <button type="button" id="announcementCreateId" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#announcementCreate" data-bs-whatever="@fat" style="width: 300px; height: 50px; font-size: 15px">Add Announcement</button>  
 </div>
 
 <h1>Announcements</h1>
