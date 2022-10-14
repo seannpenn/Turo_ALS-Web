@@ -26,6 +26,7 @@ class QuestionController extends Controller
             return redirect()->back()->withInput()->withErrors($validation);
         }
         else{
+            
 
             $questionId = Question::insertGetId([
                 'quiz_id' => $request['quiz_id'],
@@ -38,6 +39,7 @@ class QuestionController extends Controller
             ]);
             
             return redirect()->back();
+            
         }
     }
     // updating of question
@@ -68,9 +70,12 @@ class QuestionController extends Controller
     // get all questions
 
     public function getAllQuestions($id){
-        $selectedQuiz = Quiz::where('course_id', $courseid)->get();
-        $questionCollection = $selectedQuiz->question;
-        return Response::json($questionCollection);
+        $questionModel = new Question;
+        $selectedQuiz = $questionModel->getAll($id);
+        // $selectedQuiz = Question::where('quiz_id', $id)->get();
+        // $questionCollection = $selectedQuiz->question;
+        // echo json_encode($selectedQuiz);
+        return Response::json($selectedQuiz);
     }
 
     // get single question

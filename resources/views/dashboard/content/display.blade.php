@@ -5,6 +5,7 @@
 @extends('modalslug')
 @extends('dashboard/modals/createTopic_modal')
 @extends('dashboard/topic_content/choices_modal')
+@extends('dashboard/content/update_topic_modal')
 @include('dashboard/topic_content/chooseQuiz')
 
 @section('modal-content')
@@ -74,7 +75,7 @@
         text-align: left;
         outline: none;
         font-size: 15px;
-        border: 1px solid black;
+        border: 0.5px solid gray;
         border-radius: 5px;
         height: 70px;
     }
@@ -133,10 +134,10 @@
         border: 2px solid orange;
     }
     .view-topic{
-        width: 1000px;
-        height: 740px;
-        padding: 10px;
-        overflow:hidden;
+        width: 61em;
+        height: 720px;
+        padding: 5px;
+        overflow-x:hidden;
         overflow-y: scroll;
     }
     .topic-content-list {
@@ -185,17 +186,21 @@
     .quiz-select:hover{
         background-color: lightgrey;
     }
+    #panel {
+        padding: 50px;
+        display: none;
+    }
 @stop
 
 @section('main-content')
     @include('dashboard.courses.create_course')
     @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')  ])
-            <div class="d-flex justify-content-start" style="width: 1350px; margin: 0 auto;">
+        <div class="col" style="border: 0.5px solid gray; margin: 0 auto; width: 70%; padding: 10px; border-radius: 10px;">
+            <div class="d-flex justify-content-start" style="width:1350px;">
                 <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#moduleModal" data-bs-whatever="@fat">Create Module</button>
             </div>
-                                            
             <div class="d-flex justify-content-center">
-                <div class="d-flex flex-row mb-3" style="max-height: 730px; width: 350px; overflow-y: scroll;">
+                <div class="d-flex flex-row mb-3" style="max-height: 710px; width: 30%; overflow-y: scroll;">
                     <div class="w-100 p-3">
                         <table>
                             @foreach($courseCollection as $course)
@@ -204,14 +209,15 @@
                                 @stop
                                     @foreach($course->coursecontent as $module)
                                             <tr>
-                                            <button type="button" class="collapsible" id="collapsible" data-topic-value="{{$module->content_id}}" value="{{$module->content_title}}"><b>{{$module->content_title}}</b>
-                                            </button>
+                                                <button type="button"  class="shadow p-3 bg-body rounded collapsible" id="collapsible" data-topic-value="{{$module->content_id}}" value="{{$module->content_title}}"><b>{{$module->content_title}}</b>
+                                                    <!-- <a href="" onclick="return confirm('Are you sure you want to delete this content?')"><img src="{{ asset('images/delete.png') }}" alt=""></a> -->
+                                                </button>
                                                 <!-- For topic create modal  -->
                                             </tr>   
                                             <tr>
                                                 <div class="content">
                                                     @foreach($module->topic as $topic)
-                                                        <button class="topic" data-value="{{$topic->topic_id}}" data-title="{{$topic->topic_title}}" onclick="getTopicId({{$topic->topic_id}})">
+                                                        <button class="topic" data-value="{{$topic->topic_id}}" data-title="{{$topic->topic_title}}" data-description="{{$topic->topic_description}}" onclick="getTopicId({{$topic->topic_id}})">
                                                             <label for="">
                                                                 {{$topic->topic_title}}
                                                             </label>
@@ -245,15 +251,17 @@
                         </table>
                     </div>
                 </div>
-                <div class="d-inline p-1 text-bg-dark align-items-center">
+                <div class="d-inline p-1 text-bg align-items-center">
                     <div class="control-area" id="control-area"></div>
-                    <div class="view-topic" id="view-topic">
-                    
+                        <div class="view-topic" id="view-topic">
+                            
+                        </div>
                     </div>
                 </div>
             </div>
-            
     <script type="text/javascript">
+
+        
 
         var y;
         var contentId, topicId;
@@ -372,7 +380,7 @@
                             view.style.overflow = "scroll";
                             view.innerHTML = `
                             <div class="container text-center" >
-                                <embed src="${asset}" height="700" width="950"/>
+                                <embed src="${asset}" height="700" width="940"/>
                             </div>
                             `;
                         }
@@ -384,13 +392,16 @@
                 });
             });
             
-
+            $("#first").click(function(){
+            $("#panel").toggle(200);
+            
+        });
         
         var i;
         const coll = document.getElementsByClassName("collapsible");
         const topic = document.getElementsByClassName("topic");
         for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function() {
+            $(coll[i]).click(function(){
                 contentid = this.getAttribute("data-topic-value");
                 state = 'http://{{Request::getHttpHost()}}/teacher/course/' + '{{request()->route('courseid')}}/content/' + contentid;
                 if('{{Request::url()}}' !== state)
@@ -403,18 +414,18 @@
                 var routeCreateTopic = "http://localhost:8000/teacher/course/content/" + contentid +"/topic";
 
                 routeTopicCreate = routeTopicCreate.replace(':contentId', contentid);
-                
-                control.innerHTML = `
+                view.innerHTML = ``;
+                view.innerHTML = `
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                         <button 
-                                            type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#topicCreate{{request()->route('contentid')}}">Create Topic
+                                            type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#topicCreate{{request()->route('contentid')}}">Add Topic
                                         </button>
                                     </div>
                                     <h2 style="margin-left:20px;"> ${this.value} ${contentid}</h2>
                                     <hr>
                 `;
                 view.style.overflow = "hidden";
-                view.innerHTML = ``;
+                
 
                 $('.create-button').click(function(e){
                         $("#content_id").val(contentid);
@@ -436,6 +447,7 @@
                 
                 topicId = this.getAttribute("data-value");
                 topicTitle = this.getAttribute("data-title");
+                topicDescription= this.getAttribute("data-description");
                 state = 'http://{{Request::getHttpHost()}}/teacher/course/' + '{{request()->route('courseid')}}/topic/' + topicId;
                 if('{{Request::url()}}' !== state)
                 {
@@ -447,16 +459,27 @@
                 view.style.overflow = "hidden";
                 view.innerHTML = ``;
                 
-                control.innerHTML = `
+                view.innerHTML = `
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                         <button 
+                                            type="button" id="topicUpdate" class="create-button" data-bs-toggle="modal" 
+                                            data-bs-whatever="@fat" data-bs-target="#topicUpdateModal">Edit topic
+                                        </button>
+                                        <button 
                                             type="button" id="topicChoices" class="create-button" data-bs-toggle="modal" 
-                                            data-bs-whatever="@fat" data-bs-target="#topicChoices">Create Resource
+                                            data-bs-whatever="@fat" data-bs-target="#topicChoices">Add Resource
                                         </button>
                                     </div>
                                     <h2 style="margin-left:20px;">${topicTitle} ${topicId}</h2>
                                     <hr>
                 `;
+
+                // update topic modal
+                $('#topicUpdate').click(function(e){
+                    $("#topic_id").val(topicId);
+                    $("#topic_title").val(topicTitle);
+                    $("#topic_description").text(topicDescription);
+                });
 
                 // assigning of topic id to adding of resources
                 $('#html-choice-button').click(function(e){

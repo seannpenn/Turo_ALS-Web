@@ -1,6 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"> -->
+    <script src= "{{ asset('js/bootstrap.js') }}" ></script>
+    
+    <style>
+      .nav-link {
+        color:orange;
+      }
+      a{
+        text-decoration: none;
+        color:orange;
+      }
+      nav{
+        /* box-shadow: 2px 1px 5px 2px lightgrey; */
+        /* border-bottom: 2px solid white; */
+        background-color: white;
+      }
+      .navbar-brand{
+        color:orange;
+      }
+      .container-fluid a{
+        font-size: 20px;
+      }
+      .nav-item{
+        margin-right: 15px;
+      }
+      /* #container-outer{
+        width: 1500px;
+      } */
+    </style>
+
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,6 +65,7 @@
     width: 1500px;
   }
   </style>
+
 </head>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>  
 
@@ -144,15 +179,27 @@
         @elseif(Auth::user()->userType == '1')
         
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{Auth::user()->username}}
-            </a>
-            
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{route('teacher.profile')}}">Profile</a></li>
-              <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
-            </ul>
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{Auth::user()->username}}
+              </a>
+              
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{route('teacher.profile')}}">Profile</a></li>
+                <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
+              </ul>
           </li>
+        @else
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{Auth::user()->username}}
+              </a>
+              
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{route('teacher.profile')}}">Profile</a></li>
+                <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
+              </ul>
+          </li>
+
           <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
 
         @endif
@@ -167,6 +214,7 @@
             <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
           </ul>
         </li>
+
         @endif
         
       </div>
@@ -198,14 +246,14 @@
 </body>
 
 <script>
-let confirmTask = document.getElementById('homeButton');
-confirmTask.addEventListener('click',()=>{
-  if(Auth::user()->userType == '1'){
-    window.location.href = "{{ route('teacher.home') }}";
-  }
-  else{
-    window.location.href = "{{ route('home') }}";
-  }
-  }); 
+// let confirmTask = document.getElementById('homeButton');
+// confirmTask.addEventListener('click',()=>{
+//     if(Auth::user()->userType == '1'){
+//       window.location.href = "{{ route('teacher.home') }}";
+//     }
+//     else{
+//       window.location.href = "{{ route('home') }}";
+//     }
+//   }); 
 </script>
 </html>

@@ -29,7 +29,7 @@ class TopicContentController extends Controller
                     'type' =>$request['type'],
                     'html' => $request['html'],
                 ]);
-                return redirect()->route('course.showInfo', $course);
+                
             }
 
             if($request->type == 'file'){
@@ -46,7 +46,7 @@ class TopicContentController extends Controller
                     'file' => $originalFileName,
                 ]);
                 
-                return redirect()->route('course.showInfo', $course);
+                
             }
 
             if($request->type == 'quiz'){
@@ -57,9 +57,9 @@ class TopicContentController extends Controller
                     'topic_content_title' => $request['topic_content_title'],
                     'link' =>$request['link'],
                 ]);
-                return redirect()->back();
+                
             }
-            
+            return redirect()->back();
     }
     
     public function linkContent(Request $request, $id){

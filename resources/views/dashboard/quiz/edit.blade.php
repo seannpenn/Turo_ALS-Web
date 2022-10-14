@@ -104,110 +104,110 @@
         <br>
             <div class="questions" id="questions">
                 @foreach($selectedQuiz[0]->question as $key => $question)
-                        <div class="card text-center questionContainer" id="question-container" style="width: 50%; margin: 0 auto; margin-bottom: 20px;" question-id="{{$question->question_id}}" tabindex='1'>
-                            <div class="card-header" style="background-color: orange;">
-                                question id: {{ $question->question_id }}
-                            </div>
-                            <div class="card-body " >
-                                <div class="row g-3 optionArea">
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control question_id" id="question_id" placeholder="Question" aria-label="Question" value="{{ $question->question_id }}" hidden>
-                                        <input type="text" style="height:45px;" class="form-control question" id="question" placeholder="Question" aria-label="Question" value="{{ $question->question }}" question-id="{{$question->question_id}}">
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <select id="questionType" class="form-select questionType">
-                                        @php
-                                            $count = 1;
-                                        @endphp
-                                        @foreach($types as $type)
-                                            @if(($count == 1) and ($question->type <> $type->type_id))
-                                                <option value="{{ $type->type_id }}" selected>{{ $type->type_name }}</option>
-                                            @elseif($question->type == $type->type_id)  
-                                                <option value="{{ $type->type_id }}" selected>{{ $type->type_name }}</option>
-                                            @else
-                                                <option value="{{ $type->type_id }}">{{ $type->type_name  }}</option>
-                                            @endif
+                            <div class="card text-center questionContainer" id="question-container" style="width: 50%; margin: 0 auto; margin-bottom: 20px;" question-id="{{$question->question_id}}" tabindex='1'>
+                                <div class="card-header" style="background-color: orange;">
+                                    question id: {{ $question->question_id }}
+                                </div>
+                                <div class="card-body " >
+                                    <div class="row g-3 optionArea">
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control question_id" id="question_id" placeholder="Question" aria-label="Question" value="{{ $question->question_id }}" hidden>
+                                            <input type="text" style="height:45px;" class="form-control question" id="question" placeholder="Question" aria-label="Question" value="{{ $question->question }}" question-id="{{$question->question_id}}">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <select id="questionType" class="form-select questionType">
                                             @php
-                                                $count++;
+                                                $count = 1;
                                             @endphp
-                                        @endforeach
-                                        </select>
-                                    </div>
-                                    <div class ="questionChoices" id="questionChoices">
-                                        <form>
-                                            @foreach($question->option as $option)
-
-                                            <div class="input-group mb-3">
-                                                <div class="input-group flex-nowrap " id="optionArea">
-                                                    @if($option->isCorrect == 1)
-                                                        <span class="input-group-text" style="color:green; background-color:transparent;border-style: hidden;">
-                                                            <img src="{{ asset('images/correct.png') }}"  alt="" width="20" height="20">
-                                                        </span>
-                                                    @endif
-                                                    @if($question->type != 2)
-                                                        <span class="input-group-text" id="addon-wrapping">
-                                                            @if($question->type == 1)
-                                                                <input type="radio" value="{{$option->option_id}}" href="" aria-label="Checkbox for following text input" disabled>
-                                                            @elseif($question->type == 3)
-                                                                <input type="checkbox" value="{{$option->option_id}}" aria-label="Checkbox for following text input" disabled>
-                                                            @endif
-
-                                                        </span>
-                                                        <input type="text" class="form-control option" id="option" placeholder="Question" aria-label="Question" option-id = "{{$option->option_id}}" value="{{$option->option}}">
-                                                    @endif
-
-                                                    @if($question->type == 2)
-                                                        <div class="col-sm-5">
-                                                            <input type="text" style="border-top-style: hidden; border-right-style: hidden;border-left-style: hidden;" placeholder="Short answer text" class="form-control" aria-label="Question" value="">
-                                                        </div>
-                                                    @endif
-
-                                                    
-                                                    @if($question->type != 2)
-                                                    <span class="input-group-text" style="background-color: transparent; ">
-                                                        @if($option->isCorrect == 1)
-                                                            <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer" checked>
-                                                        @else
-                                                        <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer" >
-                                                        @endif
-                                                    </span>
-                                                    <span class="input-group-text">
-                                                        <button type="button" class="form-check-label deleteOption" style="border:none;" value="{{$option->option_id}}" title="Delete Option" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/close.png') }}" alt="" width="20" height="20"></button>
-                                                    </span>
-                                                    @endif
-                                                </div>
-                                            </div>
+                                            @foreach($types as $type)
+                                                @if(($count == 1) and ($question->type <> $type->type_id))
+                                                    <option value="{{ $type->type_id }}" selected>{{ $type->type_name }}</option>
+                                                @elseif($question->type == $type->type_id)  
+                                                    <option value="{{ $type->type_id }}" selected>{{ $type->type_name }}</option>
+                                                @else
+                                                    <option value="{{ $type->type_id }}">{{ $type->type_name  }}</option>
+                                                @endif
+                                                @php
+                                                    $count++;
+                                                @endphp
                                             @endforeach
-                                            <div class="row g-3">
-                                                    <div class="col-sm-9" style="text-align:left;">
-                                                        <div class="form-check">
-                                                        @if($question->type != 2)
-                                                            <button type="button" style="border:none; background-color: transparent;" class="addOptionButton" value="{{ $question->question_id }}"><img src="{{ asset('images/add.png') }}" alt="" width="20" height="20">Add option</button>
+                                            </select>
+                                        </div>
+                                        <div class ="questionChoices" id="questionChoices">
+                                            <form>
+                                                @foreach($question->option as $option)
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group flex-nowrap " id="optionArea">
+                                                        @if($option->isCorrect == 1)
+                                                            <span class="input-group-text" style="color:green; background-color:transparent;border-style: hidden;">
+                                                                <img src="{{ asset('images/correct.png') }}"  alt="" width="20" height="20">
+                                                            </span>
                                                         @endif
-                                                        </div>
+                                                        @if($question->type != 2)
+                                                            <span class="input-group-text" id="addon-wrapping">
+                                                                @if($question->type == 1)
+                                                                    <input type="radio" value="{{$option->option_id}}" href="" aria-label="Checkbox for following text input" disabled>
+                                                                @elseif($question->type == 3)
+                                                                    <input type="checkbox" value="{{$option->option_id}}" aria-label="Checkbox for following text input" disabled>
+                                                                @endif
+
+                                                            </span>
+                                                            <input type="text" class="form-control option" id="option" placeholder="Question" aria-label="Question" option-id = "{{$option->option_id}}" value="{{$option->option}}">
+                                                        @endif
+
+                                                        @if($question->type == 2)
+                                                            <div class="col-sm-5">
+                                                                <input type="text" style="border-top-style: hidden; border-right-style: hidden;border-left-style: hidden;" placeholder="Short answer text" class="form-control" aria-label="Question" value="">
+                                                            </div>
+                                                        @endif
+
+                                                        
+                                                        @if($question->type != 2)
+                                                        <span class="input-group-text" style="background-color: transparent; ">
+                                                            @if($option->isCorrect == 1)
+                                                                <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer" checked>
+                                                            @else
+                                                            <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer" >
+                                                            @endif
+                                                        </span>
+                                                        <span class="input-group-text" style="background-color: transparent;">
+                                                            <button type="button" class="form-check-label deleteOption" style="border:none; background-color: transparent;" value="{{$option->option_id}}" title="Delete Option" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/close.png') }}" alt="" width="20" height="20"></button>
+                                                        </span>
+                                                        @endif
                                                     </div>
-                                            </div>
-                                        </form>
+                                                </div>
+                                                @endforeach
+                                                <div class="row g-3">
+                                                        <div class="col-sm-9" style="text-align:left;">
+                                                            <div class="form-check">
+                                                            @if($question->type != 2)
+                                                                <button type="button" style="border:none; background-color: transparent;" class="addOptionButton" value="{{ $question->question_id }}"><img src="{{ asset('images/add.png') }}" alt="" width="20" height="20">Add option</button>
+                                                            @endif
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
-                                <hr>
-                                <div class="d-flex justify-content-end">
-                                    <div class="d-flex justify-content-evenly" style="width: 200px;">
-                                        <a class="setAnswer" title="Set Answer" value="{{ $question->question_id }}"><img src="{{ asset('images/answer.png') }}"  alt="" width="20" height="20"> Set answer</a>
-                                        <button class="question-button deleteQuestion" value="{{ $question->question_id }}" title="Delete Question" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border:none;"><img src="{{ asset('images/delete.png') }}" alt="" width="20" height="20"></button>
+                                    <hr>
+                                    <div class="d-flex justify-content-end">
+                                        <div class="d-flex justify-content-evenly" style="width: 200px;">
+                                            <a class="setAnswer" title="Set Answer" value="{{ $question->question_id }}"><img src="{{ asset('images/answer.png') }}"  alt="" width="20" height="20"> Set answer</a>
+                                            <button class="question-button deleteQuestion" style="background-color: transparent; border:none;" value="{{ $question->question_id }}" title="Delete Question" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border:none;"><img src="{{ asset('images/delete.png') }}" alt="" width="20" height="20"></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    
-                    <!-- for updating the question -->
                         
-                    <!-- for deleting the question -->
-                        @section('modal-title')
-                            Delete Question
-                        @stop
-                    <!--  -->
-                @endforeach
+                        <!-- for updating the question -->
+                            
+                        <!-- for deleting the question -->
+                            @section('modal-title')
+                                Delete Question
+                            @stop
+                        <!--  -->
+                    @endforeach
                 <br>
             </div>
         @else
@@ -230,9 +230,8 @@
                 deleteQuestion(),
                 deleteOption(),
                 getQuestion(),
-                
+                // loadQuestions(),
             );
-
             var isCorrect = document.getElementsByClassName('isCorrect');
 
             for(var i = 0; i < isCorrect.length; i++) {
@@ -257,7 +256,7 @@
                 var x;
                 for(x=0;x<question.length;x++){
                     $(question[x]).click(function(e){
-                        var getQuestionRoute = "{{route('question.get', ":questionid")}}";
+                        var getQuestionRoute = "{{ route('question.get', ":questionid") }}";
                         var questionId = this.getAttribute("question-id");
                         getQuestionRoute = getQuestionRoute.replace(':questionid', questionId);
 
@@ -277,6 +276,13 @@
                     });
                 }
             }
+            // await axios.post(`http://localhost:8000/api/products`, formData).then(({data})=>{
+            // Swal.fire({
+            //     icon:"success",
+            //     text:data.message
+            // })
+            // navigate("/")
+            // })
             
             // delete question
             function deleteQuestion(){
@@ -326,14 +332,16 @@
             var quizId = {{request()->route('quizid')}};
             
             $("#createQuestion").click(function(e){
-                
+                e.preventDefault();
                 console.log(questionCreateRoute);
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }
                 });
-                
+                // $('#questions').html(`<div class="spinner-border" role="status">
+                //                             <span class="visually-hidden">Loading...</span>
+                //                             </div>`);
                 $.ajax({
                         url: questionCreateRoute,
                         type: 'POST',
@@ -344,7 +352,9 @@
                         dataType: 'json',
                         success: function(response){
                             console.log(response);
-                            console.log(response);
+                        },
+                        complete: function(response){
+                            console.log('created successfully')
                         },
                         error: function(data){
                             console.log(data);
@@ -354,7 +364,7 @@
                     window.location.reload();
                 });
                 
-            });
+                });
 
             
 
@@ -434,6 +444,10 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                         }
                         });
+                        if(this.value == "2"){
+                            deleteAllOption(data.question_id);
+                            addOption(data.question_id);
+                        }
                         $.ajax({
                                 url: questionUpdateRoute,
                                 type: 'POST',
@@ -447,10 +461,6 @@
                                     console.log(response);
                                 },
                         });
-                        if(this.value == "2"){
-                            deleteAllOption(data.question_id);
-                            addOption(data.question_id);
-                        }
                         $(document).ajaxStop(function(){
                             
                             window.location.reload();
@@ -465,7 +475,7 @@
             
             var a;
             for(a=0;a<option.length;a++){
-                $(option[a]).on("click change", function(e){
+                $(option[a]).on("change", function(e){
                     var option_id = this.getAttribute("option-id");
                     var updateOptionRoute = "{{route('option.update', ":optionid")}}";
                     updateOptionRoute = updateOptionRoute.replace(':optionid', option_id);
@@ -565,40 +575,41 @@
 
             // add Option
 
-            function addOption(questionId){
-                $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            }
-                        });
-                        $.ajax({
-                            url: optionCreateRoute,
-                            type: 'POST',
-                            data: {
-                                question_id: questionId,
-                                option: 'Untitled option',
-                            },
-                            dataType: 'json',
-                            success: function(data){
-                                console.log('Option added');
-                                console.log(data);
-                            },
-                            error: function(data){
-                                console.log(data);
-                                console.log('error');
-                            },
-                        });
-                        $(document).ajaxStop(function(){
-                            window.location.reload();
-                        });
-            }
+                function addOption(questionId){
+                    $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                }
+                            });
+                            $.ajax({
+                                url: optionCreateRoute,
+                                type: 'POST',
+                                data: {
+                                    question_id: questionId,
+                                    option: 'Untitled option',
+                                },
+                                dataType: 'json',
+                                success: function(data){
+                                    console.log('Option added');
+                                    console.log(data);
+                                },
+                                error: function(data){
+                                    console.log(data);
+                                    console.log('error');
+                                },
+                            });
+                            $(document).ajaxStop(function(){
+                                window.location.reload();
+                            });
+                }
             
                 const optionButton = document.getElementsByClassName("addOptionButton");
                 var index;
                 var optionCreateRoute = "{{route('option.create')}}";
-                console.log(optionCreateRoute);
+                
                 for(index = 0; index < optionButton.length; index++){
                     $(optionButton[index]).click(function(e){
+                        console.log(optionCreateRoute);
                         addOption(this.value);
                     });
                 }

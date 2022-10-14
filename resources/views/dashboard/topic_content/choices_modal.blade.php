@@ -42,6 +42,7 @@
                 <div class="mb-3">
                     <label for="recipient-name" class="col-form-label">Title</label>
                     <input type="text" name="topic_content_title" class="form-control" id="recipient-name">
+                    <input type="text" name="type" value="html" hidden>
                     <input type="text" id= "html_topic_id" name="topic_id" class="form-control" value="" readonly>
                 </div>
                 <div class="form-group">
