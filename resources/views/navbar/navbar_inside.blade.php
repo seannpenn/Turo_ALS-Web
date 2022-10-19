@@ -51,13 +51,14 @@
               @endif
         
           @elseif(Auth::user()->userType == '2')
-            @if(Route::currentRouteName() == 'student.student_viewcontent' || Route::currentRouteName() == 'student.course')
+            @if( Route::currentRouteName() == 'student.course')
             <a class="inner-nav-link" aria-current="page" href="{{route('student.course')}}">Courses</a>
 
             @elseif(Route::currentRouteName() != 'student.course')
-            <a class="inner-nav-link" aria-current="page" href="{{route('student.student_viewmodule', request()->route('courseid'))}}">Course Home</a>
-            <a class="inner-nav-link" aria-current="page" href="{{route('student.course')}}">Content</a>
-            <a class="inner-nav-link" aria-current="page" href="{{route('student.course')}}">Quizzes</a>
+            <a class="inner-nav-link" aria-current="page" href="{{route('student.course')}}">Courses</a>
+            <a class="inner-nav-link" aria-current="page" href="{{route('student.courseHome', request()->route('courseid'))}}">Course Home</a>
+            <a class="inner-nav-link" aria-current="page" href="{{route('student.contentDisplay', request()->route('courseid'))}}">Content</a>
+            <a class="inner-nav-link" aria-current="page" href="{{route('student.quizzes', request()->route('courseid'))}}">Quizzes</a>
           @endif
         @endif
       @endauth

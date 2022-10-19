@@ -97,6 +97,8 @@ class CourseController extends Controller
         return view('dashboard.content.display')->with(compact('courseCollection'));
     }
 
+
+
     //display courses in students page
     public function studentDisplayCourse(){
         $studentId = Student::where('user_id', Auth::id())->get()->first();
@@ -104,14 +106,18 @@ class CourseController extends Controller
         $teacher = Teacher::getTeacherByLocProg($EnrolledStudent->loc_id, $EnrolledStudent->prog_id);
 
         $courseCollection = $teacher->course;
-        return view('student.student_dashboard')->with(compact('courseCollection'));
+        return view('student.course.display')->with(compact('courseCollection'));
     }
 
     public function studentDisplayModule($id){
         $chosenCourse = Course::where('course_id',$id)->get();
-        return view('student.student_viewmodule')->with(compact('chosenCourse'));  
+        return view('student.student_viewmodule')->with(compact('chosenCourse'));
     }
 
+    public function studentDisplayModules($id){
+        $chosenCourse = Course::where('course_id',$id)->get();
+        return view('student.content.home')->with(compact('chosenCourse'));  
+    }
     // public function studentDisplayContent($id){
     //     $chosenCourse = CourseContent::where('content_id',$id)->get();
     //     return view('student.student_viewcontent')->with(compact('chosenCourse', 'courseCollection'));  
@@ -124,6 +130,6 @@ class CourseController extends Controller
 
         $courseCollection = $teacher->course;
         
-        return view('student.student_viewcontent')->with(compact('courseCollection'));
+        return view('student.content.display')->with(compact('courseCollection'));
     }
 }

@@ -149,13 +149,20 @@ Route::middleware('auth')->group(function(){
 
 
     Route::get('/student/announcement', [AnnouncementController::class,'showAnnouncement'])->name('student.student_dashboard');
-    Route::get('/student/course/{id}', [CourseController::class,'studentShowCourse'])->name('student.student_coursecontent');
+    Route::get('/student/course/{courseid}/home', [CourseController::class,'studentDisplayModules'])->name('student.courseHome');
+    Route::get('/student/course/{courseid}', [CourseController::class,'studentDisplayContent'])->name('student.contentDisplay');
+    Route::get('/student/course/{courseid}/modules', [CourseController::class,'studentDisplayModule'])->name('student.student_viewmodule');
+    Route::get('/student/course/{courseid}/topiccontent/{topiccontentid}', [TopicContentController::class, 'studentViewTopicContent'])->name('student.topicContent'); //important
+
+    // quiz
+    Route::get('/student/course/{courseid}/quizzes', [QuizController::class,'getQuizzes'])->name('student.quizzes');
+    Route::get('/student/course/{courseid}/quiz/{quizid}', [QuizController::class,'viewQuiz'])->name('student.viewQuiz');
 });
 
 
 //for students course content page
 Route::get('/student/courses', [CourseController::class, 'studentDisplayCourse'])->name('student.course');
-Route::get('/student/course/{courseid}/modules', [CourseController::class,'studentDisplayModule'])->name('student.student_viewmodule');
+
 Route::get('/student/course/{courseid}/content', [CourseController::class,'studentDisplayContent'])->name('student.student_viewcontent');
 
 //for student topic content page
