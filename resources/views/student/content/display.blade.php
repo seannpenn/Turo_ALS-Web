@@ -51,17 +51,18 @@
     }
     .collapsible {
         margin: 10px;
-        background-color: white;
-        color: orange;
+        background-color: orange;
+        color: white;
         cursor: pointer;
         padding: 5px;
         width: 280px;
-        text-align: left;
+        text-align: center;
         outline: none;
         font-size: 15px;
-        border: 1px solid black;
-        border-radius: 5px;
+        border: 1px solid orange;
         height: 70px;
+        <!-- border-radius: 5px; -->
+        
     }
     
     .collapsible:hover {
@@ -170,7 +171,7 @@
             @foreach($course->coursecontent as $module)
 
             <tr>
-                <button type="button" class="collapsible" data-topic-value="{{$module->content_id}}" value="{{$module->content_id}}">
+                <button type="button" class="collapsible" content-title="{{$module->content_title}}" value="{{$module->content_id}}">
                     <b>{{$module->content_title}}</b>
                 </button>
             </tr>
@@ -179,7 +180,7 @@
                 <div class="content">
                     @foreach($module->topic as $topic)
                     
-                    <div class="topic" data-value="{{$topic->topic_id}}" value="{{$topic->topic_title}}" onclick="getTopicId({{$topic->topic_id}})">
+                    <div class="topic" topic-id="{{$topic->topic_id}}" topic-title="{{$topic->topic_title}}" onclick="getTopicId({{$topic->topic_id}})">
                         <label for="">
                             {{$topic->topic_title}}
                         </label>
@@ -212,7 +213,7 @@
     </div>
 </div>
                 
-<div class="d-inline p-2 text-bg-dark align-items-center">
+<div class="d-inline p-2 text-bg align-items-center">
     <div class="control-area" id="control-area">
         {{request()->route('id')}}
     </div>
@@ -239,12 +240,12 @@ function getTopicId(id){
 
 $(document).ready(function () {
     $(".topic-content").click(function(e){
-        var routeURL = '{{Request::getRequestUri()}}' + '/view/' + contentId;
+        var getTopicContent = '/student/course/' + "{{request()->route('courseid')}}" +  '/topiccontent/'+ contentId;
         e.preventDefault();
         
         $.ajax({
             type: "GET",
-            url: routeURL,
+            url: getTopicContent,
             dataType: 'json',
             
             success: function(data){
@@ -252,22 +253,12 @@ $(document).ready(function () {
                     view.innerHTML = `<h1> ${data[0].topic_content_title} </h1><hr>`;
                     view.innerHTML += `<div class="text-content">
                     <div class="col-auto">
-                        <form>
                             <div class="card-body">
-                                {{csrf_field()}}
-                            
-                                <div class="mb-3">
-                                    <label for="recipient-name" class="col-form-label">Topic Title</label>
-                                    <input type="text" name="topic_content_title" class="form-control" id="topic_content_title" value="${data[0].topic_content_title}">
-                                    <input type="text" name="type" class="form-control" id="type" value="html" hidden>
-                                    <input type="text" name="topic_id" class="form-control" id="topic_id" value="${data[0].topic_id}" hidden>
-                                </div>
-                                
+                                <br>
                                 <div class="form-group">
-                                    <textarea class="form-control mt-5" name="html" id="editor" rows="20" >${data[0].html}</textarea>
+                                    ${data[0].html}
                                 </div>
                             </div>
-                        </form>
                         <br><br>
                     </div>
                     `;
@@ -288,17 +279,37 @@ $(document).ready(function () {
                     view.innerHTML += `<div class="container text-center" style=" margin: 200px auto;">
                     <div class="row">
                         <div class="col align-self-center">
-                            <h1>View and edit this quiz in the quiz tab</h1>
+                            <h1>View this quiz in the quiz tab</h1>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col align-self-center">
-                            <a href=""><button type="submit" class="btn btn-warning">Go to Quiz</button></a>
+                            <button id="goToQuiz" type="submit" class="btn btn-warning">Go to Quiz</button>
                         </div>
                     </div>
                     `;
+                    $('#goToQuiz').click(function(){
+                        var quizId = data[0].link;
+                        var goToQuizRoute = '/student/course/' + "{{request()->route('courseid')}}" +  '/quiz/'+ quizId;
+                        window.location.href = goToQuizRoute;
+                    });
+
                 }
+
+                else{
+                    var asset = "{{ asset(":fileDirectory") }}";
+                    asset = asset.replace(':fileDirectory', data[1]);
+                    console.log(asset);
+                    console.log(data[1]);
+                    control.innerHTML = ``;
+                    view.style.overflow = "scroll";
+                        view.innerHTML = `
+                        <div class="container text-center" >
+                            <embed src="${asset}" height="700" width="940"/>
+                        </div>
+                        `;
+                    }
                 console.log(data); 
             },
             error: function(data){
@@ -308,46 +319,48 @@ $(document).ready(function () {
     });
 });
             
-var i;
-const coll = document.getElementsByClassName("collapsible");
-const topic = document.getElementsByClassName("topic");
-for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function() {
-        const dataValue = this.getAttribute("data-topic-value");
-        var contentId = coll.value;
-        
-        view.innerHTML = `<h2 style="margin-left:20px;"> ${this.value}</h2>
-        <hr>
-        `;
-        
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        
-        if (content.style.display === "block") {
-            content.style.display = "none";
-        } 
-        else {
-            content.style.display = "block";
-        }
-    });
-}
+    var i;
+    const coll = document.getElementsByClassName("collapsible");
 
-for (z = 0; z < topic.length; z++) {
-    topic[z].addEventListener("click", function() {
-        dataValue = this.getAttribute("data-value");
-        
-        view.innerHTML = `<h2 style="margin-left:20px;"> ${this.value}</h2>
-        <hr>
-        `;
-        
-        var topiccontent = this.nextElementSibling;
-        if (topiccontent.style.display === "block") {
-            topiccontent.style.display = "none";
-        } 
-        else {
-            topiccontent.style.display = "block";
-        }
-    });
-}
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            const contentTitle = this.getAttribute("content-title");
+            
+            view.innerHTML = `<h2 style="margin-left:20px;"> ${contentTitle}</h2>
+            <hr>
+            `;
+            
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } 
+            else {
+                content.style.display = "block";
+            }
+        });
+    }
+
+    const topic = document.getElementsByClassName("topic");
+    for (z = 0; z < topic.length; z++) {
+        topic[z].addEventListener("click", function() {
+            topicId = this.getAttribute("topic-id");
+            topicTitle = this.getAttribute("topic-title");
+            view.innerHTML = `<h2 style="margin-left:20px;"> ${topicId}</h2>
+            <hr><br><br>
+            `;
+            view.innerHTML += `<h2 style="margin-left:20px;"> ${topicTitle}</h2>
+            `;
+            
+            var topiccontent = this.nextElementSibling;
+            if (topiccontent.style.display === "block") {
+                topiccontent.style.display = "none";
+            } 
+            else {
+                topiccontent.style.display = "block";
+            }
+        });
+    }
 </script>
 @stop

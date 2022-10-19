@@ -69,30 +69,26 @@
         
         <form action="{{ route('teacher.login') }}" method="post">
         {{ csrf_field() }}
-            <div class="row mb-3">
-                <label for="inputEmail3" class="col-sm-2 col-form-label">Username</label>
-                <div class="col-sm-10">
-                    <input type="text" name="username" value="{{ old('email') }}" class="form-control" id="inputEmail3">
-                    <div class="col-auto">
-                        @foreach($errors->get('email') as $errorMessage )
-                            <span>{{ $errorMessage }}</span>
-                        @endforeach        
-                    </div>
+
+            <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Username</label>
+                <input type="text" name="username" value="{{ old('email') }}" class="form-control" id="inputEmail3">
+                <div class="col-auto">
+                    @foreach($errors->get('email') as $errorMessage )
+                        <span>{{ $errorMessage }}</span>
+                    @endforeach        
                 </div>
             </div>
-            <div class="row mb-3">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
-                    <input type="password" name="password"  class="form-control" id="inputPassword3">
-                    <div class="col-auto">
-                        @foreach($errors->get('password') as $errorMessage )
-                            <span>{{ $errorMessage }}</span>
-                        @endforeach 
-                    </div>
+            <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Password</label>
+                <input type="password" name="password"  class="form-control" id="inputPassword3">
+                <div class="col-auto">
+                    @foreach($errors->get('password') as $errorMessage )
+                        <span>{{ $errorMessage }}</span>
+                    @endforeach 
                 </div>
             </div>
            
-            
             <div class="d-grid gap-2 col-6 mx-auto">
                 <button type="submit" class="btn btn-warning" type="button">Sign in</button>
             </div>
