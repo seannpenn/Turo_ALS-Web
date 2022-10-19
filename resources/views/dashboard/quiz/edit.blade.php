@@ -339,9 +339,6 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }
                 });
-                // $('#questions').html(`<div class="spinner-border" role="status">
-                //                             <span class="visually-hidden">Loading...</span>
-                //                             </div>`);
                 $.ajax({
                         url: questionCreateRoute,
                         type: 'POST',
@@ -370,7 +367,7 @@
 
             //update quiz
             var quizId = "{{request()->route('quizid')}}";
-            var quizUpdateRoute = "{{route('quiz.update', ":quizid") }}";
+            var quizUpdateRoute = "{{route('quiz.update', ":quizid")}}";
             quizUpdateRoute = quizUpdateRoute.replace(':quizid', quizId);
 
                 $("#quiz_title").change(function(e){

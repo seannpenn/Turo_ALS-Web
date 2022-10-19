@@ -58,7 +58,7 @@
         @stop
     </div>
     <div class="layout">
-    @if($quizCollection->count() != 0)
+        @if($quizCollection->count() != 0)
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <table class="table table-hover table table-bordered">
                 <tr>

@@ -85,4 +85,15 @@ class QuizController extends Controller
         return Response::json($quizCollection);
     }
 
+    // get quizzes for student
+
+    public function getQuizzes($courseid){
+        $quizCollection = Quiz::where('course_id', $courseid)->get();
+        return view('student.quiz.display')->with(compact('quizCollection'));
+    }
+    public function viewQuiz($courseid,$quizid){
+        $chosenQuiz = Quiz::where('quiz_id', $quizid)->get();
+        return view('student.quiz.viewQuiz')->with(compact('chosenQuiz'));
+    }
+
 }
