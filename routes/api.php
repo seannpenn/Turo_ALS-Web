@@ -36,4 +36,5 @@ Route::get('/{id}/course', [CourseController::class, 'show']); //ok
 
 Route::get('/course/{id}/module', [CourseContentController::class, 'show']); //ok
 Route::get('/module/{id}/topic', [TopicController::class, 'show']); 
-Route::get('/topic/{id}/quiz', [QuizController::class, 'show']);
+Route::get('/course/{id}/quiz', [QuizController::class, 'show']);
+Route::get('/quiz/{id}/questions', [QuizController::class, 'getQuestion']);
