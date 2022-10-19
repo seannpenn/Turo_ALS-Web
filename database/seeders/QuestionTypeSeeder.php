@@ -25,7 +25,6 @@ class QuestionTypeSeeder extends Seeder
                 'type_name' => 'Checkboxes'
             ],
         ];
-
         DB::table('question_type')->insert($types);
     }
 }

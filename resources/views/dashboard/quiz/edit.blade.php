@@ -357,9 +357,9 @@
                             console.log(data);
                         },
                 });
-                $(document).ajaxStop(function(){
-                    window.location.reload();
-                });
+                // $(document).ajaxStop(function(){
+                //     window.location.reload();
+                // });
                 
             });
 
@@ -529,7 +529,7 @@
             }
 
             // Choose question type
-            // const questionType = document.getElementsByClassName("questionType");
+            const questionType = document.getElementsByClassName("questionType");
             const options = document.getElementsByClassName("option");
             var x, y=0;
             for(x=0;x<questionType.length;x++){
