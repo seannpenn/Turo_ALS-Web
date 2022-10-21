@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Validator;
+use Response;
 use App\Models\Teacher;
 use App\Models\Student;
 use App\Models\Course;
@@ -39,8 +40,9 @@ class CourseController extends Controller
             $course->course_description = $request->course_description;
             
             $course->save();
-
-            return redirect('teacher/course/all')->with('message', 'Course created successfully');
+            return redirect()->back();
+            // return back();
+            // return redirect('teacher/course/all')->with('message', 'Course created successfully');
         }
     }
     // updating of courses
@@ -83,7 +85,15 @@ class CourseController extends Controller
         $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
         $ownedCourses = Course::where('teacher_id', $teacherId->teacher_id)->get();
 
+        // return Response::json($ownedCourses);
+
         return view('dashboard.courses.display_course')->with(compact('ownedCourses' ));
+    }
+    public function getCourses(){
+        $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
+        $ownedCourses = Course::where('teacher_id', $teacherId->teacher_id)->get();
+
+        return Response::json($ownedCourses);
     }
     // viewing of course created.
     public function showCourse($id){

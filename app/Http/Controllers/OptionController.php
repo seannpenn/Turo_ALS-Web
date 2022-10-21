@@ -59,7 +59,14 @@ class OptionController extends Controller
             return Response::json($updateOption);
         }
     }
-
+    public function getOptions($questionId){
+        $optionModel = new Option;
+        $options = $optionModel->getAllOption($questionId);
+        // $selectedQuiz = Question::where('quiz_id', $id)->get();
+        // $questionCollection = $selectedQuiz->question;
+        // echo json_encode($selectedQuiz);
+        return Response::json($options);
+    }
     public function delete($id){
         
         $selectedOption = Option::findOrFail($id);

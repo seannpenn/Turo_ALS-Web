@@ -95,5 +95,10 @@ class QuizController extends Controller
         $chosenQuiz = Quiz::where('quiz_id', $quizid)->get();
         return view('student.quiz.viewQuiz')->with(compact('chosenQuiz'));
     }
+    public function takeQuiz($courseid,$quizid){
+        $chosenQuiz = Quiz::where('quiz_id', $quizid)->get()->first();
+        $questions = $chosenQuiz->question;
+        return view('student.quiz.takeQuiz')->with(compact(['chosenQuiz', 'questions']));
+    }
 
 }

@@ -20,7 +20,7 @@ class LoginController extends Controller
             // User is automatically logged out when they log in to a wrong portal.
             if(Auth::user()->userType == 2){
                 Auth::logout();
-                return redirect()->to('/student/login')->with('error', 'You are not allowed to gain Admin access.');
+                return redirect()->to('/student/login')->with('error', 'You dont have permission to Admin access.');
             }
             else if(Auth::user()->userType == 0){
                 return redirect()->to(route('users.all'));

@@ -7,7 +7,6 @@ use App\Models\CourseContent;
 use App\Models\Teacher;
 use App\Models\Course;
 use App\Models\Topic;
-use App\Models\Course;
 use App\Models\TopicContent;
 use Illuminate\Support\Facades\Auth;
 use Validator;

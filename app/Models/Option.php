@@ -21,7 +21,7 @@ class Option extends Model
 
     ];
     public static function getAllOption($questionId){
-        return self::get()->where('question_id', $questionId);
+        return self::where('question_id', $questionId)->get();
     }
     public function question(){
         return $this->belongsTo(Question::class, 'question_id', 'question_id');

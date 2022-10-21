@@ -69,19 +69,20 @@
         margin: 10px;
         background-color: white;
         color: orange;
-        cursor: pointer;
         padding: 5px;
         width: 280px;
         text-align: left;
         outline: none;
         font-size: 15px;
-        border: 0.5px solid gray;
+        border: 0.5px lightgray;
         border-radius: 5px;
         height: 70px;
+        transition: transform 250ms;
     }
-    
-    .collapsible:hover {
-        background-color: lightgrey;
+    .collapsible:hover{
+        cursor:pointer;
+        transform: translateY(-4px);
+        box-shadow: 0 1px 5px rgb(0 0 0 / 0.2);
     }
     .collapsible:focus {
         border: 2px solid orange;
@@ -95,8 +96,9 @@
         text-align: justify;
     }
     .content {
+        width: 500px;
         font-size: 15px;
-        padding: 0 18px;
+        padding: 10px 18px;
         display: none;
         overflow: hidden;
         text-align: justify;
@@ -118,6 +120,7 @@
         background-color: white;
         text-align: left;
         width: 250px;
+        height: 80px;
         border: 2px solid white;
         border-bottom: 2px solid lightgray;
         border-radius: 5px;
@@ -141,23 +144,26 @@
         overflow-y: scroll;
     }
     .topic-content-list {
-        
+        width: 500px;
         font-size: 15px;
         padding: 0 18px;
         display: none;
         overflow: hidden;
         text-align: left;
+        gap: 3;
     }
     .topic-content{
         background-color: white;
         font-size: 10px;
         width: 225px;
+        height: 75px;
         border: 1px solid white;
         border-radius: 5px;
         border-bottom: 0.5px solid lightgray;
         padding: 10px;
         margin-left: 20px;
         justify-content:start;
+        text-align: left;
     }
     .topic-content:hover{
         border: 1px solid orange;
@@ -193,9 +199,8 @@
 @stop
 
 @section('main-content')
-    @include('dashboard.courses.create_course')
     @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')  ])
-        <div class="col" style="border: 0.5px solid gray; margin: 0 auto; width: 70%; padding: 10px; border-radius: 10px;">
+        <div class="col" style=" margin: 0 auto; width: 70%; padding: 10px; border-radius: 10px;">
             <div class="d-flex justify-content-start" style="width:1350px;">
                 <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#moduleModal" data-bs-whatever="@fat">Create Module</button>
             </div>
@@ -217,17 +222,17 @@
                                             <tr>
                                                 <div class="content">
                                                     @foreach($module->topic as $topic)
-                                                        <button class="topic" data-value="{{$topic->topic_id}}" data-title="{{$topic->topic_title}}" data-description="{{$topic->topic_description}}" onclick="getTopicId({{$topic->topic_id}})">
+                                                        <button class="topic position-relative shadow-sm p-3 mb-1 bg-body" data-value="{{$topic->topic_id}}" data-title="{{$topic->topic_title}}" data-description="{{$topic->topic_description}}" onclick="getTopicId({{$topic->topic_id}})">
                                                             <label for="">
                                                                 {{$topic->topic_title}}
                                                             </label>
-                                                            <div class="icon" style="display: flex; margin-left: 210px; right: 0;">
-                                                                <a href="{{route('topic.delete', $topic->topic_id)}}" onclick="return confirm('Are you sure you want to delete this topic?')"><img src="{{ asset('images/delete.png') }}" alt=""></a>                                                                                    
+                                                            <div class="position-absolute top-0 start-100 translate-middle">
+                                                                <a href="{{route('topic.delete', $topic->topic_id)}}" onclick="return confirm('Are you sure you want to delete this topic?\nDeleting this topic will also delete all of its content.')"><img class="rounded-circle" src="{{ asset('images/close.png') }}" alt="" style="background-color: lightgray;"></a>
                                                             </div>
                                                         </button>
                                                         <div class="topic-content-list">
                                                             @foreach($topic->topiccontent as $topiccontent)
-                                                                    <button class="topic-content" id="topic-content" onclick="getTopicContentId({{$topiccontent->topic_content_id}})">
+                                                                    <button class="topic-content shadow-sm mb-1 bg-body" id="topic-content" onclick="getTopicContentId({{$topiccontent->topic_content_id}})">
                                                                         @if($topiccontent->type == 'html')
                                                                             <img src="{{ asset('images/text.jpg') }}" alt=""> 
                                                                         @elseif($topiccontent->type == 'quiz')
@@ -236,11 +241,7 @@
                                                                             <img src="{{ asset('images/pdf.png') }}" alt="">
                                                                         @endif
                                                                         {{$topiccontent->topic_content_title}}
-                                                                        <div class="icon" style="display: flex; margin-left: 180px; right: 0;">
-                                                                        <a href="{{route('topicContent.delete', $topiccontent->topic_content_id)}}" onclick="return confirm('Are you sure you want to delete this content? {{$topiccontent->topic_content_id}}')"><img src="{{ asset('images/delete.png') }}" alt=""></a>                                                                                    
-                                                                        </div>
                                                                     </button>
-                                                                    
                                                             @endforeach
                                                         </div>
                                                     @endforeach
@@ -291,11 +292,13 @@
                     success: function(data){
                         if(data[0].type == 'html'){
                             console.log(routeUpdate);
-                            control.innerHTML = ``;
-                            
-                            view.innerHTML = `<div class="text-content" >
+                            control.innerHTML = `
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <a href="/teacher/course/content/topic/content/${data[0].topic_content_id}/delete"><button type="button" id="topicUpdate" class="btn btn-warning">Delete Topic Content</button></a>
+                                            </div>
+                            `;
+                            view.innerHTML = `<div class="text-content">
                                                     <div class="col-auto">
-                                                        <form>
                                                             <div class="card-body">
                                                                     {{csrf_field()}}
                                                                         <div class="mb-3">
@@ -307,19 +310,23 @@
                                                                         <div class="form-group">
                                                                             <textarea class="form-control mt-5" name="html" id="editor" rows="20">${data[0].html}</textarea>
                                                                         </div>
-                                                                    </div>
-                                                                    
-                                                                
                                                             </div>
                                                             <div class="modal-footer">  
                                                                 <button type="submit" id="update" class="btn btn-warning">Update</button>
                                                             </div>
-                                                        </form>
+                                                    </div>
                                                     <br><br>
-                                                    
                                                 </div>
                                                 `;
-
+                                                ClassicEditor
+                                                .create( document.querySelector( '#editor' ) )
+                                                .then( editor => {
+                                                    console.log( editor );
+                                                } )
+                                                
+                                                .catch( error => {
+                                                    console.error( error );
+                                                } );
                                                 
                                     $("#update").click(function(e){
                                         $.ajaxSetup({
@@ -348,13 +355,20 @@
                                             }
                                         });
                                     });
+                                    
                         }
                         else if(data[0].type == 'quiz'){ //ok
 
                             var route = "{{route('quiz.edit', [":courseid" ,":id"])}}";
                             route = route.replace(':courseid', {{request()->route('courseid')}});
                             route = route.replace(':id', data[0].link); 
-                            control.innerHTML = ``;
+
+                            control.innerHTML = `
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <a href="/teacher/course/content/topic/content/${data[0].topic_content_id}/delete"><button type="button" id="topicUpdate" class="btn btn-warning">Delete Topic Content</button></a>
+                                            </div>
+                            `;
+
                             view.style.overflow = "scroll";
                             view.innerHTML = `
                             <div class="container text-center" style=" margin: 250px auto;">
@@ -376,7 +390,11 @@
                             asset = asset.replace(':fileDirectory', data[1]);
                             console.log(asset);
                             console.log(data[1]);
-                            control.innerHTML = ``;
+                            control.innerHTML = `
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                <a href="/teacher/course/content/topic/content/${data[0].topic_content_id}/delete"><button type="button" id="topicUpdate" class="btn btn-warning">Delete Topic Content</button></a>
+                                            </div>
+                            `;
                             view.style.overflow = "scroll";
                             view.innerHTML = `
                             <div class="container text-center" >
@@ -458,9 +476,9 @@
         
                 view.style.overflow = "hidden";
                 view.innerHTML = ``;
-                
+                control.innerHTML = ``;
                 view.innerHTML = `
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                         <button 
                                             type="button" id="topicUpdate" class="create-button" data-bs-toggle="modal" 
                                             data-bs-whatever="@fat" data-bs-target="#topicUpdateModal">Edit topic

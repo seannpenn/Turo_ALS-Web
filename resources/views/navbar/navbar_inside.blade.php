@@ -37,7 +37,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin: 0 auto; width: 1200px;text-align: left; justify-content:left;">
       @auth
           @if(Auth::user()->userType == '1')
-            @if(Route::currentRouteName() == 'course.all' || Route::currentRouteName() == 'students.all' || Route::currentRouteName() == 'student.application')
+            @if(Route::currentRouteName() == 'course.all' || Route::currentRouteName() == 'students.all' || Route::currentRouteName() == 'student.application' || Route::currentRouteName() == 'teacher.profile')
 
               <a class="inner-nav-link" aria-current="page" href="{{route('course.all')}}">Courses</a>
               <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
@@ -48,7 +48,8 @@
               <a class="inner-nav-link" aria-current="page" href="{{route('course.displayAll', request()->route('courseid'))}}">Content</a>
               <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage', request()->route('courseid'))}}">Quizzes</a>
               <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
-              @endif
+              <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Announcements</a>
+            @endif
         
           @elseif(Auth::user()->userType == '2')
             @if( Route::currentRouteName() == 'student.course')

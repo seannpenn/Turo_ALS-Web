@@ -23,6 +23,7 @@
         cursor:pointer;
     }
     .card{
+        
         transition: transform 250ms;
     }
     .card:hover{
@@ -44,6 +45,7 @@
         right: 30px;
     }
     .layout-bottom{
+        max-width: 1200px;
         <!-- display: flex;
         align-items: stretch;
         width: 100%; -->
@@ -75,72 +77,94 @@
     .view-topic{
         display: none;
     }
-    
+    .header{
+        height: 200px;
+        border-bottom: 2px solid orange;
+        <!-- margin:15px; -->
+    }
 @stop
 
 @section('main-content')
-    @include('dashboard.courses.create_course')
     @include('navbar/navbar_inside', ['courseId' =>  request()->route('courseid'), 'topiccontentid' => '' ])
-        <nav aria-label="breadcrumb" >
-            <ol class="breadcrumb" style="background-color:white;">
-                <li class="breadcrumb-item"><a href="{{route('course.all')}}">Courses</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Home</li>
-            </ol>
-        </nav>
-
+        
         <div class="layout">
-            <div class="row shadow-none p-3 mb-5 bg-light rounded">
+            <div class="upper-area">
+                <div class="shadow-sm mb-3 p-5 bg-body header">
                 @foreach($chosenCourse as $course)
-                    <div class = "d-flex justify-content-center">
-                        <div class="card " id="card" class="btn btn-primary" data-bs-toggle="modal">
-                            <div class="card-body">
-                                <h6 class="card-title">{{$course->course_title}}</h6>
-                                <p class="card-text">{{$course->course_description}}</p>
+                    <div class = "justify-content-left" style="margin: 0">
+                        <h1>{{$course->course_title}}</h1>
+                        <p>{{$course->course_description}}</p>
+                    </div>
+                @endforeach
+                </div>
+            </div>
+            <div class="layout-bottom">
+                    <nav aria-label="breadcrumb" >
+                        <ol class="breadcrumb" style="background-color:white;">
+                            <li class="breadcrumb-item"><a href="{{route('course.all')}}">Courses</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Home</li>
+                        </ol>
+                    </nav>
+                    <div class="row">
+                        <div class="row text-left">
+                            <div class="col-md-8">
+                                <h3>Courses</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-8" style="height: 500px;">
+                            <div class="row row-cols-2 g-3 shadow-sm p-3 mb-5 bg-body rounded">
+                                @foreach($chosenCourse as $course)
+                                    @foreach($course->coursecontent as $content)
+                                        <div class="col">
+                                            <div class="card h-100">
+                                                <svg style="border-bottom: 2px solid black;" class="bd-placeholder-img card-img-top" width="100%" height="100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                                    <title>Placeholder</title><rect width="100%" height="100%" fill="#FFFFFF"></rect><text x="39%" y="50%" fill="orange" dy=".3em">Image cap</text>
+                                                </svg>
+                                                <div class="card-body">
+                                                    <a href="{{ route('student.contentDisplay', $course['course_id'] ) }}">
+                                                        <h5 class="card-title">{{$content['content_title']}}</h5>
+                                                    </a>
+                                                    <p class="card-text">{{$content['content_description']}}</p>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    @endforeach
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4">
+                            <div class="shadow-sm p-3 mb-5 bg-body rounded">
+                                <div class="container text-left shadow-none p-3 mb-5 bg-light rounded">
+                                    <ol class="list-group list-group-numbered">
+                                        <h2>Teacher profile</h2>
+                                        <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Completely round image: 75x75" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                            <title>Completely round image</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="22%" y="50%" fill="#dee2e6" dy=".3em">75x75</text></svg>
+                                    </ol>
+                                </div>
                             </div>
                         </div>
                     </div>
-                @endforeach
-            </div>
-            <div class="layout-bottom">
-                <div class="row shadow-none p-3 mb-5 bg-light rounded">
-                    <div class="row text-left">
-                        <div class="col-md-8">
-                            <h3>Courses</h3>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="row row-cols-2 g-3">
-                            @foreach($chosenCourse as $course)
-                                @foreach($course->coursecontent as $content)
-                                    <div class="col">
-                                        <div class="card" style="width: 20em;">
-                                                        <!-- <img src="..." class="card-img-top" alt="..."> -->
-                                            <div class="card-body">
-                                                <a href="{{ route('student.contentDisplay', $course['course_id'] ) }}">
-                                                    <h5 class="card-title">{{$content['content_title']}}</h5>
-                                                </a>
-                                                <p class="card-text">{{$content['content_description']}}</p>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                @endforeach
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-4">
-                        <div class="shadow-sm p-3 mb-5 bg-body rounded">
-                            <div class="container text-left shadow-none p-3 mb-5 bg-light rounded">
+                    <div class="row shadow-none p-3 mb-5 bg-light rounded">
+                        <div class="row shadow-none p-3 mb-5 bg-light rounded" style="margin-top: 10px;">
+                            <div class="container text-left" >
                                 <ol class="list-group list-group-numbered">
-                                    <h2>Teacher profile</h2>
-                                    <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Completely round image: 75x75" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                        <title>Completely round image</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="22%" y="50%" fill="#dee2e6" dy=".3em">75x75</text></svg>
+                                    <div class="justify-content-left">
+                                        <h2>Announcements for this course</h2>
+                                    </div>
                                     
+                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                        <div class="ms-2 me-auto">
+                                        <div class="fw-bold">No classes on Monday</div>
+                                            As declared by the Department of Education, all ALS blablablabla
+                                            <p>{{now()->toDateTimeString()}}</p>
+                                            
+                                        </div>
+                                    </li>
                                 </ol>
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
 

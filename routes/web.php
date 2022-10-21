@@ -48,7 +48,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
 
     // For teacher 
 
-    Route::view('/teacher/profile', 'profile.teacher_profile')->name('teacher.profile');
+    Route::view('/profile', 'profile.teacher_profile')->name('teacher.profile');
 
     // For students
     Route::get('/students/records', [StudentController::class, 'showAllStudents'])->name('students.all');
@@ -61,10 +61,11 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     // For create courses
     Route::post('/course/create', [CourseController::class, 'create'])->name('course.create');
     Route::get('/course/all', [CourseController::class, 'showOwnedCourses'])->name('course.all');
+    Route::get('/course/getAll', [CourseController::class, 'getCourses'])->name('course.getAll');
     Route::get('/course/{courseid}/content', [CourseController::class, 'showAll'])->name('course.displayAll'); //important
     Route::get('/course/{courseid}/home', [CourseController::class,'showCourse'])->name('course.showInfo');
-    Route::post('/course/{id}/update', [CourseController::class, 'update'])->name('course.update');
-    Route::get('/course/{id}/delete', [CourseController::class,'delete'])->name('course.delete');
+    Route::post('/course/{courseid}/update', [CourseController::class, 'update'])->name('course.update');
+    Route::get('/course/{courseid}/delete', [CourseController::class,'delete'])->name('course.delete');
 
     // for create course content
     Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.create');
@@ -121,6 +122,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::get('/quiz/question/option/delete/{optionid}', [OptionController::class, 'delete'])->name('option.delete');
     Route::get('/quiz/question/{questionid}/option/delete/all', [OptionController::class, 'deleteAll'])->name('option.deleteAll');
     Route::post('/quiz/question/option/{optionid}/setAnswer', [OptionController::class, 'setAnswer'])->name('option.setAnswer');
+    Route::get('/quiz/question/{questionid}/options', [OptionController::class, 'getOptions'])->name('option.getAll');
 
 });
 
@@ -157,6 +159,7 @@ Route::middleware('auth')->group(function(){
     // quiz
     Route::get('/student/course/{courseid}/quizzes', [QuizController::class,'getQuizzes'])->name('student.quizzes');
     Route::get('/student/course/{courseid}/quiz/{quizid}', [QuizController::class,'viewQuiz'])->name('student.viewQuiz');
+    Route::get('/student/course/{courseid}/quiz/take/{quizid}', [QuizController::class,'takeQuiz'])->name('student.takeQuiz');
 });
 
 

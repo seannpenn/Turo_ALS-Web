@@ -9,9 +9,8 @@
 
 @section('css-style')
     .layout{
+        max-width: 1200px;
         margin: 0 auto;
-        width: 50em;
-        padding: 50px;
     }
     table {
         justify-content: center;
@@ -51,42 +50,43 @@
 @section('main-content')
 @include('navbar/navbar_inside', ['courseId' => request()->route('courseid') ])
 
-    <div class="upper-left-header">
-        <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#quizModal" data-bs-whatever="@fat">Create Quiz</button>
-        @section('course_id')
-            {{request()->route('courseid')}}
-        @stop
-    </div>
+    
     <div class="layout">
-        @if($quizCollection->count() != 0)
-        <div class="row row-cols-1 row-cols-md-2 g-4">
-            <table class="table table-hover table table-bordered">
-                <tr>
-                    <th scope="col">Quiz Id</th>
-                    <th scope="col">Quiz Title</th>
-                    <th scope="col">Status </th>
-                    <th scope="col">Actions</th>
-                </tr>
-                
+        <h1>Quiz List</h1>
+        
+        <div class="container text-center p-4">
+            
+            <div class="col align-self-center">
+            @if($quizCollection->count() != 0)
+                <div class="d-flex flex-row mb-3">
+                    <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#quizModal" data-bs-whatever="@fat">Create Quiz</button>
+                </div>
+                <table class="table table-hover table table-bordered" style="width: 100%;">
+                    <tr>
+                        <th scope="col" class="text-left">Quiz Title</th>
+                        <th scope="col">Status </th>
+                        <th scope="col">Actions</th>
+                    <tbody>
                     @foreach($quizCollection as $quiz)
                         <tr>
-                            <th scope="row">{{ $quiz->quiz_id }}</th>
-                            <td>{{ $quiz->quiz_title }}</td>
+                            <td width="90%" class="text-left p-3">
+                                <a href="{{ route('student.viewQuiz', [request()->route('courseid'), $quiz->quiz_id])}}">{{ $quiz->quiz_title }}</a>
+                                <br>
+                                <p style="font-size:small;">Available on Sep 7, 2022 10:30 AM until Sep 7, 2022 12:30 PM</p>
+                            </td>
                             <td>{{ $quiz->status }}</td>
                             <td>
                                 <a href="{{ route('quiz.edit',[ request()->route('courseid') ,$quiz->quiz_id]) }}" title="Edit Quiz"><button class="btn btn-warning"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
-                                <a href="{{ route('quiz.edit',[ request()->route('courseid') ,$quiz->quiz_id]) }}" title="Edit Quiz"><button class="btn btn-danger"><img src="{{ asset('images/delete.png') }}" alt="" ></button></a>
                             </td>
                         </tr>
-
-                    
                     @endforeach
-                
-            </table>
+                    </tbody>
+                </table>
+            @else
+                <h2>No created quizes..</h2>
+            @endif
+            </div>
         </div>
-        @else
-            <h2>No created quizes..</h2>
-        @endif
-    </div>
+    </div>  
     
 @stop

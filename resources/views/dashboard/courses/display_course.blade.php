@@ -84,7 +84,6 @@
 @stop
 
 @section('main-content')
-@include('dashboard.courses.create_course')
 @include('navbar/navbar_inside', ['courseId' =>  request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid') ])
 
     <div class="justify-content-center" style="width: 500px; height: 30px; margin: 0 auto;">
@@ -105,43 +104,114 @@
     </div>
         <div class="justify-content-center" style="width: 1000px; margin: 30px auto; padding: 5px;">
             @if(count($ownedCourses) != 0)
-                            <div class="row row-cols-1 row-cols-md-3 g-2">
-                                    <div class="col">
-                                        <div class="card" style="border: none;">
-                                            <a title="Add course" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">
-                                                <div class="card text-center" id="create-button" style="border: none;">
-                                                    <div class="card-body">
-                                                        <img style="width: 100px; height: 100px; margin: 50px auto;" src="{{ asset('images/add-icon.png') }}" alt="" >
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @foreach($ownedCourses as $course)
-                                    
-                                    <div class="col">
-                                        <div class="card">
-                                        <!-- <img src="..." class="card-img-top" alt="..."> -->
-                                            <div class="card-body" style="height: 15em;">
-                                                <h5 class="card-title">{{$course['course_title']}}</h5>
-                                                <p class="card-text">{{$course['course_description']}}</p>
-                                            </div>
-                                        </div>
-                                        <div class="action">
-                                            <td class="icons"><a href="{{route('course.showInfo', $course['course_id'])}}" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
-                                        </div>
-                                        <div class="action-delete" style="margin:2px;">
-                                            <td class="icons"><a href ="{{ route('course.delete', $course['course_id']) }}" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
+                <div class="container text-center">
+                    <div class="row row-cols-3 g-3" id="courseArea">
+
+                    </div>
+                </div>
             @else
                 <div class="empty-course">
                     <h1>You dont have any courses posted.</h1>
                 </div>
             @endif
     </div>
+    <script>
+        $(document).ready(function(){
+            $(window).on('load', 
+                getCourses(),
+                console.log('otin'),
+            );
+
+            $('#createCourseButton').click(function (e) {
+                var route = "{{route('course.create')}}";
+                console.log(route);
+                console.log($('#course_title').val());
+                console.log($('#course_description').val());
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: route,
+                    data: {
+                        course_title: $('#course_title').val(),
+                        course_description: $('#course_description').val(),
+                    },
+                    success: function (response) {
+                        console.log('success');
+                        getCourses();
+                        $('#course_title').val('');
+                        $('#course_description').val('');
+                    },
+                    error: function (response) {
+                        console.log(response);
+                        console.log('error');
+                    }
+                });
+            });
+
+            function getCourses(){
+                var route = "{{route('course.getAll')}}";
+                $.ajax({
+                    type: "GET",
+                    url: route,
+                    dataType: "json",
+                    success: function (response) {
+                        displayCourse(response);
+                    },
+                    error: function (response){
+                        console.log(response);
+                    }
+                });
+            }
+            function displayCourse(courses){
+                console.log('These are the courses');
+
+                let courseArea = document.getElementById('courseArea');
+                courseArea.innerHTML=``;
+                courseArea.innerHTML = `
+                                            <div class="col">
+                                                <a title="Add course" data-bs-toggle="modal" data-bs-target="#createCourse" data-bs-whatever="@fat">
+                                                    <div class="card" style="width: 19em;height: 15em; border: none;">
+                                                        <div class="card text-center" id="create-button" style="border: none;">
+                                                            <div class="card-body">
+                                                                <img style="width: 100px; height: 100px; margin: 50px auto;" src="{{ asset('images/add-icon.png') }}" alt="" >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            `;
+                for(x in courses){
+                    // courseArea.innerHTML += `Hello`;
+                    
+                    courseArea.innerHTML += `
+                                        <div class="col">
+                                            <div class="card" style="width: 19em;height: 15em;">
+                                                <div class="card-body" >
+                                                    <h5 class="card-title">${courses[x].course_title}</h5>
+                                                    <p class="card-text">${courses[x].course_description}</p>
+                                                </div>
+                                            </div>
+                                            <div class="action">
+                                                <td class="icons"><a href="/teacher/course/${courses[x].course_id}/home" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
+                                            </div>
+                                            <div class="action-delete" style="margin:2px;">
+                                                <td class="icons"><a href ="/teacher/course/${courses[x].course_id}/delete" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
+                                            </div>
+                                        </div>
+                                    
+                                    `;
+                    console.log(courses[x].course_title);
+                }
+            }
+        });
+        
+
+    </script>
 
 @stop
 

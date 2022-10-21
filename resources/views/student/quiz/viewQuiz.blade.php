@@ -17,17 +17,23 @@
 @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')])
     <div class="layout">
         <h1>Quiz</h1>
-        <div class="container text-center p-4">
+        
+        <div class="container text-left p-4 rounded" style="border: 2px solid black; width: 600px;">
             <div class="col align-self-center">
                 @if($chosenQuiz->count() != 0)
                     @foreach($chosenQuiz as $quiz)
-                        <h1>{{$quiz->quiz_id}}</h1>
-                        <h3>{{$quiz->quiz_title}}</h3>
+                        <h1>Quiz - {{$quiz->quiz_title}}</h1>
+                        <h2>Learner</h2>
+                        <h5>{{Auth::user()->student->student_fname}} {{Auth::user()->student->student_mname}} {{Auth::user()->student->student_lname}}</h5>
 
-                        <button type="button" class="btn btn-warning">Take Quiz!</button>
+                        <div class="text-center">
+                            <a href="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id])}}"><button type="button" class="btn btn-warning">Take Quiz!</button></a>
+                        </div>
                     @endforeach
                 @endif
             </div>
+            
         </div>
+
     </div>  
 @stop

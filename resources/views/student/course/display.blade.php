@@ -8,7 +8,6 @@
     }
     .header{
         height: 250px;
-        border-bottom: 5px solid orange;
         <!-- margin:15px; -->
     }
     .upper-area{
@@ -26,14 +25,17 @@
         <!-- width: 300px; -->  
     }
     .col .card{
-        border-left: 3px solid grey;
+        <!-- border-left: 3px solid orange; -->
         transition: transform 250ms;
     }
     .card:hover{
         border-left: 3px solid orange;
         cursor:pointer;
-        transform: translateY(-5px);
+        transform: translateY(-1px);
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    }
+    .card-title:hover{
+        text-decoration: underline;
     }
 @stop
 
@@ -56,21 +58,25 @@
         <div class="container text-center">
             <!-- Stack the columns on mobile by making one full-width and the other half-width -->
             
-            <div class="row shadow-none p-3 mb-5 bg-light rounded">
-                <div class="row text-left">
-                    <div class="col-md-8">
-                        <h3>Courses</h3>
+            <div class="row g-5">
+                
+                <div class="col-md-8 shadow-none p-3 mb-5 bg-light rounded">
+                    <div class="row text-left">
+                        <div class="col-md-8">
+                            <h3>Courses</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-8">
                     <div class="row row-cols-2 g-3">
                         @foreach($courseCollection as $course)
                             <div class="col">
-                                <a href="{{ route('student.courseHome',$course['course_id'] )}}" class="viewCourse">
-                                    <div class="card h-100">
-                                        <div class="card-body">
+                                <a href="{{ route('student.courseHome',$course['course_id'] )}}" class="viewCourse" style="text-decoration: none;">
+                                    <div class="card" style="height: 12rem;">
+                                        <svg style="border-bottom: 2px solid black;" class="bd-placeholder-img card-img-top" width="100%" height="75" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                            <title>Placeholder</title><rect width="100%" height="100%" fill="#FFFFFF"></rect><text x="40%" y="50%" fill="orange" dy=".3em">Image cap</text>
+                                        </svg>
+                                        <div class="card-body" style="text-align: left; text-decoration: none;">
                                             <h5 class="card-title">{{$course['course_title']}}</h5>
-                                            <p class="card-text">{{$course['course_description']}}</p>
+                                            <!-- <p class="card-text">{{$course['course_description']}}</p> -->
                                         </div>
                                     </div>
                                 </a>
@@ -79,11 +85,12 @@
                     </div>
                 </div>
 
-                <div class="col-6 col-md-4">
-                    <div class="shadow-sm p-3 mb-5 bg-body rounded">
+                <div class="col-6 col-md-4 ">
+
+                    <div class="shadow-none p-3 mb-5 bg-light rounded">
                         <div class="container text-left shadow-none p-3 mb-5 bg-light rounded">
                             <ol class="list-group list-group-numbered">
-                                <h2>Teacher profile</h2>
+                                <h2>Teacher profile</h2>    
                                 <svg class="bd-placeholder-img rounded-circle" width="75" height="75" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Completely round image: 75x75" preserveAspectRatio="xMidYMid slice" focusable="false">
                                     <title>Completely round image</title><rect width="100%" height="100%" fill="#868e96"></rect><text x="22%" y="50%" fill="#dee2e6" dy=".3em">75x75</text></svg>
                                 
