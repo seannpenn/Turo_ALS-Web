@@ -23,16 +23,18 @@
                     <tr>
                         <th scope="col" class="text-left">Quiz Title</th>
                         <th scope="col">Status </th>
+                        <th scope="col">Attempt </th>
                     </tr>
                     <tbody>
                     @foreach($quizCollection as $quiz)
                         <tr>
-                            <td width="90%" class="text-left p-3">
+                            <td width="80%" class="text-left p-3">
                                 <a href="{{ route('student.viewQuiz', [request()->route('courseid'), $quiz->quiz_id])}}">{{ $quiz->quiz_title }}</a>
                                 <br>
                                 <p style="font-size:small;">Available on Sep 7, 2022 10:30 AM until Sep 7, 2022 12:30 PM</p>
                             </td>
-                            <td>{{ $quiz->status }}</td>
+                            <td>done <br><a href="">view result</a> </td>
+                            <td>{{$quiz->attempt->count()}}/1</td>
                         </tr>
                     @endforeach
                     </tbody>

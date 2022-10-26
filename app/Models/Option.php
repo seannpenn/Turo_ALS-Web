@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Question;
+use App\Models\QuizAnswer;
 class Option extends Model
 {
     use HasFactory;
@@ -25,6 +26,9 @@ class Option extends Model
     }
     public function question(){
         return $this->belongsTo(Question::class, 'question_id', 'question_id');
+    }
+    public function answer(){
+        return $this->hasOne(QuizAnswer::class, 'option_id', 'option_id');
     }
 
 }

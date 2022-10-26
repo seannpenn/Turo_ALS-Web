@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('quiz_id');
             $table->unsignedInteger('type')->default(1);
             $table->String('question');
+            $table->integer('points')->default(1);
 
             $table->foreign('quiz_id')->references('quiz_id')->on('quiz')->onDelete('cascade');
             $table->foreign('type')->references('type_id')->on('question_type');

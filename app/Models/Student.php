@@ -9,6 +9,7 @@ use App\Models\LearningCenter;
 use App\Models\StudentEducation;
 use App\Models\StudentInformation;
 use App\Models\Enrollment;
+use App\Models\QuizSummary;
 use App\Models\StudentFamily;
 class Student extends Model
 {
@@ -47,4 +48,5 @@ class Student extends Model
     public function enrollment(){
         return $this->hasOne(Enrollment::class, 'student_id', 'student_id');
     }
+    
 }
