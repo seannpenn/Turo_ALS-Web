@@ -63,8 +63,16 @@ class QuestionController extends Controller
                 'question' => $request->question,
                 'type' => $request->type
             ]);
-            return Response::json($updateQuestion);
+            return Response::json($request->type);
         }
+    }
+    public function updatePoint(Request $request, $id){
+        $selectedQuestion = Question::where('question_id',$id);
+            
+        $selectedQuestion->update([
+            'points' => $request->points
+        ]);
+        return Response::json($selectedQuestion);
     }
 
     // get all questions

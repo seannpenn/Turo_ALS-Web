@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
 use App\Models\Option;
+use App\Models\QuizAnswer;
 use Response;
 class OptionController extends Controller
 {
@@ -90,5 +91,13 @@ class OptionController extends Controller
                 'isCorrect' => $request->isCorrect,
             ]);
             return Response::json($updateOption);
+    }
+
+    public function considerAnswer(Request $request, $id){
+        $answer = QuizAnswer::where('quiz_answer_id',$id)->get()->first();
+        $answer->update([
+            'isCorrect' => $request->isCorrect,
+        ]);
+        return Response::json($answer);
     }
 }

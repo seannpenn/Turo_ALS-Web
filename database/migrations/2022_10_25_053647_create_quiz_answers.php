@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('quiz_answers', function (Blueprint $table) {
             $table->increments('quiz_answer_id');
-            $table->unsignedInteger('student_id');
             $table->unsignedInteger('attempt_id');
+            $table->unsignedInteger('student_id');
             $table->unsignedInteger('question_id');
-            $table->unsignedInteger('option_id');
-            $table->integer('isCorrect');
+            $table->unsignedInteger('option_id')->nullable();
+            $table->integer('isCorrect')->nullable();
+            $table->longText('textAnswer')->nullable();
 
+            
             $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
             $table->foreign('attempt_id')->references('attempt_id')->on('quiz_attempt')->onDelete('cascade');
             $table->foreign('question_id')->references('question_id')->on('question')->onDelete('cascade');

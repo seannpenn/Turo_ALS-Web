@@ -1,7 +1,7 @@
 @extends('main')
 @extends('dashboard/courses/update_course_modal')
 @extends('modalslug')
-
+@extends('dashboard/module/create')
 @section('modal-content')
     <span id="modalContent"> Deleting this course would also remove all of its contents. Are you sure you want to proceed?</span>
 @stop
@@ -126,14 +126,26 @@
                         <div class="row text-left">
                             <div class="col-md-8">
                             @if($chosenCourse[0]->coursecontent->count() != 0)
-                                <h3>Modules</h3>
+                                <div class="d-flex flex-row mb-3">
+                                <div class="p-2"><h3>Modules</h3></div>
+                                <div class="p-2">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#moduleModal" data-bs-whatever="@fat" style="background-color: orange; border-color:orange;">Create Module</button>
+                                </div>
+                            </div>
                             @else
-                            <h4>Add modules....</h4>
+                            <h4>Add modules....
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#moduleModal" data-bs-whatever="@fat" style="background-color: orange; border-color:orange;">Create Module</button>
+                            </h4>
                             @endif
                             </div>
                         </div>
+                        <div class="col" style="width:fit-content;">
+                            
+                        </div>
                         <div class="col-md-15" style="height: 500px;">
-                            <div class="row row-cols-2 g-3">
+                        
+                            <div class="row row-cols-3 g-3">
+                                
                                 @foreach($chosenCourse as $course)
                                     @foreach($course->coursecontent as $content)
                                         <div class="col">

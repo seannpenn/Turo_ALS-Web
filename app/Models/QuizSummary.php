@@ -19,6 +19,7 @@ class QuizSummary extends Model
     protected $fillable = [
         'attempt_id',
         'total_score',
+        'total_points',
     ];
 
     public function QuizAttempt(){

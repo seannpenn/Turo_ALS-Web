@@ -10,6 +10,7 @@ use App\Models\StudentEducation;
 use App\Models\StudentInformation;
 use App\Models\Enrollment;
 use App\Models\QuizSummary;
+use App\Models\QuizAnswer;
 use App\Models\StudentFamily;
 class Student extends Model
 {
@@ -47,6 +48,12 @@ class Student extends Model
     
     public function enrollment(){
         return $this->hasOne(Enrollment::class, 'student_id', 'student_id');
+    }
+    public function quizAttempt(){
+        return $this->hasMany(QuizAttempt::class, 'student_id', 'student_id');
+    }
+    public function quizAttemptByStudentByQuiz($studentid, $quizid){
+        return QuizAttempt::where('student_id',$studentid)->where('quiz_id',$quizid)->get();
     }
     
 }

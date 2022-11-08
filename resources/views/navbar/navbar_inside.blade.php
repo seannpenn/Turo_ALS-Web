@@ -47,6 +47,7 @@
               <a class="inner-nav-link" aria-current="page" href="{{route('course.showInfo', request()->route('courseid') )}}">Course Home</a>
               <a class="inner-nav-link" aria-current="page" href="{{route('course.displayAll', request()->route('courseid'))}}">Content</a>
               <a class="inner-nav-link" aria-current="page" href="{{route('quiz.manage', request()->route('courseid'))}}">Quizzes</a>
+              <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Assignments</a>
               <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Manage Enrollees</a>
               <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Announcements</a>
             @endif
@@ -54,12 +55,16 @@
           @elseif(Auth::user()->userType == '2')
             @if( Route::currentRouteName() == 'student.course')
             <a class="inner-nav-link" aria-current="page" href="{{route('student.course')}}">Courses</a>
+            <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Announcements</a>
 
             @elseif(Route::currentRouteName() != 'student.course')
             <a class="inner-nav-link" aria-current="page" href="{{route('student.course')}}">Courses</a>
             <a class="inner-nav-link" aria-current="page" href="{{route('student.courseHome', request()->route('courseid'))}}">Course Home</a>
             <a class="inner-nav-link" aria-current="page" href="{{route('student.contentDisplay', request()->route('courseid'))}}">Content</a>
             <a class="inner-nav-link" aria-current="page" href="{{route('student.quizzes', request()->route('courseid'))}}">Quizzes</a>
+            <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Assignments</a>
+            <a class="inner-nav-link" aria-current="page" href="">Assignments</a>
+            <a class="inner-nav-link" aria-current="page" href="">Announcements</a>
           @endif
         @endif
       @endauth

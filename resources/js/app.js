@@ -1,2 +1,2 @@
-import './bootstrap';
-require('./bootstrap');
+import '../../public/js/bootstrap';
+require('../../public/js/bootstrap');

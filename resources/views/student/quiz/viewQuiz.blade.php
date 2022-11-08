@@ -32,31 +32,48 @@
                         <h2>Learner</h2>
                         <!-- <h5>{{Auth::user()->student->student_fname}} {{Auth::user()->student->student_mname}} {{Auth::user()->student->student_lname}}</h5> -->
                         
-                        
+                        @if($quiz->quizAttempt)
                             <div class="row">
                                 <div class="col-12">
                                     <div class="alert alert-success" role="alert">
-                                        @foreach($quiz->attempt as $attempt)
+                                        @foreach($quiz->quizAttempt as $attempt)
                                             @php
                                                 $totalPoints = 0;
                                             @endphp
                                             @foreach($quiz->question as $question)
+
                                                 @php
                                                     $totalPoints += $question->points
                                                 @endphp
-                                                    
                                             @endforeach
-                                            Score: {{$attempt->quizSummary->total_score}} / {{$totalPoints}}
+                                            Score: {{$attempt->quizSummary->total_score}} / {{$attempt->quizSummary->total_points}}
                                         @endforeach
                                     </div>
                                 </div>
                             </div>
+                        @endif
                         <div class="text-center">
                             <br>
-                            @if($quiz->attempt->count() == 1)
+                            @if($quiz->quizAttempt->count() == 1)
                                 <h6>You are done taking the quiz. Click <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">HERE</a>to view result.</h6>
                             @else
-                                <a href="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id])}}"><button type="button" class="btn btn-warning">Take Quiz!</button></a>
+                                @if($quiz->password == null)
+                                    <a href="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id])}}"><button type="button" class="btn btn-warning">Take Quiz!</button></a>
+                                @else
+                                    <form class="row gx-3 gy-2 align-items-center" action="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id]) }}" method="GET">
+                                        <div class="col-sm-5">
+                                                <input type="text" class="form-control" name="quizPass" id="specificSizeInputGroupUsername" placeholder="input quiz password" required>
+                                                    @if($errors->any())
+                                                    <p class="fs-6" style="color: red;">
+                                                        {{$errors->first()}}
+                                                    </p>
+                                                    @endif
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <button type="submit" class="btn btn-warning">Take Quiz!</button>
+                                        </div>
+                                    </form>
+                                @endif
                             @endif
                         </div>
                     @endforeach

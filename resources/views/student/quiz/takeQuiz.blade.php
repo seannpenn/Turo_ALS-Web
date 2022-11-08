@@ -7,30 +7,16 @@
     }
     .container{
         max-width: 1500px;
+        margin: 50px auto;
     }
 @stop
 
 @section('main-content')
-
-    <div class="layout">
-        <div class="col align-self-center">
-            <div class="container text-left p-4 rounded" style="width: 600px;">
-                <h1>Hello i am Taking the quiz</h1>
-                <button type="button" class="btn btn-warning">Submit Quiz</button>
-            </div>
-        </div>
-    </div>
+@include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')])
+   
     <div class="container">
         <div class="row justify-content-center">
-        @if($message)
-            <div class="row">
-                <div class="col-12">
-                    <div class="alert alert-success" role="alert">
-                        {{ $message }}
-                    </div>
-                </div>
-            </div>
-        @else
+        
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{$chosenQuiz->quiz_title}}</div>
@@ -47,7 +33,7 @@
                                                     @foreach($question->option as $option)
                                                         <div class="form-check">
                                                             
-                                                            @if($question->type != 2)
+                                                            @if($question->type != 2 && $question->type != 4)
                                                                 @if($question->type == 1)
                                                                     <input class="form-check-input" type="radio" name="questions[{{ $question->question_id }}]hello" id="option-{{ $option->option_id }}" value="{{ $option->option_id }}">
                                                                 @elseif($question->type == 3)
@@ -56,11 +42,15 @@
                                                                 <label class="form-check-label" for="{{$question->question_id}}">
                                                                     {{ $option->option }}
                                                                 </label>
-                                                            @else
-                                                                <input type="text" name="questions[{{ $question->question_id }}]" style="border-top-style: hidden; border-right-style: hidden;border-left-style: hidden;" placeholder="Short answer text" class="form-control" aria-label="Question" value="">
                                                             @endif
-                                                            
                                                         </div>
+                                                        @if($question->type == 2)
+                                                            <input type="text" name="questions[{{ $question->question_id }}]" style="border-top-style: hidden; border-right-style: hidden;border-left-style: hidden;" placeholder="Short answer text" class="form-control" aria-label="Question" value="">
+                                                            @break
+                                                        @endif
+                                                        @if($question->type == 4)
+                                                            <textarea class="form-control" name="questions[{{ $question->question_id }}]" placeholder="Enter your answer here..." id="floatingTextarea" rows="5"></textarea>                                                                
+                                                        @endif
                                                     @endforeach
                                                 </div>
                                             </div>
@@ -78,7 +68,6 @@
                     </div>
                 </div>
             </div>
-        @endif
         </div>
     </div>
 
