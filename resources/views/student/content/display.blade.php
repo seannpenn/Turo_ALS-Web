@@ -103,6 +103,7 @@
         background-color: white;
         text-align: left;
         width: 250px;
+        height: 70px;
         border: 2px solid white;
         border-bottom: 2px solid lightgray;
         border-radius: 5px;
@@ -132,6 +133,7 @@
         display: none;
         overflow: hidden;
         text-align: left;
+        width: 350px;
     }
     .topic-content{
         font-size: 10px;
@@ -140,7 +142,7 @@
         border-radius: 5px;
         border-bottom: 0.5px solid lightgray;
         padding: 10px;
-        margin-left: 30px;
+        margin-left: 28px;
         justify-content:start;
     }
     .topic-content:hover{

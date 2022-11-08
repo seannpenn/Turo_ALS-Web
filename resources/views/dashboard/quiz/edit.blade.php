@@ -1,6 +1,7 @@
 @extends('main')
 @extends('dashboard/modals/createquestion_modal')
 @extends('dashboard/modals/editquestion_modal')
+@extends('dashboard/quiz/quizSettingsModal')
 @extends('modalslug')
 @section('modal-content')
     <span id="modalContent"> Are you sure you want to delete this question?</span>
@@ -69,164 +70,35 @@
 
 @section('main-content')
 @include('navbar/navbar_inside', ['courseId' => request()->route('courseid')])
-
-    @if(app('router')->getRoutes()->match(app('request')->create(URL::previous()))->getName() == 'topic.view')
-        <a href="{{ URL::previous() }}">
-            < Back to Topic
-        </a>
-    @else
-        <a href="{{ URL::previous() }}">
-            < Back to Quiz Management
-        </a>
-    @endif
     
     <div class="layout">
-        
-        @foreach($selectedQuiz as $quiz)
-            <form action="{{ route('quiz.update', $selectedQuiz[0]->quiz_id) }}" method="post" style="width: 50%; margin: 0 auto;">
-            {{ csrf_field() }}
-                <div class="row">
-                    <label for="staticEmail2" >Quiz title: </label>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <input type="text" style="height:50px;" class="form-control" name="quiz_title" id="quiz_title" value="{{$quiz->quiz_title}}">
-                    </div>
-                </div>
-            </form>
-            @section('quiz_id')
-                {{$quiz->quiz_id}}
-            @stop
-        @endforeach
-        
-            <!-- <div class="upper-left-header">
-                <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#questionModal" data-bs-whatever="@fat">Create Question</button>
-            </div> -->
-
-        @if($selectedQuiz[0]->question->count() != 0)
-        <br>
-            <div class="questions" id="questions">
-                @foreach($selectedQuiz[0]->question as $key => $question)
-                            <div class="card text-center questionContainer" id="question-container" style="width: 50%; margin: 0 auto; margin-bottom: 20px;" question-id="{{$question->question_id}}" tabindex='1'>
-                                <div class="card-header" style="background-color: orange;">
-                                    question id: {{ $question->question_id }}
-                                </div>
-                                <div class="card-body " >
-                                    <div class="row g-3 optionArea">
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control question_id" id="question_id" placeholder="Question" aria-label="Question" value="{{ $question->question_id }}" hidden>
-                                            <input type="text" style="height:45px;" class="form-control question" id="question" placeholder="Question" aria-label="Question" value="{{ $question->question }}" question-id="{{$question->question_id}}">
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <select id="questionType" class="form-select questionType">
-                                            @php
-                                                $count = 1;
-                                            @endphp
-                                            @foreach($types as $type)
-                                                @if(($count == 1) and ($question->type <> $type->type_id))
-                                                    <option value="{{ $type->type_id }}" selected>{{ $type->type_name }}</option>
-                                                @elseif($question->type == $type->type_id)  
-                                                    <option value="{{ $type->type_id }}" selected>{{ $type->type_name }}</option>
-                                                @else
-                                                    <option value="{{ $type->type_id }}">{{ $type->type_name  }}</option>
-                                                @endif
-                                                @php
-                                                    $count++;
-                                                @endphp
-                                            @endforeach
-                                            </select>
-                                        </div>
-                                        <div class ="questionChoices" id="questionChoices">
-                                            <form>
-                                                @foreach($question->option as $option)
-
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group flex-nowrap " id="optionArea">
-                                                        @if($option->isCorrect == 1)
-                                                            <span class="input-group-text" style="color:green; background-color:transparent;border-style: hidden;">
-                                                                <img src="{{ asset('images/correct.png') }}"  alt="" width="20" height="20">
-                                                            </span>
-                                                        @endif
-                                                        @if($question->type != 2)
-                                                            <span class="input-group-text" id="addon-wrapping">
-                                                                @if($question->type == 1)
-                                                                    <input type="radio" value="{{$option->option_id}}" href="" aria-label="Checkbox for following text input" disabled>
-                                                                @elseif($question->type == 3)
-                                                                    <input type="checkbox" value="{{$option->option_id}}" aria-label="Checkbox for following text input" disabled>
-                                                                @endif
-
-                                                            </span>
-                                                            <input type="text" class="form-control option" id="option" placeholder="Question" aria-label="Question" option-id = "{{$option->option_id}}" value="{{$option->option}}">
-                                                        @endif
-
-                                                        @if($question->type == 2)
-                                                            <div class="col-sm-5">
-                                                                <input type="text" style="border-top-style: hidden; border-right-style: hidden;border-left-style: hidden;" placeholder="Short answer text" class="form-control" aria-label="Question" value="">
-                                                            </div>
-                                                        @endif
-
-                                                        
-                                                        @if($question->type != 2)
-                                                        <span class="input-group-text" style="background-color: transparent; ">
-                                                            @if($option->isCorrect == 1)
-                                                                <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer" checked>
-                                                            @else
-                                                            <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer">
-                                                            @endif
-                                                        </span>
-                                                        <span class="input-group-text" style="background-color: transparent;">
-                                                            <button type="button" class="form-check-label deleteOption" style="border:none; background-color: transparent;" value="{{$option->option_id}}" title="Delete Option" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/close.png') }}" alt="" width="20" height="20"></button>
-                                                        </span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                                <div class="row g-3">
-                                                        <div class="col-sm-9" style="text-align:left;">
-                                                            <div class="form-check">
-                                                            @if($question->type != 2)
-                                                                <button type="button" style="border:none; background-color: transparent;" class="addOptionButton" value="{{ $question->question_id }}"><img src="{{ asset('images/add.png') }}" alt="" width="20" height="20">Add option</button>
-                                                            @endif
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex justify-content-end">
-                                        <div class="d-flex justify-content-right">
-                                            <button class="question-button deleteQuestion" style="background-color: transparent; border:none;" value="{{ $question->question_id }}" title="Delete Question" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border:none;"><img src="{{ asset('images/delete.png') }}" alt="" width="20" height="20"></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                        <!-- for updating the question -->
-                            
-                        <!-- for deleting the question -->
-                            @section('modal-title')
-                                Delete Question
-                            @stop
-                        <!--  -->
-                    @endforeach
-                <br>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb" style="background-color:white;">
+                <li class="breadcrumb-item"><a href="{{ route('quiz.manage',request()->route('courseid')) }}">Quiz list</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{$selectedQuiz[0]->quiz_title}}</li>
+            </ol>
+        </nav>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Setup</button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Student's answers</button>
+                <button class="nav-link" id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" type="button" role="tab" aria-controls="nav-settings" aria-selected="false"><img src="{{ asset('images/settings.png') }}"  alt="" width="20" height="20"></button>        
             </div>
-        @else
-            <div class="d-grid gap-2 col-2 mx-auto" >
-                <h2>Add questions..</h2>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">@include('dashboard.quiz.editQuestions')</div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">@include('dashboard.quiz.studentAnswers')</div>
+            <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab" tabindex="0">
+                @include('dashboard.quiz.settings')
             </div>
-        @endif
-            <nav class="navbar fixed-bottom navbar-dark" style="box-shadow: 0 4px 20px rgb(0 0 0 / 0.2);">
-                <div class="container-fluid">
-                    <button type="button" class="create-button" id="createQuestion">Add Question</button>
-                </div>
-            </nav>
+        </div>
     </div>
 @stop
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
         $(document).ready(function(){
             $(window).on('load', 
                 deleteQuestion(),
@@ -369,7 +241,7 @@
                         url: deleteAllOption,
                         dataType: "json",
                         success: function (response) {
-                            addOption(questionId);
+                            console.log('Deleted all option');
                         }
                     });
                 }
@@ -406,9 +278,9 @@
                             console.log(data);
                         },
                 });
-                // $(document).ajaxStop(function(){
-                //     window.location.reload();
-                // });
+                $(document).ajaxStop(function(){
+                    window.location.reload();
+                });
                 
             });
 
@@ -450,65 +322,97 @@
                 const questionId = document.getElementsByClassName("question_id");
                 const questions = document.getElementsByClassName("question");
                 const questionType = document.getElementsByClassName("questionType");
+                const points = document.getElementsByClassName("point");
                 var questionUpdateRoute = "{{route('question.update', ":questionid")}}";
+                var pointsUpdateRoute = "{{route('question.updatePoint', ":questionid")}}";
                 var a;
                 var temp;
                 for(a=0;a<questions.length;a++){
-                    
-                    $(questions[a]).change(function(e){
-                        var questionId = this.getAttribute("question-id");
-                        questionUpdateRoute = questionUpdateRoute.replace(':questionid', questionId);
-                        $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        }
-                        });
-                        $.ajax({
-                                url: questionUpdateRoute,
-                                type: 'POST',
-                                data: {
-                                    question: this.value,
-                                    type: data.type,
-                                },
-                                dataType: 'json',
-                                success: function(response){
-                                    // $("#question-table").load(location.href + " #question-table");
-                                    console.log(response);
-                                },
-                                error: function(data){
-                                    console.log(data);
-                                }
-                        });
-                    });
-                    $(questionType[a]).change(function(e){
-                        if(this.value == "2"){
-                            deleteAllOption(data.question_id);
-                        }
-                        questionUpdateRoute = questionUpdateRoute.replace(':questionid', data.question_id);
-                        $.ajaxSetup({
+                        $(points[a]).change(function(e){
+                            
+                            var questionId = this.getAttribute("question-id");
+                            alert(questionId);
+                            pointsUpdateRoute = pointsUpdateRoute.replace(':questionid', questionId);
+                            $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                             }
-                        });
-                        
-                        $.ajax({
-                                url: questionUpdateRoute,
-                                type: 'POST',
+                            });
+                            $.ajax({
+                                type: "post",
+                                url: pointsUpdateRoute,
                                 data: {
-                                    question: data.question,
-                                    type: this.value,
+                                    points: this.value,
                                 },
-                                dataType: 'json',
-                                success: function(response){
-                                        
+                                dataType: "json",
+                                success: function (response) {
+                                    console.log('success');
                                     console.log(response);
                                 },
+                                error: function(response){
+                                    console.log('error');
+                                }
+                            });
                         });
-                        $(document).ajaxStop(function(){
+                        
+                        $(questions[a]).change(function(e){
+                            alert(this.value);
+                            var questionId = this.getAttribute("question-id");
+                            questionUpdateRoute = questionUpdateRoute.replace(':questionid', questionId);
+                            $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }
+                            });
+                            $.ajax({
+                                    url: questionUpdateRoute,
+                                    type: 'POST',
+                                    data: {
+                                        question: this.value,
+                                        type: data.type,
+                                    },
+                                    dataType: 'json',
+                                    success: function(response){
+                                        console.log('question is updated');
+                                        console.log(response);
+                                    },
+                                    error: function(data){
+                                        console.log(data);
+                                    }
+                            });
+                        });
+
+                        $(questionType[a]).change(function(e){
+                            questionUpdateRoute = questionUpdateRoute.replace(':questionid', data.question_id);
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                }
+                            });
                             
-                            window.location.reload();
+                            $.ajax({
+                                    url: questionUpdateRoute,
+                                    type: 'POST',
+                                    data: {
+                                        question: data.question,
+                                        type: this.value,
+                                    },
+                                    dataType: 'json',
+                                    success: function(response){
+                                        if(response == 2 || response == 4){
+                                            deleteAllOption(data.question_id);
+                                            addOption(data.question_id);
+                                        }
+                                        else{
+                                            window.location.reload();
+                                        }
+                                        console.log('success');
+                                    },
+                                    error: function(response){
+                                        console.log('error');
+                                    }
+                            });
                         });
-                    });
                     
                 }
             }
@@ -635,15 +539,16 @@
                                 success: function(data){
                                     console.log('Option added');
                                     console.log(data);
+                                    window.location.reload();
                                 },
                                 error: function(data){
                                     console.log(data);
                                     console.log('error');
                                 },
                             });
-                            $(document).ajaxStop(function(){
-                                window.location.reload();
-                            });
+                            // $(document).ajaxStop(function(){
+                            //     window.location.reload();
+                            // });
                 }
             
                 const optionButton = document.getElementsByClassName("addOptionButton");

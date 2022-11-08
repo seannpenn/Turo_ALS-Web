@@ -121,6 +121,13 @@
     @endif
 
     <script>
+        // $(window).focus(function() {
+        //     //do something
+        // });
+
+        // $(window).blur(function() {
+        //     alert('You changed to another tab.')
+        // });
 
         $(document).ready(function(){
             $(window).on('load', 

@@ -100,9 +100,9 @@ class CourseController extends Controller
         $chosenCourse = Course::where('course_id',$id)->get();
         return view('dashboard.courses.view_course')->with(compact('chosenCourse'));  
     }
-    public function showAll(){
+    public function showAll($courseid){
         $teacherId = Teacher::where('user_id', Auth::id())->get()->first();
-        $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
+        $courseCollection = Course::where('course_id', $courseid)->get();
         
         return view('dashboard.content.display')->with(compact('courseCollection'));
     }
@@ -138,7 +138,7 @@ class CourseController extends Controller
         $EnrolledStudent = Enrollment::where('student_id', $studentId->student_id)->get()->first();
         $teacher = Teacher::getTeacherByLocProg($EnrolledStudent->loc_id, $EnrolledStudent->prog_id);
 
-        $courseCollection = $teacher->course;
+        $courseCollection = $teacher->course->where('course_id', $id);
         
         return view('student.content.display')->with(compact('courseCollection'));
     }

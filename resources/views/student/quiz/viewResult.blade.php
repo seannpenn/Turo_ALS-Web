@@ -11,11 +11,12 @@
 @stop
 
 @section('main-content')
-
+@include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')])
     <div class="layout">
         <div class="col align-self-center">
             <div class="container text-center p-4 rounded" style="width: 600px;">
                 <h1>Quiz Result</h1>
+                <!-- {{$QuizAnswers}} -->
             </div>
         </div>
     </div>
@@ -23,97 +24,185 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{$chosenQuiz->quiz_title}}</div>
+                    <div class="card-header">
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6">
+                                {{$chosenQuiz->quiz_title}}
+                            </div>
+                            <div class="col-md-6">
+                                @foreach($chosenQuiz->quizAttempt as $attempt)
+                                    <h6 style="float: right;">
+                                        <span class="badge text-bg-success" >
+                                            Score : {{$attempt->quizSummary->total_score}} point/s
+                                        </span>
+                                    </h6>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
-                            @foreach($questions as $index => $question)
-                                @foreach($QuizAnswers as $answer)
-                                    @if($question->question_id == $answer->question_id)
+                            @foreach($quizAttempt->quiz->question as $index => $question)
                                         <div class="card mb-3">
                                             <div class="card ">
-                                                <div class="card-header">{{$index+1}}.) {{  $question->question }}  {{$question->points}} point/s</div>
-                            
+                                                <div class="card-header">{{$index+1}}.) {{  $question->question }}  
+                                                <div class="float-end">{{$question->points}} point/s</div>
+                                                    
+                                                    
+                                                </div>
                                                 <div class="card-body">
-                                                
                                                     @foreach($question->option as $option)
-                                                        
                                                             <div class="form-check">
                                                                 @if($question->type != 2)
                                                                     @if($question->type == 1)
-                                                                        @if($option->answer)
-                                                                            <div class="alert-warning">
-                                                                                <input class="form-check-input" type="radio" name="questions[{{ $question->question_id }}]hello" id="option-{{ $option->option_id }}" value="{{ $option->option_id }}" checked disabled>
-                                                                                <label class="form-check-label" for="{{$question->question_id}}">
-                                                                                    {{ $option->option }} 
-                                                                                </label>
-                                                                            </div>
-                                                                        @else
-                                                                            @if($option->isCorrect == 1)
-                                                                                <div class="alert-success">
-                                                                                    <input class="form-check-input" type="radio" name="questions[{{ $question->question_id }}]hello" id="option-{{ $option->option_id }}" value="{{ $option->option_id }}" disabled>
-                                                                                    <label class="form-check-label" for="{{$question->question_id}}">
-                                                                                        {{ $option->option }}
-                                                                                    </label>
-                                                                                </div>
+                                                                        @foreach($question->answer as $answer)
+                                                                            @if($answer->option_id == $option->option_id)
+                                                                                @if($answer->isCorrect)
+                                                                                    <div class="alert-warning" style="background-color: lightgreen;">
+                                                                                        <input class="form-check-input" type="radio" checked disabled>
+                                                                                        <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                            {{ $option->option }} 
+                                                                                        </label>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div class="alert-warning" style="background-color: #FFCCCB;">
+                                                                                        <input class="form-check-input" type="radio" checked disabled>
+                                                                                        <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                            {{ $option->option }} 
+                                                                                        </label>
+                                                                                    </div>
+                                                                                @endif
                                                                             @else
-                                                                                <input class="form-check-input" type="radio" name="questions[{{ $question->question_id }}]hello" id="option-{{ $option->option_id }}" value="{{ $option->option_id }}" disabled>
-                                                                                <label class="form-check-label" for="{{$question->question_id}}">
-                                                                                    {{ $option->option }}
-                                                                                </label>
+                                                                                @if($option->isCorrect)
+                                                                                    <div class="alert-warning" style="background-color: lightgreen;">
+                                                                                        <input class="form-check-input" type="radio" disabled>
+                                                                                        <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                            {{ $option->option }} 
+                                                                                        </label>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div class="alert-warning">
+                                                                                        <input class="form-check-input" type="radio" disabled>
+                                                                                        <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                            {{ $option->option }} 
+                                                                                        </label>
+                                                                                    </div>
+                                                                                @endif
                                                                             @endif
-                                                                        @endif
+                                                                        @endforeach
                                                                     @elseif($question->type == 3)
-                                                                        <input class="form-check-input"  type="checkbox" name="options[{{ $option->option_id}}]" id="exampleRadios2" value="{{$question->question_id}}"disabled>
-                                                                            <label class="form-check-label" for="{{$question->question_id}}">
-                                                                                {{ $option->option }}
-                                                                            </label>
+
+                                                                        @foreach($question->answer as $answer)
+                                                                            @if($answer->option_id == $option->option_id)
+                                                                                @if($answer->isCorrect)
+                                                                                    <div class="alert-warning" style="background-color: lightgreen;">
+                                                                                        <input class="form-check-input" type="checkbox" checked disabled>
+                                                                                        <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                            {{ $option->option }} 
+                                                                                        </label>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div class="alert-warning" style="background-color: #FFCCCB;">
+                                                                                        <input class="form-check-input" type="checkbox" checked disabled>
+                                                                                        <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                            {{ $option->option }} 
+                                                                                        </label>
+                                                                                    </div>
+                                                                                @endif
+                                                                            @else
+                                                                                @if($option->isCorrect)
+                                                                                    <div class="alert-warning" style="background-color: lightgreen;">
+                                                                                        <input class="form-check-input" type="checkbox" disabled>
+                                                                                        <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                            {{ $option->option }} 
+                                                                                        </label>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <div class="alert-warning">
+                                                                                        <input class="form-check-input" type="checkbox" disabled>
+                                                                                        <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                            {{ $option->option }} 
+                                                                                        </label>
+                                                                                    </div>
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        <textarea class="form-control" placeholder="Enter your answer here..." id="floatingTextarea" rows="4" disabled>{{$option->answerbyQuestion->textAnswer}}</textarea>                                                                
                                                                     @endif
                                                                 @else
-                                                                    <input type="text" name="questions[{{ $question->question_id }}]" style="border-top-style: hidden; border-right-style: hidden;border-left-style: hidden;" placeholder="Short answer text" class="form-control" aria-label="Question" value="">
+                                                                    <input type="text" class="form-control option" id="option" placeholder="Question" aria-label="Question"  value="{{$option->answerbyQuestion->textAnswer}}">
                                                                 @endif
                                                             </div>
                                                     @endforeach
-                                                    
                                                 </div>
+                                                
                                                 <div class="card-footer">
-                                                    @if($answer->question_id == $question->question_id)
-                                                        @if($answer->isCorrect==1)
+                                                @foreach($question->answer as $answer)
+                                                    @if($answer->isCorrect || $answer->option_id == null)
+                                                        @if($answer->option_id == null)
+                                                            @foreach($correctAnswers as $correctanswer)
+                                                                @if($answer->textAnswer == $correctanswer)
+                                                                <span class="input-group-text" style="color:green; background-color:transparent;border-style: hidden;">
+                                                                    <img src="{{ asset('images/correct.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
+                                                                    <div class="fw-bolder">You got the correct answer.</div>
+                                                                    
+                                                                </span>
+                                                                @endif
+                                                                @break
+                                                            @endforeach
+                                                            @if($question->type == 2)
+                                                                <div class="fw-bolder">Other possible answers: </div>
+                                                                
+                                                                @foreach($correctAnswers as $correctanswer)
+                                                                    @if($option->answerbyQuestion->textAnswer != $correctanswer)
+                                                                        {{$correctanswer}}, 
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                            @if($question->type == 4)
+                                                            
+                                                            <span class="input-group-text" style="color:orange; background-color:transparent;border-style: hidden;">
+                                                                <img src="{{ asset('images/pending.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
+                                                                <div class="fw-bolder">Your answer is to be reviewed.</div>
+                                                            </span>
+                                                                
+                                                            @endif
+                                                        @else
                                                             <span class="input-group-text" style="color:green; background-color:transparent;border-style: hidden;">
                                                                 <img src="{{ asset('images/correct.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
-                                                                You got the correct answer.
+                                                                <div class="fw-bolder">You got the correct answer.</div>
+                                                                
                                                             </span>
-                                                        @else
-                                                            <span class="input-group-text" style="color:red; background-color:transparent;border-style: hidden;">
-                                                                <img src="{{ asset('images/wrong.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
-                                                                You got the wrong answer.
-                                                            </span>
+                                                        @endif
+                                                    @else
+                                                        <span class="input-group-text" style="color:red; background-color:transparent;border-style: hidden;">
+                                                            <img src="{{ asset('images/wrong.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
+                                                            <div class="fw-bolder">You got the wrong answer.</div>
+                                                            
+                                                        </span>
+                                                            <div class="fw-bolder">Correct answer is:</div>
                                                             @foreach($question->option as $option)
                                                                 @if($option->isCorrect == 1)
-                                                                    Correct answer is: {{$option->option}}
+                                                                     {{$option->option }}
                                                                 @endif
                                                             @endforeach
-                                                        @endif
                                                     @endif
+                                                @endforeach
                                                 </div>
                                             </div>
                                         </div>
-                                    @endif
-                                @endforeach
                             @endforeach
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6">
                                     <a href="{{ route('student.viewQuiz',[request()->route('courseid'), request()->route('quizid')])}}">
-                                        <button type="button" class="btn btn-primary">
+                                        <button type="button" class="btn btn" style="background-color: orange;">
                                             Return
                                         </button>
                                     </a>
                                     
                                 </div>
-                                <div class="col">
-                                    <div class="d-flex align-content-end flex-wrap">
-                                    Points
-                                    </div>
-                                </div>
+                                
                             </div>
                     </div>
                 </div>

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->time('start_time')->nullable();
-            $table->date('end_time')->nullable();
-            $table->integer('attempts')->default(0);
+            $table->time('end_time')->nullable();
+            $table->integer('attempts')->default(1);
             $table->String('status')->default('active');
             $table->String('password')->nullable();
 

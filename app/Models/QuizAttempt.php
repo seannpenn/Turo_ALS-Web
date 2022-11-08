@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\QuizSummary;
 use App\Models\QuizAnswer;
 use App\Models\Quiz;
+use App\Models\Student;
 
 class QuizAttempt extends Model
 {
@@ -20,10 +21,21 @@ class QuizAttempt extends Model
 
     protected $fillable = [
         'quiz_id',
+        'student_id',
     ];
+
+    public static function getAll(){
+        return self::get();
+    }
+    public function attemptsbyQuiz($quiz_id){
+        return self::where('quiz_id',$quiz_id)->get();
+    }
 
     public function quiz(){
         return $this->belongsTo(Quiz::class, 'quiz_id', 'quiz_id');
+    }
+    public function student(){
+        return $this->belongsTo(Student::class, 'student_id', 'student_id');
     }
     public function quizSummary(){
         return $this->hasOne(QuizSummary::class, 'attempt_id', 'attempt_id');

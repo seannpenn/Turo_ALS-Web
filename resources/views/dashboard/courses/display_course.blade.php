@@ -41,14 +41,15 @@
         
     }
     .action{
-        position: absolute;
+        <!-- position: absolute; -->
         bottom: 0px;
-        right: 20px;
+        <!-- right: 20px; -->
     }
     .action-delete{
-        position: absolute;
-    bottom: 0px;
-    right: 50px;
+        margin-right: 2px;
+        <!-- position: absolute; -->
+        bottom: 0px;
+        <!-- right: 50px; -->
     }
     .header{
         display:flex;
@@ -200,19 +201,23 @@
                     // courseArea.innerHTML += `Hello`;
                     
                     courseArea.innerHTML += `
+                    
                                         <div class="col">
-                                            <div class="card" style="width: 19em;height: 15em;">
-                                                <div class="card-body" >
+                                            <div class="card" style="width: 19em;height: 15em; ">
+                                                <div class="card-body" style="text-align:left;">
                                                     <h5 class="card-title">${courses[x].course_title}</h5>
                                                     <p class="card-text">${courses[x].course_description}</p>
                                                 </div>
+                                                <div class="row g-2 justify-content-end" style="width: 19em; padding-right: 5px;">
+                                                    <div class="action col-1 m-1">
+                                                        <td class="icons"><a href="/teacher/course/${courses[x].course_id}/home" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
+                                                    </div>
+                                                    <div class="action-delete col-1 m-1" style="">
+                                                        <td class="icons"><a href ="/teacher/course/${courses[x].course_id}/delete" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="action">
-                                                <td class="icons"><a href="/teacher/course/${courses[x].course_id}/home" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
-                                            </div>
-                                            <div class="action-delete" style="margin:2px;">
-                                                <td class="icons"><a href ="/teacher/course/${courses[x].course_id}/delete" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
-                                            </div>
+                                            
                                         </div>
                                     
                                     `;

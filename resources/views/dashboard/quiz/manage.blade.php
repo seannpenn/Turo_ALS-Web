@@ -69,18 +69,36 @@
                     <tbody>
                     @foreach($quizCollection as $quiz)
                         <tr>
-                            <td width="90%" class="text-left p-3">
+                            <td width="80%" class="text-left p-3">
                                 <a href="{{ route('student.viewQuiz', [request()->route('courseid'), $quiz->quiz_id])}}">{{ $quiz->quiz_title }}</a>
                                 <br>
                                 <p style="font-size:small;">Available on Sep 7, 2022 10:30 AM until Sep 7, 2022 12:30 PM</p>
                             </td>
-                            <td>{{ $quiz->status }} <br>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" @if($quiz->status == 'active') checked @endif>
+                            <td>
+                                @if( $quiz->status == 'active')
+                                <div class="badge bg-success text-wrap" style="width: 100%;">
+                                {{ $quiz->status }} 
+                                </div>
+                                @else
+                                    @if($quiz->status == 'active')
+                                        <div class="badge bg-success text-wrap" style="width: 100%;">
+                                        {{ $quiz->status }} 
+                                        </div>
+                                    @else
+                                        <div class="badge bg text-wrap" style="width: 100%; background-color:grey;">
+                                        {{ $quiz->status }} 
+                                        </div>
+                                    @endif
+                                @endif
+                                <br>
+                                <div class="form-check form-switch toogleSwitch">
+                                    <input class="form-check-input activate" value="{{$quiz->quiz_id}}"  type="checkbox" role="switch" id="flexSwitchCheckChecked"  @if($quiz->status == 'active') checked @endif>
                                 </div>
                             </td>
                             <td>
                                 <a href="{{ route('quiz.edit',[ request()->route('courseid') ,$quiz->quiz_id]) }}" title="Edit Quiz"><button class="btn btn-warning"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
+                                <a href="{{ route('quiz.delete', $quiz->quiz_id) }}" title="Delete Quiz" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger"><img src="{{ asset('images/delete.png') }}" alt="" ></button></a>
+
                             </td>
                         </tr>
                     @endforeach
@@ -95,5 +113,115 @@
             </div>
         </div>
     </div>  
+
+    <script>
+
+        $(document).ready(function(){
+
+            $(window).on('load', 
+                // getAllQuizzes()
+            );
+
+            // function displayQuizStatus(){
+
+            //     const toggleSwitch = document.getElementsByClassName("toogleSwitch");
+
+            //     for(y=0;y<toggleSwitch.length;y++){
+
+            //     }
+
+            // }
+            
+            
+
+            // function getAllQuizzes(){
+            //     getAllQuizzesRoute = "{{route('quiz.all', request()->route('courseid'))}}";
+            //     $.ajax({
+            //         type: "get",
+            //         url: getAllQuizzesRoute,
+            //         dataType: "json",
+            //         success: function (response) {
+            //             console.log(response);
+            //             displayAllQuizzes(response);
+            //         }
+            //     });
+            // }
+            // function displayAllQuizzes(data){
+            //     for(quiz in data){
+            //         console.log(data[quiz].quiz_title);
+            //         table = `
+            //                 <td width="80%" class="text-left p-3">
+            //                     <a href="">${data[quiz].quiz_title}</a>
+            //                     <br>
+            //                     <p style="font-size:small;">Available on Sep 7, 2022 10:30 AM until Sep 7, 2022 12:30 PM</p>
+            //                 </td>
+            //                 <td>
+            //                 `;
+            //         if(data[quiz].status == 'active'){
+            //             table +=`
+            //                     <div class="badge bg-success text-wrap" style="width: 100%;">
+            //                         ${data[quiz].status}
+            //                     </div>`;
+            //         }else{
+            //             table +=`
+            //                     <div class="badge bg-danger text-wrap" style="width: 100%;">
+            //                         ${data[quiz].status} 
+            //                     </div>
+            //                 <br>
+            //             `;
+            //         }
+            //         table+=` 
+            //                     <br>
+                                
+            //                 </td>
+            //                 <td>
+            //                     <a href="/teacher/course/{{request()->route('courseid')}}/quiz/setup/${data[quiz].quiz_id}" title="Edit Quiz"><button class="btn btn-warning"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
+            //                     <a href="/quiz/delete/${data[quiz].quiz_id}" title="Delete Quiz" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger"><img src="{{ asset('images/delete.png') }}" alt="" ></button></a>
+
+            //                 </td>
+            //         `;
+            //         $('#quizzes').html(table);
+            //     }
+            // }
+
+            const toggle = document.getElementsByClassName("activate");
+            
+            for(x=0;x<toggle.length;x++){
+                $(toggle[x]).change(function(e){
+                    var quizId = this.value;
+                    var activateQuizRoute = '/teacher/quiz/' + quizId + '/activate';
+                    // var activateQuizRoute = "{{route('quiz.activate', ":quizid")}}";
+                    // activateQuizRoute.replace(':quizid', $quizId);
+                        e.preventDefault();
+                        
+                        console.log(activateQuizRoute);
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }
+                        });
+                        $.ajax({
+                                url: activateQuizRoute,
+                                type: 'post',
+                                dataType: 'json',
+                                success: function(response){
+                                    if(response.status == 'active'){
+                                        alert('Quiz is now active.');
+                                    }
+                                    else{
+                                        alert('Quiz is now inactive.');
+                                    }
+                                    window.location.reload();
+                                },
+                                error: function(error){
+                                    alert('Error activating quiz. Please set quiz settings first.');
+                                    window.location.reload();
+                                    console.log(error);
+                                }
+                        });
+                });
+            }
+        });
+    </script>
     
 @stop

@@ -8,6 +8,7 @@ use App\Models\Topic;
 use App\Models\Question;
 use App\Models\TopicContent;
 use App\Models\QuizAttempt;
+use Illuminate\Support\Facades\Auth;
 class Quiz extends Model
 {
     use HasFactory;
@@ -19,9 +20,15 @@ class Quiz extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'topic_id',
         'quiz_title',
         'course_id',
+        'start_date',
+        'end_date',
+        'start_time',
+        'end_time',
+        'attempts',
+        'password',
+        'status'
     ];
 
     public static function getAllQuizByTopic($topicId){
@@ -46,7 +53,7 @@ class Quiz extends Model
         return $this->belongsTo(TopicContent::class, 'link', 'quiz_id');
     }
     
-    public function attempt(){
-        return $this->hasMany(QuizAttempt::class, 'quiz_id', 'quiz_id');
+    public function quizAttempt(){
+        return $this->hasMany(QuizAttempt::class, 'quiz_id', 'quiz_id')->where('student_id', Auth::user()->student->student_id);
     }
 }

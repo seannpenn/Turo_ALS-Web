@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Quiz;
 use App\Models\Option;
+use App\Models\QuizAnswer;
+use Illuminate\Support\Facades\Auth;
 class Question extends Model
 {
     use HasFactory;
@@ -32,4 +34,11 @@ class Question extends Model
     public function option(){
         return $this->hasMany(Option::class, 'question_id', 'question_id');
     }
+    public function answer(){
+        return $this->hasMany(QuizAnswer::class, 'question_id', 'question_id')->where('student_id', Auth::user()->student->student_id);
+    }
+    public function getAnswerByQuestionStudent($questionId, $studentId){
+        return QuizAnswer::where('question_id',$questionId)->where('student_id',$studentId)->get()->first();
+    }
+    
 }

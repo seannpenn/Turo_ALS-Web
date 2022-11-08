@@ -1,0 +1,56 @@
+@if($option->answer->isCorrect)
+                                                                                <div class="alert-warning" style="background-color: lightgreen;">
+                                                                                    <input class="form-check-input" type="radio" name="questions[{{ $question->question_id }}]" id="option-{{ $option->option_id }}" value="{{ $option->option_id }}" checked disabled>
+                                                                                    <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                        {{ $option->option }} 
+                                                                                    </label>
+                                                                                </div>
+                                                                            @else
+                                                                                <div class="alert-warning" style="background-color: #FFCCCB;">
+                                                                                    <input class="form-check-input" type="radio" name="questions[{{ $question->question_id }}]" id="option-{{ $option->option_id }}" value="{{ $option->option_id }}" checked disabled>
+                                                                                    <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                        {{ $option->option }} 
+                                                                                    </label>
+                                                                                </div>
+                                                                            @endif
+
+
+
+                                                                            
+
+                                                                            @if($QuizAnswers)
+                                                                            @foreach($QuizAnswers as $answer)
+                                                                                @if($option->option_id == $answer->option_id)
+                                                                                    @if($answer->isCorrect == 1)
+                                                                                        <div class="alert-warning" style="background-color: lightgreen;">
+                                                                                            <input class="form-check-input" type="radio" name="questions[{{ $question->question_id }}]" id="option-{{ $option->option_id }}" value="{{ $option->option_id }}" checked disabled>
+                                                                                            <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                                {{ $option->option }} 
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    @else
+                                                                                        <div class="alert-warning" style="background-color: #FFCCCB;">
+                                                                                            <input class="form-check-input" type="radio" name="questions[{{ $question->question_id }}]" id="option-{{ $option->option_id }}" value="{{ $option->option_id }}" checked disabled>
+                                                                                            <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                                {{ $option->option }} 
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endforeach
+                                                                        
+                                                                        @else
+                                                                            @if($option->isCorrect == 1)
+                                                                                <div class="alert-success" style="background-color: lightgreen;">
+                                                                                    <input class="form-check-input" type="radio" name="questions[{{ $question->question_id }}]hello" id="option-{{ $option->option_id }}" value="{{ $option->option_id }}" disabled>
+                                                                                    <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                        {{ $option->option }}
+                                                                                    </label>
+                                                                                </div>
+                                                                            @else
+                                                                                <input class="form-check-input" type="radio" name="questions[{{ $question->question_id }}]hello" id="option-{{ $option->option_id }}" value="{{ $option->option_id }}" disabled>
+                                                                                <label class="form-check-label" for="{{$question->question_id}}">
+                                                                                    {{ $option->option }}
+                                                                                </label>
+                                                                            @endif
+                                                                        @endif

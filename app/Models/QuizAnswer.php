@@ -22,7 +22,8 @@ class QuizAnswer extends Model
         'student_id',
         'question_id',
         'option_id',
-        'isCorrect'
+        'isCorrect',
+        'textAnswer'
     ];
 
     public function option($optionId){
@@ -30,6 +31,9 @@ class QuizAnswer extends Model
     }
     public function quizAttempt(){
         return $this->belongsTo(QuizAttempt::class, 'attempt_id', 'attempt_id');
+    }
+    public function questions(){
+        return $this->hasOne(Question::class, 'question_id', 'question_id'); 
     }
     public function options(){
         return $this->belongsTo(Option::class, 'option_id', 'option_id'); 

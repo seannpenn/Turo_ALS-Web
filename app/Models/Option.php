@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Question;
 use App\Models\QuizAnswer;
+use Illuminate\Support\Facades\Auth;
 class Option extends Model
 {
     use HasFactory;
@@ -29,6 +30,9 @@ class Option extends Model
     }
     public function answer(){
         return $this->hasOne(QuizAnswer::class, 'option_id', 'option_id');
+    }
+    public function answerbyQuestion(){
+        return $this->hasOne(QuizAnswer::class, 'question_id', 'question_id')->where('student_id', Auth::user()->student->student_id);
     }
 
 }

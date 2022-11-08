@@ -17,6 +17,7 @@ return new class extends Migration
             $table->increments('quiz_summary_id');
             $table->unsignedInteger('attempt_id');
             $table->integer('total_score')->default(0);
+            $table->integer('total_points')->default(0);
 
             $table->foreign('attempt_id')->references('attempt_id')->on('quiz_attempt')->onDelete('cascade');
         });

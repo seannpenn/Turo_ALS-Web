@@ -112,3 +112,90 @@
             //                         `;
             //     }
             // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <td width="80%" class="text-left p-3">
+                <a href="{{ route('student.viewQuiz', [request()->route('courseid'), $quiz->quiz_id])}}">{{ $quiz->quiz_title }}</a>
+                <br>
+                <p style="font-size:small;">Available on Sep 7, 2022 10:30 AM until Sep 7, 2022 12:30 PM</p>
+            </td>
+            <td>
+                @if( $quiz->status == 'active')
+                <div class="badge bg-success text-wrap" style="width: 100%;">
+                {{ $quiz->status }} 
+                </div>
+                @else
+                    <div class="badge bg-danger text-wrap" style="width: 100%;">
+                    {{ $quiz->status }} 
+                    </div>
+                @endif
+                <br>
+                <div class="form-check form-switch">
+                    <input class="form-check-input activate" value="{{$quiz->quiz_id}}"  type="checkbox" role="switch" id="flexSwitchCheckChecked"  @if($quiz->status == 'active') checked @endif>
+                </div>
+            </td>
+            <td>
+                <a href="{{ route('quiz.edit',[ request()->route('courseid') ,$quiz->quiz_id]) }}" title="Edit Quiz"><button class="btn btn-warning"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
+                <a href="{{ route('quiz.delete', $quiz->quiz_id) }}" title="Delete Quiz" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger"><img src="{{ asset('images/delete.png') }}" alt="" ></button></a>
+
+            </td>
+
+
+
+
+
+
+
+            <!-- @if($question->answer->isCorrect)
+                                                        <span class="input-group-text" style="color:green; background-color:transparent;border-style: hidden;">
+                                                            <img src="{{ asset('images/correct.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
+                                                            You got the correct answer.
+                                                        </span>
+                                                        @if($question->type == 2)
+                                                            Other possible answers: 
+                                                            @foreach($correctAnswers as $correctanswer)
+                                                                @if($option->answerbyQuestion->textAnswer != $correctanswer)
+                                                                    {{$correctanswer}}, 
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    @else
+                                                        <span class="input-group-text" style="color:red; background-color:transparent;border-style: hidden;">
+                                                            <img src="{{ asset('images/wrong.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
+                                                            You got the wrong answer.
+                                                        </span>
+                                                        Correct answer is:
+                                                            @foreach($question->option as $option)
+                                                                @if($option->isCorrect == 1)
+                                                                     {{$option->option }}
+                                                                @endif
+                                                            @endforeach
+                                                    @endif -->

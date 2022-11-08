@@ -100,11 +100,16 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
 
     // for quiz make
     Route::view('/quiz/create', 'dashboard.quiz.create')->name('quiz.create');
+    Route::get('/quiz/delete/{quizid}', [QuizController::class, 'delete'])->name('quiz.delete');
     Route::get('/course/{courseid}/quiz/edit/{quizid}', [QuizController::class, 'edit'])->name('quiz.edit');
+    Route::post('/course/{courseid}/quiz/setup/{quizid}', [QuizController::class, 'quizSetup'])->name('quiz.setup');
+    Route::post('/quiz/{quizid}/activate', [QuizController::class, 'activateorDeactivate'])->name('quiz.activate');
     Route::post('/quiz/edit/{quizid}/update', [QuizController::class, 'update'])->name('quiz.update');
     Route::post('/quiz/store', [QuizController::class, 'create'])->name('quiz.store');
     Route::get('/course/{courseid}/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
     Route::get('/course/{courseid}/quiz/all',[QuizController::class, 'getAllQuizzes'])->name('quiz.all');
+    Route::get('/course/quiz/{quizid}/allAttempts/recalculate', [QuizController::class, 'recalculateScore'])->name('quiz.recalculateScore');
+
     
     Route::get('/course/{courseid}/quiz/get/{quizid}', [QuizController::class, 'getSelectedQuiz'])->name('quiz.get');
     // ^
@@ -115,6 +120,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::get('/quiz/question/all/{quizid}', [QuestionController::class, 'getAllQuestions'])->name('question.getAll');
     Route::get('/quiz/question/delete/{questionid}', [QuestionController::class, 'delete'])->name('question.delete');
     Route::post('/quiz/question/update/{questionid}', [QuestionController::class, 'update'])->name('question.update');
+    Route::post('/quiz/question/update/{questionid}/points', [QuestionController::class, 'updatePoint'])->name('question.updatePoint');
 
     // for question option
     Route::post('/quiz/option/update/{optionid}', [OptionController::class, 'update'])->name('option.update');
@@ -122,6 +128,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::get('/quiz/question/option/delete/{optionid}', [OptionController::class, 'delete'])->name('option.delete');
     Route::get('/quiz/question/{questionid}/option/delete/all', [OptionController::class, 'deleteAll'])->name('option.deleteAll');
     Route::post('/quiz/question/option/{optionid}/setAnswer', [OptionController::class, 'setAnswer'])->name('option.setAnswer');
+    Route::post('/quiz/question/option/consider/{answerid}', [OptionController::class, 'considerAnswer'])->name('answer.consider');
     Route::get('/quiz/question/{questionid}/options', [OptionController::class, 'getOptions'])->name('option.getAll');
 
 });
