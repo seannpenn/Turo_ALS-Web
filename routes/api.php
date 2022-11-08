@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\CourseContentController;
 use App\Http\Controllers\Api\TopicController;
+use App\Http\Controllers\Api\TopicContentController;
 use App\Http\Controllers\Api\AuthController;
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +37,7 @@ Route::get('/{id}/course', [CourseController::class, 'show']); //ok
 
 Route::get('/course/{id}/module', [CourseContentController::class, 'show']); //ok
 Route::get('/module/{id}/topic', [TopicController::class, 'show']); 
+Route::get('/topic/{id}/topicContent', [TopicContentController::class, 'getTopicContent']); 
 Route::get('/course/{id}/quiz', [QuizController::class, 'show']);
 Route::get('/quiz/{id}/questions', [QuizController::class, 'getQuestion']);
+Route::get('/quiz/{id}/options', [QuizController::class, 'getOption']);
