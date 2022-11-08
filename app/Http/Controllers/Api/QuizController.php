@@ -23,11 +23,20 @@ class QuizController extends Controller
         $quiz = Quiz::where('quiz_id',$id)->get()->first();
         $question = Question::where('quiz_id',$quiz->quiz_id)->get()->first();
         $questions = $quiz->question;
-        $options = $question->option;
 
         return response()->json([
             'status' => true,
             'questions' => $questions,
+        ]);
+    }
+    public function getOption($id){
+        // $options = Option::where('question_id',$id)->get();
+        $question = Question::where('question_id',$id)->get()->first();
+        $options = $question->option;
+        // $questions = $quiz->question;
+
+        return response()->json([
+            'status' => true,
             'options' => $options,
         ]);
     }
