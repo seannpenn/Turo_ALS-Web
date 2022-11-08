@@ -1,4 +1,4 @@
-<div class="modal fade" id="quizModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="quizModal{{request()->route('courseid')}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -8,7 +8,7 @@
       <div class="modal-body">
         <form action=" {{route('quiz.store')}} " method="post">
             {{ csrf_field() }}
-            <input type="text" name="course_id" class="form-control" id="recipient-name" value="@yield('course_id')" hidden>
+            <input type="text" name="course_id" class="form-control" id="recipient-name" value="{{request()->route('courseid')}}">
             <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Quiz Title</label>
                 <input type="text" name="quiz_title" class="form-control" id="recipient-name">

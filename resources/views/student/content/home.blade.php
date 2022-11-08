@@ -108,7 +108,7 @@
                     <div class="row">
                         <div class="row text-left">
                             <div class="col-md-8">
-                                <h3>Courses</h3>
+                                <h3>Modules</h3>
                             </div>
                         </div>
                         <div class="col-md-8" style="height: 500px;">

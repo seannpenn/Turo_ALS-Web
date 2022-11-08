@@ -58,7 +58,7 @@
     }
     .empty-course{
         text-align:center;
-        margin: 250 auto;
+        margin: 0 auto;
         justify-content:center;
         width: 700px;
         border: 1 solid;
@@ -110,6 +110,17 @@
                     </div>
                 </div>
             @else
+                    <div class="col" style="width:fit-content;">
+                        <a title="Add course" data-bs-toggle="modal" data-bs-target="#createCourse" data-bs-whatever="@fat">
+                            <div class="card" style="width: 19em;height: 15em; border: none;">
+                                <div class="card text-center" id="create-button" style="border: none;">
+                                    <div class="card-body">
+                                        <img style="width: 100px; height: 100px; margin: 50px auto;" src="{{ asset('images/add-icon.png') }}" alt="" >
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 <div class="empty-course">
                     <h1>You dont have any courses posted.</h1>
                 </div>

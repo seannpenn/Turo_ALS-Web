@@ -18,6 +18,13 @@ return new class extends Migration
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('teacher_id');
             $table->String('quiz_title');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->time('start_time')->nullable();
+            $table->date('end_time')->nullable();
+            $table->integer('attempts')->default(0);
+            $table->String('status')->default('active');
+            $table->String('password')->nullable();
 
 
             $table->foreign('course_id')->references('course_id')->on('courses')->onDelete('cascade');

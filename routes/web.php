@@ -160,6 +160,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/student/course/{courseid}/quizzes', [QuizController::class,'getQuizzes'])->name('student.quizzes');
     Route::get('/student/course/{courseid}/quiz/{quizid}', [QuizController::class,'viewQuiz'])->name('student.viewQuiz');
     Route::get('/student/course/{courseid}/quiz/take/{quizid}', [QuizController::class,'takeQuiz'])->name('student.takeQuiz');
+    Route::get('/student/course/{courseid}/quiz/{quizid}/result', [QuizController::class,'viewResult'])->name('student.viewResult');
+    Route::post('/student/course/{courseid}/quiz/{quizid}/answers', [QuizController::class,'storeAnswers'])->name('student.storeAnswers');
 });
 
 

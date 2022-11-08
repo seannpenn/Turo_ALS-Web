@@ -59,7 +59,7 @@
             <div class="col align-self-center">
             @if($quizCollection->count() != 0)
                 <div class="d-flex flex-row mb-3">
-                    <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#quizModal" data-bs-whatever="@fat">Create Quiz</button>
+                    <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#quizModal{{request()->route('courseid')}}" data-bs-whatever="@fat">Create Quiz</button>
                 </div>
                 <table class="table table-hover table table-bordered" style="width: 100%;">
                     <tr>
@@ -74,7 +74,11 @@
                                 <br>
                                 <p style="font-size:small;">Available on Sep 7, 2022 10:30 AM until Sep 7, 2022 12:30 PM</p>
                             </td>
-                            <td>{{ $quiz->status }}</td>
+                            <td>{{ $quiz->status }} <br>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" @if($quiz->status == 'active') checked @endif>
+                                </div>
+                            </td>
                             <td>
                                 <a href="{{ route('quiz.edit',[ request()->route('courseid') ,$quiz->quiz_id]) }}" title="Edit Quiz"><button class="btn btn-warning"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
                             </td>
@@ -83,7 +87,10 @@
                     </tbody>
                 </table>
             @else
-                <h2>No created quizes..</h2>
+                <div class="d-flex flex-row mb-3">
+                    <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#quizModal{{request()->route('courseid')}}" data-bs-whatever="@fat">Create Quiz</button>
+                </div>
+                <h2>No created quizzes..</h2>
             @endif
             </div>
         </div>
