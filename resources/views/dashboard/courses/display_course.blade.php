@@ -1,6 +1,5 @@
 @extends('main')
-@extends('dashboard/courses/create')
-@extends('modalslug')
+
 
 @section('modal-content')
     <span id="modalContent"> Deleting this course would also remove all of its contents. Are you sure you want to proceed?</span>
@@ -85,6 +84,8 @@
 @stop
 
 @section('main-content')
+@include('dashboard/courses/create')
+@include('modalslug')
 @include('navbar/navbar_inside', ['courseId' =>  request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid') ])
 
     <div class="justify-content-center" style="width: 500px; height: 30px; margin: 0 auto;">
@@ -127,11 +128,17 @@
                 </div>
             @endif
     </div>
+    
     <script>
-        $(document).ready(function(){
+
+
+        $(function(){
+            
+        // getCourses();
             $(window).on('load', 
+            
                 getCourses(),
-                console.log('otin'),
+
             );
 
             $('#createCourseButton').click(function (e) {
@@ -145,39 +152,26 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }
                 });
-                $.ajax({
-                    type: "POST",
-                    url: route,
-                    data: {
-                        course_title: $('#course_title').val(),
-                        course_description: $('#course_description').val(),
-                    },
-                    success: function (response) {
-                        console.log('success');
-                        getCourses();
+
+                axios.post(route, {
+                    course_title: $('#course_title').val(),
+                    course_description: $('#course_description').val(),
+                }).then(function(data){
+                    getCourses();
                         $('#course_title').val('');
                         $('#course_description').val('');
-                    },
-                    error: function (response) {
-                        console.log(response);
-                        console.log('error');
-                    }
-                });
+                }).catch(function(error){
+                    console.log(error);
+                })
             });
 
             function getCourses(){
-                var route = "{{route('course.getAll')}}";
-                $.ajax({
-                    type: "GET",
-                    url: route,
-                    dataType: "json",
-                    success: function (response) {
-                        displayCourse(response);
-                    },
-                    error: function (response){
-                        console.log(response);
-                    }
-                });
+                axios.get("{{route('course.getAll')}}").then(function(data){
+                    displayCourse(data.data);
+                    console.log('I am inside');
+                }).catch(function(error){
+                    console.log(error);
+                })
             }
             function displayCourse(courses){
                 console.log('These are the courses');
@@ -198,8 +192,6 @@
                                             </div>
                                             `;
                 for(x in courses){
-                    // courseArea.innerHTML += `Hello`;
-                    
                     courseArea.innerHTML += `
                     
                                         <div class="col">
@@ -210,7 +202,7 @@
                                                 </div>
                                                 <div class="row g-2 justify-content-end" style="width: 19em; padding-right: 5px;">
                                                     <div class="action col-1 m-1">
-                                                        <td class="icons"><a href="/teacher/course/${courses[x].course_id}/home" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
+                                                        <td class="icons"><a class="delete" href="/teacher/course/${courses[x].course_id}/home" title="View Course"><img src="{{ asset('images/add.png') }}" alt=""></a></td>
                                                     </div>
                                                     <div class="action-delete col-1 m-1" style="">
                                                         <td class="icons"><a href ="/teacher/course/${courses[x].course_id}/delete" title="Delete Course"><img src="{{ asset('images/delete.png') }}" onclick="return confirm('Are you sure you want to delete this course?');"></a></td>
@@ -224,9 +216,17 @@
                     console.log(courses[x].course_title);
                 }
             }
+
+            // function deleteCourse(course_id){
+            //     axios.delete("/teacher/course/" + course_id + "/delete").then(function(data){
+            //         alert('deleted successfully')
+            //     }).catch(function(error){
+            //         console.log(error);
+            //     })
+            // }
         });
         
-
+        
     </script>
 
 @stop

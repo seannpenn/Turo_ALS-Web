@@ -28,7 +28,9 @@ class Quiz extends Model
         'end_time',
         'attempts',
         'password',
-        'status'
+        'status',
+        'releaseGrades',
+        'duration',
     ];
 
     public static function getAllQuizByTopic($topicId){

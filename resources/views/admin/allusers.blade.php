@@ -4,7 +4,7 @@
 @section('main-content')
 <div class="layout">
     <form class="row g-1 searchBar">
-        <div class="col-md-6">
+        <div class="col-auto">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" id="searchBar" aria-label="Text input with dropdown button" placeholder="Search.." style="width: 50%;">
                 <select class="form-select" id="userType">
@@ -44,8 +44,8 @@
                         @endif
                     </td>
                     <td >
-                        <a href="{{ route('user.delete',$user->id) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt=""></a>
-                        <a href="" title="View Profile"><button type="button" class="btn" style="background-color:orange;">View Profile</button></a>
+                        <a href="{{ route('user.delete',$user->id) }}" title="Delete Module"><img src="{{ asset('images/delete.png') }}" alt="" onclick="return confirm('Are you sure you want to delete this user?');" ></a>
+                        <a href="{{route('admin-student.profile')}}" title="View Profile"><button type="button" class="btn" style="background-color:orange;">View Profile</button></a>
                     </td>
                     
                 </tr>
@@ -90,6 +90,9 @@
 </script>
 @stop
 @section('css-style')
+        .layout{
+            margin-top: 30px;
+        }
         img {
            height: 20px;
            width: 20px; 
@@ -111,8 +114,9 @@
             text-align: center;
         }
         .searchBar{
-            margin: 30px auto;
-            width: 70%;
+            margin: 20px auto;
+            padding-left: 18rem;
+            <!-- width: 70%; -->
             justify-content: left;
         }
         

@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
     #html-choice-button, #file-choice-button, #quiz-choice-button{
         width: 7rem;
         height: 7rem;
@@ -7,10 +7,10 @@
     a{
       color: black;
     }
-</style>
+</style> -->
 
 <div class="modal fade" id="topicChoices" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-fullscreen">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
       <h5 class="modal-title" id="exampleModalToggleLabel">What would you like to create?</h5>
@@ -32,7 +32,7 @@
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header">
-      <button class="btn" data-bs-target="#topicChoices" data-bs-toggle="modal" data-bs-dismiss="modal">< back</button>
+      <button class="btn" data-bs-target="#topicChoices" data-bs-toggle="modal">< back</button>
       <h5 class="modal-title" id="exampleModalToggleLabel" style="margin-left: 20px;">Create an HTML Document</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
       </div>

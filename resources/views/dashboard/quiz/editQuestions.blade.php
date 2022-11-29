@@ -1,13 +1,13 @@
-<div style="margin: 0 auto;">
+
 @foreach($selectedQuiz as $quiz)
         <div class="row" style="margin: 20px auto;">
             <div class="col-sm-10">
                 <form action="{{ route('quiz.update', $selectedQuiz[0]->quiz_id) }}" method="post" style="width: 50%; margin: 0 auto;">
                 {{ csrf_field() }}
                     <div class="row">
-                    <div class="col-sm-4">
-                        <input type="text" style="height:50px; background-color: transparent; border:none;" class="form-control" name="quiz_title" id="quiz_title" value="Quiz title:" disabled>
-                    </div>
+                        <div class="col-sm-4">
+                            <input type="text" style="height:50px; background-color: transparent; border:none;" class="form-control" name="quiz_title" id="quiz_title" value="Quiz title:" disabled>
+                        </div>
                         
                         <div class="col-sm-8">
                             <input type="text" style="height:50px;" class="form-control" name="quiz_title" id="quiz_title" value="{{$quiz->quiz_title}}">
@@ -28,10 +28,10 @@
         @endforeach
 
         @if($selectedQuiz[0]->question->count() != 0)
-        <br>
-            <div class="questions" id="questions">
-                @foreach($selectedQuiz[0]->question as $key => $question)
-                            <div class="card text-center questionContainer" id="question-container" style="width: 50%; margin: 0 auto; margin-bottom: 20px;" question-id="{{$question->question_id}}" tabindex='1'>
+        <br>    
+            <div class="questions" id="questions" style="background-color: yellow;">
+                    @foreach($selectedQuiz[0]->question as $key => $question)
+                            <div class="card text-center questionContainer" id="question-container" style="width: 50%; margin: 0 auto; margin-bottom: 20px;" question-id="{{$question->question_id}}">
                                 <div class="card-header" style="background-color: orange;">
                                     <div class="row align-items-center">
                                         <div class="col">
@@ -112,21 +112,19 @@
 
                                                         @if($question->type == 4)
                                                                 <textarea class="form-control" placeholder="Paragraph Answer" id="floatingTextarea" rows="5" disabled></textarea>                                                                
-                                                                
                                                         @endif
 
-                                                        
                                                         @if($question->type != 2 && $question->type != 4)
-                                                        <span class="input-group-text" style="background-color: transparent; ">
-                                                            @if($option->isCorrect == 1)
-                                                                <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer" checked>
-                                                            @else
-                                                            <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer">
-                                                            @endif
-                                                        </span>
-                                                        <span class="input-group-text" style="background-color: transparent;">
-                                                            <button type="button" class="form-check-label deleteOption" style="border:none; background-color: transparent;" value="{{$option->option_id}}" title="Delete Option" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/close.png') }}" alt="" width="20" height="20"></button>
-                                                        </span>
+                                                            <span class="input-group-text" style="background-color: transparent; ">
+                                                                @if($option->isCorrect == 1)
+                                                                    <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer" checked>
+                                                                @else
+                                                                <input type="checkbox" class="isCorrect" value="{{$option->option_id}}" aria-label="..." title="Set answer">
+                                                                @endif
+                                                            </span>
+                                                            <span class="input-group-text" style="background-color: transparent;">
+                                                                <button type="button" class="form-check-label deleteOption" style="border:none; background-color: transparent;" value="{{$option->option_id}}" title="Delete Option" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="{{ asset('images/close.png') }}" alt="" width="20" height="20"></button>
+                                                            </span>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -134,12 +132,12 @@
                                                 <div class="row g-3">
                                                         <div class="col-sm-9" style="text-align:left;">
                                                             <div class="form-check">
-                                                            @if($question->type != 2 && $question->type != 4)
-                                                                <button type="button" style="border:none; background-color: transparent;" class="addOptionButton" value="{{ $question->question_id }}"><img src="{{ asset('images/add.png') }}" alt="" width="20" height="20">Add option</button>
-                                                            @endif
-                                                            @if($question->type == 2)
-                                                                <p class="fs-6 fw-bold">Set answer by using comma (,) as separator.</p>
-                                                            @endif
+                                                                @if($question->type != 2 && $question->type != 4)
+                                                                    <button type="button" style="border:none; background-color: transparent;" class="addOptionButton" value="{{ $question->question_id }}"><img src="{{ asset('images/add.png') }}" alt="" width="20" height="20">Add option</button>
+                                                                @endif
+                                                                @if($question->type == 2)
+                                                                    <p class="fs-6 fw-bold">Set answer by using comma (,) as separator.</p>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                 </div>
@@ -175,4 +173,3 @@
                 <button type="button" class="create-button" id="createQuestion">Add Question</button>
             </div>
         </nav>
-</div>

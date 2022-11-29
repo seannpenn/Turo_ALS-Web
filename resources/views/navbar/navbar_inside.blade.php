@@ -63,7 +63,6 @@
             <a class="inner-nav-link" aria-current="page" href="{{route('student.contentDisplay', request()->route('courseid'))}}">Content</a>
             <a class="inner-nav-link" aria-current="page" href="{{route('student.quizzes', request()->route('courseid'))}}">Quizzes</a>
             <a class="inner-nav-link" aria-current="page" href="{{route('students.all')}}">Assignments</a>
-            <a class="inner-nav-link" aria-current="page" href="">Assignments</a>
             <a class="inner-nav-link" aria-current="page" href="">Announcements</a>
           @endif
         @endif

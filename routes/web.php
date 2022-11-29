@@ -39,6 +39,7 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
     Route::post('/announcement/update', [AnnouncementController::class, 'update'])->name('announcement.update');
 });
 
+
 Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
 
     Route::view('/home', 'home.teacher_home')->name('teacher.home');
@@ -69,6 +70,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
 
     // for create course content
     Route::post('/course/content/create', [CourseContentController::class, 'create'])->name('content.create');
+    Route::get('/course/{courseid}/content/getAll/', [CourseContentController::class, 'getModules'])->name('content.getAll');
     Route::get('/course/content/{id}/delete', [CourseContentController::class, 'delete'])->name('content.delete');
     Route::get('/course/{courseid}/content/{contentid}', [CourseContentController::class, 'viewModule'])->name('content.view'); //important
     Route::post('/course/content/{id}/update', [CourseContentController::class, 'update'])->name('content.update');
@@ -109,7 +111,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::get('/course/{courseid}/quiz/manage', [QuizController::class, 'manage'])->name('quiz.manage');
     Route::get('/course/{courseid}/quiz/all',[QuizController::class, 'getAllQuizzes'])->name('quiz.all');
     Route::get('/course/quiz/{quizid}/allAttempts/recalculate', [QuizController::class, 'recalculateScore'])->name('quiz.recalculateScore');
-
+    
     
     Route::get('/course/{courseid}/quiz/get/{quizid}', [QuizController::class, 'getSelectedQuiz'])->name('quiz.get');
     // ^
@@ -121,6 +123,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::get('/quiz/question/delete/{questionid}', [QuestionController::class, 'delete'])->name('question.delete');
     Route::post('/quiz/question/update/{questionid}', [QuestionController::class, 'update'])->name('question.update');
     Route::post('/quiz/question/update/{questionid}/points', [QuestionController::class, 'updatePoint'])->name('question.updatePoint');
+    Route::post('/quizAnswer/{quizanswerid}', [QuestionController::class, 'markAnswer'])->name('questionAnswer.mark');
 
     // for question option
     Route::post('/quiz/option/update/{optionid}', [OptionController::class, 'update'])->name('option.update');
@@ -147,8 +150,14 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::post('/student/register', [RegisterController::class, 'studentRegister'])->name('student.register');
 
 
-
+Route::get('/quiz/all',[QuizController::class, 'getEntireQuizzes'])->name('quiz.getAll');
 Route::middleware('auth')->group(function(){
+    // Profile
+    
+    Route::view('/admin/student/profile', 'admin.viewProfile')->name('admin-student.profile');
+
+
+
     Route::get('/student/enrollment/enroll', [StudentController::class, 'enrollForm'])->name('student.enrollment');
     Route::get('/student/enrollment', [StudentController::class, 'enrollmentPage'])->name('student.enrollment_page');
     Route::post('/student/enrollment', [StudentController::class, 'enroll'])->name('student.enroll');
@@ -169,6 +178,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/student/course/{courseid}/quiz/take/{quizid}', [QuizController::class,'takeQuiz'])->name('student.takeQuiz');
     Route::get('/student/course/{courseid}/quiz/{quizid}/result', [QuizController::class,'viewResult'])->name('student.viewResult');
     Route::post('/student/course/{courseid}/quiz/{quizid}/answers', [QuizController::class,'storeAnswers'])->name('student.storeAnswers');
+    Route::post('/student/course/quiz/answer/store', [QuizController::class, 'saveAnswerToSession'])->name('saveAnswerToSession');
 });
 
 

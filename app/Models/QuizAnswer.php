@@ -23,7 +23,8 @@ class QuizAnswer extends Model
         'question_id',
         'option_id',
         'isCorrect',
-        'textAnswer'
+        'textAnswer',
+        'points',
     ];
 
     public function option($optionId){

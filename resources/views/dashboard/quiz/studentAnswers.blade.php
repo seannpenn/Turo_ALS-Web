@@ -10,8 +10,22 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                 @foreach($student->student->quizAttemptByStudentByQuiz($student->student_id, $selectedQuiz[0]->quiz_id) as $index => $attempt)
-                    Attempt {{$index+1}}
-                    <h5 class="m-3">Points: {{$attempt->quizSummary->total_score}}</h5> 
+                    <div class="p-3">
+                        Attempt {{$index+1}}
+                    </div>
+                    @foreach($selectedQuiz[0]->question as $index => $question)
+                        @if($question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->option_id == null && $question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->isCorrect == null && $question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->points == null)
+                            <span class="badge text-bg-success" style="font-size: 20px;">
+                                Partial Score : {{$attempt->quizSummary->total_score}} / {{$attempt->quizSummary->total_points}}
+                            </span>
+                        @break
+                        @else
+                             <span class="badge text-bg-success" style="font-size: 20px;">
+                                Final Score : {{$attempt->quizSummary->total_score}} / {{$attempt->quizSummary->total_points}}
+                            </span>
+                            @break
+                        @endif
+                    @endforeach
                     
                     <div class="card m-3">
                         <div class="card-body">
@@ -71,7 +85,7 @@
                                                                                 </div>
                                                                             @else
                                                                                 <div class="alert-warning" style="background-color: #FFCCCB;">
-                                                                                    <input class="form-check-input"  type="checkbox" name="options[{{ $option->option_id}}]" id="exampleRadios2" value="{{$question->question_id}}" disabled>
+                                                                                    <input class="form-check-input"  type="checkbox" name="options[{{ $option->option_id}}]" id="exampleRadios2" value="{{$question->question_id}}" disabled checked>
                                                                                     <label class="form-check-label" for="{{$question->question_id}}">
                                                                                         {{ $option->option }}
                                                                                     </label>
@@ -114,10 +128,19 @@
                                                     @if($question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->isCorrect || $question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->option_id == null)
                                                         @if($question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->option_id == null)
                                                                     @if($question->type == 4)
-                                                                        <div class="float-end">
-                                                                            <input type="text" class="form-control">
-                                                                            <button class="btn btn-primary" style="background-color: orange; border: 1px solid orange;">Mark</button>
+                                                                    <div class="d-flex justify-content-end">
+                                                                        <div class="p">
+                                                                            <div class="input-group">
+                                                                                @if($question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->points == null)
+                                                                                    <input type="number" min="0" max="{{$question->points}}" class="form-control givenPoint" id="{{$index}}" size="2" value="{{$question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->points}}">
+                                                                                    <span class="input-group-text">/5</span>
+                                                                                    <button class="btn btn-primary mark" id="{{$index}}" style="background-color: orange; border: 1px solid orange;" value="{{$question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->quiz_answer_id}}">Mark</button>
+                                                                                @else
+                                                                                    <h6>Given score: {{$question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->points}}</h6>
+                                                                                @endif
+                                                                            </div>
                                                                         </div>
+                                                                    </div>
                                                                     @endif
                                                             @foreach($correctAnswers as $correctanswer)
                                                                 @if($question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->textAnswer == $correctanswer || $question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->isCorrect)
@@ -155,10 +178,42 @@
                                                                 
                                                             @endforeach
                                                         @else
-                                                            <span class="input-group-text" style="color:green; background-color:transparent;border-style: hidden;">
-                                                                <img src="{{ asset('images/correct.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
-                                                                Student got the correct answer.
-                                                            </span>
+                                                                @php
+                                                                    $testCount = 0;
+                                                                    $countTesting = 0;
+                                                                @endphp
+
+                                                                @foreach($attempt->quiz->question as $index => $question)
+                                                                    @if($question->type == 3)
+                                                                        @foreach($question->option as $option)
+                                                                            @if($option->isCorrect)
+                                                                                @if($option->answer)
+                                                                                    @if($option->answer->isCorrect)
+                                                                                        @php $testCount++; @endphp
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endif
+                                                                            @if($option->answer)
+                                                                                @if(!$option->answer->isCorrect)
+                                                                                    @php $countTesting++; @endphp
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @endif
+                                                                @endforeach
+
+                                                            @if($countTesting == 0)
+                                                                <span class="input-group-text" style="color:green; background-color:transparent;border-style: hidden;">
+                                                                    <img src="{{ asset('images/correct.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
+                                                                    Student got the correct answer.
+                                                                </span>
+                                                            @else
+                                                                <span class="input-group-text" style="color:red; background-color:transparent;border-style: hidden;">
+                                                                    <img src="{{ asset('images/wrong.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
+                                                                    Student got the wrong answer.
+                                                                </span>
+                                                            @endif
+                                                            <!--  -->
                                                             @if($question->type == 2)
                                                                 Other possible answers: 
                                                                 @foreach($correctAnswers as $correctanswer)
@@ -231,7 +286,7 @@
     background-color: orange;
     }
 
-    .students:after {
+    /* .students:after {
     content: '\002B';
     width: 20px;
     height: 20px;
@@ -243,7 +298,7 @@
 
     .active:after {
     content: "\2212";
-    }
+    } */
 
     .content {
     padding: 0 18px;
@@ -275,6 +330,7 @@
 
             for(var index = 0;index<considerButton.length; index++){
                 $(considerButton[index]).click(function(e){
+                    
                     var isCorrect= this.getAttribute("isCorrect");
                     var considerAnswerRoute = "{{route('answer.consider', ":answerid")}}";
                     considerAnswerRoute = considerAnswerRoute.replace(':answerid', this.value);
@@ -308,8 +364,42 @@
                 });
             }
 
-            function recalculateScore(){
-                
+            const markButton = document.getElementsByClassName('mark');
+            const givenPoint = document.getElementsByClassName('givenPoint');
+            
+            for(var index = 0;index<markButton.length; index++){
+                $(markButton[index]).on('click', markButton[index], function () {
+                    
+                    alert(givenPoint[$(markButton).index(this)].value + ' ----- ' + this.value);
+                    alert('Score'+ givenPoint[$(markButton).index(this)].value + ' will be given to this answer.Are you sure you want to proceed?');
+                    var markAnswerRoute = "/teacher/quizAnswer/" + this.value;
+                    console.log(markAnswerRoute);
+                    var point = givenPoint[$(markButton).index(this)].value;
+                    
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }
+                    });
+                    $.ajax({
+                        type: "post",
+                        url: markAnswerRoute,
+                        data: {
+                            points: point,
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            console.log('success');
+                            // window.location.reload();
+                        },
+                        error: function(response){
+                            console.log(response);
+                            console.log('error');
+                        },
+                        
+                    });
+                    
+                });
             }
 
     });

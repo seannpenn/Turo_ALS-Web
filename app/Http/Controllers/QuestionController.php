@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Response;
 use App\Models\Question;
 use App\Models\Option;
+use App\Models\QuizAnswer;
+use App\Models\QuizSummary;
 // use App\Events\Questions;
 use App\Models\Quiz;
 class QuestionController extends Controller
@@ -75,15 +77,31 @@ class QuestionController extends Controller
         return Response::json($selectedQuestion);
     }
 
+    public function markAnswer(Request $request, $answer_id){
+        $chosenAnswer = QuizAnswer::where('quiz_answer_id',$answer_id)->get()->first();
+        $quizSummary = QuizSummary::where('attempt_id',$chosenAnswer->attempt_id)->get()->first();
+
+        $chosenAnswer->update([
+            'points' => $request->points,
+        ]);
+        $quizSummary->update([
+            'total_score' => $quizSummary->total_score+=$chosenAnswer->points,
+        ]);
+
+        return Response::json($chosenAnswer);
+    }
+
     // get all questions
 
     public function getAllQuestions($id){
         $questionModel = new Question;
-        $selectedQuiz = $questionModel->getAll($id);
+        $questions = $questionModel->getAll($id);
+        
+        
         // $selectedQuiz = Question::where('quiz_id', $id)->get();
         // $questionCollection = $selectedQuiz->question;
         // echo json_encode($selectedQuiz);
-        return Response::json($selectedQuiz);
+        return Response::json($questions);
     }
 
     // get single question

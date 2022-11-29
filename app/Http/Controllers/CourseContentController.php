@@ -10,6 +10,7 @@ use App\Models\Topic;
 use App\Models\TopicContent;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Response;
 class CourseContentController extends Controller
 {
     // creating of course content
@@ -80,7 +81,12 @@ class CourseContentController extends Controller
         $selectedCourseContent->delete();
         return redirect()->to(route('course.showInfo', $selectedCourseContent->course_id));
     }
+    public function getModules($courseid){
+        $course = Course::where('course_id', $courseid)->get()->first();
+        $modules = $course->coursecontent;
 
+        return Response::json($modules);
+    }
     // viewing of course content
     public function viewModule($courseid, $contentId){
 

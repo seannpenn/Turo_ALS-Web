@@ -105,33 +105,34 @@
                             <li class="breadcrumb-item active" aria-current="page">Home</li>
                         </ol>
                     </nav>
-                    <div class="row">
+                    
                         <div class="row text-left">
                             <div class="col-md-8">
                                 <h3>Modules</h3>
                             </div>
                         </div>
-                        <div class="col-md-8" style="height: 500px;">
-                            <div class="row row-cols-2 g-3 shadow-sm p-3 mb-5 bg-body rounded">
-                                @foreach($chosenCourse as $course)
-                                    @foreach($course->coursecontent as $content)
-                                        <div class="col">
-                                            <div class="card h-100">
-                                                <svg style="border-bottom: 2px solid black;" class="bd-placeholder-img card-img-top" width="100%" height="100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                                    <title>Placeholder</title><rect width="100%" height="100%" fill="#FFFFFF"></rect><text x="39%" y="50%" fill="orange" dy=".3em">Image cap</text>
-                                                </svg>
-                                                <div class="card-body">
-                                                    <a href="{{ route('student.contentDisplay', $course['course_id'] ) }}">
-                                                        <h5 class="card-title">{{$content['content_title']}}</h5>
-                                                    </a>
-                                                    <p class="card-text">{{$content['content_description']}}</p>
+                    <div class="row">
+                            <div class="col-md-8 shadow-sm p-3 mb-5 bg-body rounded">
+                                <div class="row row-cols-2 g-3">
+                                    @foreach($chosenCourse as $course)
+                                        @foreach($course->coursecontent as $content)
+                                            <div class="col">
+                                                <div class="card h-100">
+                                                    <svg style="border-bottom: 2px solid black;" class="bd-placeholder-img card-img-top" width="100%" height="100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                                        <title>Placeholder</title><rect width="100%" height="100%" fill="#FFFFFF"></rect><text x="39%" y="50%" fill="orange" dy=".3em">Image cap</text>
+                                                    </svg>
+                                                    <div class="card-body">
+                                                        <a href="{{ route('student.contentDisplay', $course['course_id'] ) }}">
+                                                            <h5 class="card-title">{{$content['content_title']}}</h5>
+                                                        </a>
+                                                        <p class="card-text">{{$content['content_description']}}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div> 
+                                            </div> 
+                                        @endforeach
                                     @endforeach
-                                @endforeach
+                                </div>
                             </div>
-                        </div>
 
                         <div class="col-6 col-md-4">
                             <div class="shadow-sm p-3 mb-5 bg-body rounded">

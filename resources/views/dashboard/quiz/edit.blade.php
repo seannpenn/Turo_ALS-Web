@@ -43,7 +43,7 @@
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
         cursor:pointer;
     }
-    #question-container:focus-within,  #question-container:focus{
+    #qquestion-container:focus-within,  #qquestion-container:focus{
         z-index: 9;
         transform: scale(1.05);
         border-left: 5px solid orange;
@@ -80,13 +80,13 @@
         </nav>
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Setup</button>
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="false">Setup</button>
                 <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Student's answers</button>
                 <button class="nav-link" id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" type="button" role="tab" aria-controls="nav-settings" aria-selected="false"><img src="{{ asset('images/settings.png') }}"  alt="" width="20" height="20"></button>        
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">@include('dashboard.quiz.editQuestions')</div>
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">@include('dashboard.quiz.editQuestions')</div>
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">@include('dashboard.quiz.studentAnswers')</div>
             <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab" tabindex="0">
                 @include('dashboard.quiz.settings')
@@ -104,7 +104,7 @@
                 deleteQuestion(),
                 deleteOption(),
                 getQuestion(),
-                getQuestions()
+                // getQuestions()
                 // loadQuestions(),
             );
 
@@ -119,7 +119,7 @@
                     dataType: "json",
                     success: function (response) {
                         console.log('These are the questions');
-
+                        
                         $(response).each(function(index, value) {
                             console.log(`question${index}: ${this.question}`);
                             getOptions(this.question_id);

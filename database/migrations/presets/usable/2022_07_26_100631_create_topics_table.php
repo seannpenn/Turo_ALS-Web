@@ -29,9 +29,9 @@ return new class extends Migration
             $table->string('type');
             $table->longText('html')->nullable();
             $table->longText('file')->nullable();
-            $table->integer('link')->nullable();
+            $table->integer('quiz_link')->nullable();
+            $table->integer('assignment_link')->nullable();
             
-
             $table->foreign('topic_id')->references('topic_id')->on('topics')->onDelete('cascade');
         });
 

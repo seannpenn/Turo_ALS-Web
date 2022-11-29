@@ -4,8 +4,10 @@
 @extends('dashboard/courses/update_course_modal')
 @extends('modalslug')
 @extends('dashboard/modals/createTopic_modal')
-@extends('dashboard/topic_content/choices_modal')
-@extends('dashboard/content/update_topic_modal')
+@include('dashboard/topic_content/add-html')
+@include('dashboard/topic_content/add-file')
+@include('dashboard/topic_content/add-quiz')
+@include('dashboard/content/update_topic_modal')
 @include('dashboard/topic_content/chooseQuiz')
 
 @section('modal-content')
@@ -66,7 +68,7 @@
         border: 2px solid orange;
     }
     .collapsible {
-        margin: 10px;
+        margin: 5px;
         background-color: white;
         color: orange;
         padding: 5px;
@@ -85,7 +87,7 @@
         box-shadow: 0 1px 5px rgb(0 0 0 / 0.2);
     }
     .collapsible:focus {
-        border: 2px solid orange;
+        border-bottom: 2px solid orange;
     }
     .courseContent {
         margin-bottom: 10px;
@@ -153,6 +155,7 @@
         gap: 3;
     }
     .topic-content{
+        margin-top: 10px;
         background-color: white;
         font-size: 10px;
         width: 225px;
@@ -201,6 +204,21 @@
 @section('main-content')
     @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')  ])
         <div class="col" style=" margin: 0 auto; width: 70%; padding: 10px; border-radius: 10px;">
+
+            <!-- @if($errors->any())                  
+                <div class="toast-container position-fixed top-0 start-50 translate-middle-x">
+                    <div id="liveToast" class="toast bg-warning" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                        <img src="{{ asset('images/correct.png') }}" class="rounded me-2" alt="...">
+                        <strong class="me-auto">Success</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                        {{$errors->first()}}
+                        </div>
+                    </div>
+                </div>
+            @endif -->
             <div class="d-flex justify-content-start" style="width:1350px;">
                 <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#moduleModal" data-bs-whatever="@fat">Create Module</button>
             </div>
@@ -214,7 +232,7 @@
                                 @stop
                                     @foreach($course->coursecontent as $module)
                                             <tr>
-                                                <button type="button"  class="shadow p-3 bg-body rounded collapsible" id="collapsible" data-topic-value="{{$module->content_id}}" value="{{$module->content_title}}"><b>{{$module->content_title}}</b>
+                                                <button type="button"  class="shadow-sm p-3 bg-body rounded collapsible" id="collapsible" data-topic-value="{{$module->content_id}}" value="{{$module->content_title}}"><b>{{$module->content_title}}</b>
                                                     <!-- <a href="" onclick="return confirm('Are you sure you want to delete this content?')"><img src="{{ asset('images/delete.png') }}" alt=""></a> -->
                                                 </button>
                                                 <!-- For topic create modal  -->
@@ -230,9 +248,13 @@
                                                                 <a href="{{route('topic.delete', $topic->topic_id)}}" onclick="return confirm('Are you sure you want to delete this topic?\nDeleting this topic will also delete all of its content.')"><img class="rounded-circle" src="{{ asset('images/close.png') }}" alt="" style="background-color: lightgray;"></a>
                                                             </div>
                                                         </button>
-                                                        <div class="topic-content-list">
+                                                        <div class="topic-content-list g-2">
                                                             @foreach($topic->topiccontent as $topiccontent)
-                                                                    <button class="topic-content shadow-sm mb-1 bg-body" id="topic-content" onclick="getTopicContentId({{$topiccontent->topic_content_id}})">
+                                                                    <button class="topic-content position-relative shadow-sm mb-1 bg-body " id="topic-content" onclick="getTopicContentId({{$topiccontent->topic_content_id}})">
+                                                                        <!-- <div class="position-absolute top-0 start-100 translate-middle">
+                                                                            <a href="{{route('topic.delete', $topic->topic_id)}}" onclick="return confirm('Are you sure you want to delete this topic?\nDeleting this topic will also delete all of its content.')"><img class="rounded-circle" src="{{ asset('images/close.png') }}" alt="" style="background-color: lightgray;"></a>
+                                                                        </div> -->
+                                                                        
                                                                         @if($topiccontent->type == 'html')
                                                                             <img src="{{ asset('images/text.jpg') }}" alt=""> 
                                                                         @elseif($topiccontent->type == 'quiz')
@@ -255,20 +277,20 @@
                 <div class="d-inline p-1 text-bg align-items-center">
                     <div class="control-area" id="control-area"></div>
                         <div class="view-topic" id="view-topic">
-                            
+
                         </div>
                     </div>
                 </div>
             </div>
     <script type="text/javascript">
 
-        
+        // const toast = new bootstrap.Toast(toastLiveExample)
+        // toast.show()
 
         var y;
         var contentId, topicId;
         var view = document.getElementById("view-topic");
         var control = document.getElementById("control-area");
-        var editor = document.getElementById("editor");
         
         function getTopicContentId(id){
             topicContentId = id;
@@ -284,7 +306,19 @@
                 // history.pushState(null, null, '/course/' + '{{request()->route('courseid')}}' +  '/topiccontent/'+ topicContentId);
                 // view content
                 e.preventDefault();
-
+                view.innerHTML =`
+                    <div class="container text-center" style=" margin: 250px auto;">
+                        <div class="row">
+                            <div class="col align-self-center">
+                                <div class="spinner-grow" role="status" style="color:orange;">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                `;
+                
                 $.ajax({
                     type: "GET",
                     url: routeURL,
@@ -294,11 +328,12 @@
                             console.log(routeUpdate);
                             control.innerHTML = `
                                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <a href="/teacher/course/content/topic/content/${data[0].topic_content_id}/delete"><button type="button" id="topicUpdate" class="btn btn-warning">Delete Topic Content</button></a>
+                                            <a href="/teacher/course/content/topic/content/${data[0].topic_content_id}/delete"><button type="button" id="topicUpdate" class="btn" style="background-color:orange;color: white;">Delete Topic Content</button></a>
                                             </div>
                             `;
                             view.innerHTML = `<div class="text-content">
                                                     <div class="col-auto">
+                                                        <form id="myForm" action="/teacher/course/content/topic/content/${data[0].topic_content_id}/update" method="post">
                                                             <div class="card-body">
                                                                     {{csrf_field()}}
                                                                         <div class="mb-3">
@@ -308,64 +343,119 @@
                                                                             <input type="text" name="topic_id" class="form-control" id="topic_id" value="${data[0].topic_id}" hidden>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <textarea class="form-control mt-5" name="html" id="editor" rows="20">${data[0].html}</textarea>
+                                                                            <textarea class="form-control mt-5" name="html" class="html" id="editor" onclick="alert('Hello')" rows="20"></textarea>
                                                                         </div>
                                                             </div>
+                                                            <br>
                                                             <div class="modal-footer">  
-                                                                <button type="submit" id="update" class="btn btn-warning">Update</button>
+                                                                <button type="submit" id="update" class="btn btn" style="background-color:orange;color: white;">Update</button>
                                                             </div>
+                                                        </form>
                                                     </div>
                                                     <br><br>
                                                 </div>
+
                                                 `;
-                                                ClassicEditor
-                                                .create( document.querySelector( '#editor' ) )
-                                                .then( editor => {
-                                                    console.log( editor );
-                                                } )
-                                                
-                                                .catch( error => {
-                                                    console.error( error );
-                                                } );
-                                                
-                                    $("#update").click(function(e){
-                                        $.ajaxSetup({
-                                            headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                            }
-                                        });
+                                                $("#editor").val(data[0].html);
+                                        // $("#editor").change(function handleChange(event) {
+                                        //     console.log(event.target);
+                                        //         var editor = this.value;
+                                        //         console.log(editor);
+                                        //     console.log(event.target.value);
+                                        // });
+
                                         
-                                            var topicId = $('#topic_id').val();
-                                            var topicContentTitle = $('#topic_content_title').val();
-                                            var type = $('#type').val();
-                                            var editor = $('#editor').val();
-                                        $.ajax({
-                                                topic_id: topicId, 
-                                                topic_content_id: contentId, 
-                                                topic_content_title: topicContentTitle,
-                                                type: type, 
-                                                html: editor,
-                                            dataType: 'json',
-                                            success: function(response){
-                                                alert('Update done.');
-                                                console.log(response);
-                                            },
-                                            error: function(data){
-                                                console.log(data);
-                                            }
-                                        });
-                                    });
+                                            // $("myForm").submit(function (event) {
+
+                                            //     var formData = {
+                                            //         topic_id: $('#topic_id').val(),
+                                            //         topic_content_id: $('#topic_content_title').val(),
+                                            //         topic_content_title: $('#type').val(),
+                                            //         type: $(".html").val(),
+                                            //     };
+
+                                            //     $.ajax({
+                                            //     type: "POST",
+                                            //     url: routeUpdate,
+                                            //     data: formData,
+                                            //     dataType: 'json',
+                                            //     success: function(response){
+                                            //         alert('Update done.');
+                                            //         console.log(response);
+                                            //     },
+                                            //     error: function(data){
+                                            //         console.log(data);
+                                            //     },
+
+                                            // });
+
+                                        // $("#update").click(function(e){
+                                        //     const form = getElementById('myForm');
+
+                                        //     $('#myForm').submit(function() {
+                                        //         // get all the inputs into an array.
+                                        //         var $inputs = $('#myForm :input');
+
+                                        //         // not sure if you wanted this, but I thought I'd add it.
+                                        //         // get an associative array of just the values.
+                                        //         var values = {};
+                                        //         $inputs.each(function() {
+                                        //             values[this.name] = $(this).val();
+                                        //             console.log(values[this.name]);
+                                        //         });
+                                                
+                                        //     });
+                                        // });
+                                        // $("#update").click(function(e){
+                                        //     $.ajaxSetup({
+                                        //         headers: {
+                                        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                        //         }
+                                        //     });
+                                            
+                                                
+                                        //     $.ajax({
+                                        //         type: "post",
+                                        //         url: routeUpdate,
+                                        //         data:{
+                                        //             topic_id: topicId, 
+                                        //             topic_content_id: contentId, 
+                                        //             topic_content_title: topicContentTitle,
+                                        //             type: type, 
+                                        //             html: editor,
+                                        //         },
+                                        //         dataType: 'json',
+                                        //         success: function(response){
+                                        //             alert('Update done.');
+                                        //             console.log(response);
+                                        //         },
+                                        //         error: function(data){
+                                        //             console.log(data);
+                                        //         }
+                                        //     });
+                                        //     event.preventDefault();
+                                        // });
+
+                                        ClassicEditor
+                                            .create( document.querySelector( '#editor' ) )
+                                            .then( editor => {
+                                                console.log( editor );
+                                            } )
+                                                
+                                            .catch( error => {
+                                                console.error( error );
+                                            } );
                                     
                         }
                         else if(data[0].type == 'quiz'){ //ok
 
                             var route = "{{route('quiz.edit', [":courseid" ,":id"])}}";
-                            route = route.replace(':courseid', {{request()->route('courseid')}});
-                            route = route.replace(':id', data[0].link); 
+                            route = route.replace(':courseid', "{{request()->route('courseid')}}");
+                            route = route.replace(':id', data[0].quiz_link); 
 
                             control.innerHTML = `
                                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <a href="/teacher/course/content/topic/content/${data[0].topic_content_id}/delete"><button type="button" id="topicUpdate" class="btn btn-warning">Delete Topic Content</button></a>
+                                            <a href="/teacher/course/content/topic/content/${data[0].topic_content_id}/delete"><button type="button" id="topicUpdate" class="btn" style="background-color:orange; color: white;">Delete Topic Content</button></a>
                                             </div>
                             `;
 
@@ -379,11 +469,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col align-self-center">
-                                    <a href="${route}"><button type="submit" class="btn btn-warning">Go to Quiz</button></a>
+                                    <a href="${route}"><button type="submit" class="btn btn" style="background-color:orange; color: white;">Go to Quiz</button></a>
                                     </div>
                                 </div>
                             </div>
                             `;
+
+                            
                         }
                         else{
                             var asset = "{{ asset(":fileDirectory") }}";
@@ -392,7 +484,7 @@
                             console.log(data[1]);
                             control.innerHTML = `
                                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                                <a href="/teacher/course/content/topic/content/${data[0].topic_content_id}/delete"><button type="button" id="topicUpdate" class="btn btn-warning">Delete Topic Content</button></a>
+                                                <a href="/teacher/course/content/topic/content/${data[0].topic_content_id}/delete"><button type="button" id="topicUpdate" class="btn" style="background-color:orange; color: white;">Delete Topic Content</button></a>
                                             </div>
                             `;
                             view.style.overflow = "scroll";
@@ -432,6 +524,7 @@
                 var routeCreateTopic = "http://localhost:8000/teacher/course/content/" + contentid +"/topic";
 
                 routeTopicCreate = routeTopicCreate.replace(':contentId', contentid);
+                control.innerHTML =``;
                 view.innerHTML = ``;
                 view.innerHTML = `
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -483,10 +576,26 @@
                                             type="button" id="topicUpdate" class="create-button" data-bs-toggle="modal" 
                                             data-bs-whatever="@fat" data-bs-target="#topicUpdateModal">Edit topic
                                         </button>
+                                            
                                         <button 
-                                            type="button" id="topicChoices" class="create-button" data-bs-toggle="modal" 
-                                            data-bs-whatever="@fat" data-bs-target="#topicChoices">Add Resource
+                                                type="button" id="topicChoices" class="create-button btn-sm dropdown-toggle" 
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="10,20">Add Resource
                                         </button>
+                                        <div class="btn-group">
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" id="html-choice-button" href="#" data-bs-target="#html-create" data-bs-toggle="modal" data-bs-dismiss="modal">HTML Document</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" id="file-choice-button" href="#" data-bs-target="#file-create" data-bs-toggle="modal" data-bs-dismiss="modal">File</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" id="quiz-choice-button" href="#" data-bs-target="#quiz-link" data-bs-toggle="modal" data-bs-dismiss="modal">Quiz</a>
+                                                </li>
+                                                
+                                            </ul>
+                                        </div>
+
                                     </div>
                                     <h2 style="margin-left:20px;">${topicTitle} ${topicId}</h2>
                                     <hr>
@@ -509,7 +618,7 @@
 
                 // get all course quizzes for quiz display
                 $(document).ready(function () {
-                    $('#quiz-choice-button').one('click',function(e){
+                    $('#quiz-choice-button').click(function(e){
                         var getQuizRoute = "{{ route('quiz.all', ":courseid") }}";
                         getQuizRoute = getQuizRoute.replace(':courseid', '{{request()->route('courseid')}}');
                             $.ajax({
@@ -519,6 +628,7 @@
                                     success: function(data){
                                         console.log(data);
                                         var listQuizzes = document.getElementById("list-quizzes");
+                                        listQuizzes.innerHTML = ``;
                                         var a;
                                         for(a=0;a<data.length; a++){
                                             listQuizzes.innerHTML += `
@@ -527,7 +637,7 @@
                                                     <div>
                                                         <input type="text" class="form-control" name="type" id="recipient-name" value="quiz" hidden>
                                                         <input type="text" name="topic_content_title" class="form-control" value="${data[a].quiz_title}" hidden>
-                                                        <input type="text" name="link" class="form-control" value="${data[a].quiz_id}" hidden>
+                                                        <input type="text" name="quiz_link" class="form-control" value="${data[a].quiz_id}" hidden>
                                                         <input type="text" name="topic_id" class="form-control" value="${topicId}" hidden>
                                                         <button class="quiz-select" type="submit">${data[a].quiz_title} - ${data[a].quiz_title}</button>
                                                         
@@ -553,5 +663,11 @@
                 }
             });
         }
+
+        ClassicEditor
+        .create( document.querySelector( '#editor1' ) )
+        .catch( error => {
+            console.error( error );
+        } );
     </script>
 @stop

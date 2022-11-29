@@ -14,8 +14,8 @@
     } 
 @stop
 @section('main-content')
-@include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')])
-    <div class="layout">
+    @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')])
+    <div class="container">
         <h1>Quiz</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb" style="background-color:white;">
@@ -23,16 +23,21 @@
                     <li class="breadcrumb-item active" aria-current="page">{{$chosenQuiz[0]->quiz_title}}</li>
                 </ol>
             </nav>
-        <div class="container text-left p-4 rounded" style="border: 2px solid black; width: 600px;">
+        <div class="container text-left p-4 rounded">
             
             <div class="col align-self-center">
                 @if($chosenQuiz->count() != 0)
                     @foreach($chosenQuiz as $quiz)
                         <h1>Quiz - {{$quiz->quiz_title}}</h1>
-                        <h2>Learner</h2>
+                        @php
+                            $duration = $quiz->duration;
+                            $hours = intdiv($duration, 60);
+                            $minutes = $duration%60;
+                        @endphp
+                        <h3>Quiz duration - {{$hours}} hour and {{$minutes}} minutes</h3>
                         <!-- <h5>{{Auth::user()->student->student_fname}} {{Auth::user()->student->student_mname}} {{Auth::user()->student->student_lname}}</h5> -->
                         
-                        @if($quiz->quizAttempt)
+                        @if($quiz->quizAttempt->count() > 0)
                             <div class="row">
                                 <div class="col-12">
                                     <div class="alert alert-success" role="alert">
@@ -52,15 +57,17 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="text-center">
+                        <div class="text-left">
                             <br>
-                            @if($quiz->quizAttempt->count() == 1)
-                                <h6>You are done taking the quiz. Click <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">HERE</a>to view result.</h6>
+                            @if($quiz->quizAttempt->count() >= 1)
+                                @if($quiz->releaseGrades != 1)
+                                    <h6>You are done taking the quiz. Click <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">HERE</a> to view result.</h6>
+                                @endif
                             @else
                                 @if($quiz->password == null)
                                     <a href="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id])}}"><button type="button" class="btn btn-warning">Take Quiz!</button></a>
                                 @else
-                                    <form class="row gx-3 gy-2 align-items-center" action="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id]) }}" method="GET">
+                                    <form class="row gx-3 gy-2 align-items-left" action="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id]) }}" method="GET">
                                         <div class="col-sm-5">
                                                 <input type="text" class="form-control" name="quizPass" id="specificSizeInputGroupUsername" placeholder="input quiz password" required>
                                                     @if($errors->any())
@@ -83,4 +90,8 @@
         </div>
 
     </div>  
+
+    <script>
+        
+    </script>
 @stop

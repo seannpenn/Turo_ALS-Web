@@ -18,12 +18,14 @@ return new class extends Migration
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('teacher_id');
             $table->String('quiz_title');
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
+            $table->String('start_date')->nullable();
+            $table->String('end_date')->nullable();
+            $table->String('start_time')->nullable();
+            $table->String('end_time')->nullable();
             $table->integer('attempts')->default(1);
-            $table->String('status')->default('active');
+            $table->String('status')->default('inactive');
+            $table->integer('duration')->nullable();
+            $table->boolean('releaseGrades')->default(false);
             $table->String('password')->nullable();
 
 

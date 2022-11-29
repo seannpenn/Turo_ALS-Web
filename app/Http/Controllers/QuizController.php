@@ -53,11 +53,19 @@ class QuizController extends Controller
         return back();
     }
     public function activateorDeactivate($quizid){
-        
+        $validateOptionCorrectAnswer = 0;
         $activateQuiz = Quiz::where('quiz_id',$quizid)->get()->first();
-        
+        $questions = $activateQuiz->question;
+        foreach($questions as $question){
+            foreach($question->option as $option){
+                if($option->isCorrect){
+                    $validateOptionCorrectAnswer++;
+                }
+            }
+        }
         if($activateQuiz->start_date != null && $activateQuiz->end_date != null && 
-            $activateQuiz->start_time != null && $activateQuiz->end_time != null){
+            $activateQuiz->start_time != null && $activateQuiz->end_time != null &&
+            $activateQuiz->duration != null && $validateOptionCorrectAnswer >= $questions->count()){
 
             if($activateQuiz->status == 'active'){
                 $activateQuiz->update([
@@ -73,8 +81,9 @@ class QuizController extends Controller
             }
         }else{
             return Response::json(array(
-                'msg' => 'Incorrect!'
-            ), 400);
+                'msg' => 'Incorrect!',
+                'error' => $validateOptionCorrectAnswer
+            ), 404);
         }
             
     }
@@ -114,13 +123,18 @@ class QuizController extends Controller
         // $endTime = Carbon::createFromFormat('H:i:s',$request->start_time)->format('g:i A');
         // dd($request);
         $setupQuiz = Quiz::where('quiz_id',$quizid)->get()->first();
+
+        $hours = $request->duration[0] * 60; //hours in minutes
+        $duration = $hours + $request->duration[1]; //total duration in minutes
         $setupQuiz->update([
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'attempts' => $request->attempts,
-            'password' => $request->password
+            'password' => $request->password,
+            'releaseGrades' => $request->releaseGrades,
+            'duration' => $duration,
         ]);
 
         return back();
@@ -160,6 +174,10 @@ class QuizController extends Controller
         $quizCollection = Quiz::where('teacher_id', Auth::user()->teacher->teacher_id)->where('course_id', $courseid)->get();
         return view('dashboard.quiz.manage')->with(compact('quizCollection'));  
     }
+    public function getEntireQuizzes(){
+        $quizCollection = Quiz::getAllQuiz();
+        return Response::json($quizCollection);
+    }
     public function getAllQuizzes($courseid){
         $quizCollection = Quiz::where('course_id', $courseid)->get();
         return Response::json($quizCollection);
@@ -168,7 +186,7 @@ class QuizController extends Controller
     // get quizzes for student
 
     public function getQuizzes($courseid){
-        $quizCollection = Quiz::where('course_id', $courseid)->get();
+        $quizCollection = Quiz::where('course_id', $courseid)->where('status', 'active')->get();
         $quizCollection->each(function ($quiz){
             // echo Carbon::parse($quiz->start_date)->isoFormat('MMMM DD YYYY');
             // echo Carbon::parse($quiz->end_date)->isoFormat('MMMM DD YYYY');
@@ -257,14 +275,15 @@ class QuizController extends Controller
         $attempt = QuizAttempt::where('quiz_id', $quizid)->where('student_id', Auth::user()->student->student_id)->get()->last();
         $request->collect('questions')->each(function ($option,$question) {
             $attempt = QuizAttempt::where('quiz_id', request()->route('quizid'))->where('student_id', Auth::user()->student->student_id)->get()->last();
-            $isCorrect = Option::where('option_id',$option)->get()->first();
-            // echo is_int((int)$option);
+            $questionData = Question::where('question_id', $question)->get()->first();
+            $optionData = Option::where('option_id',$option)->get()->first();
+            
             if((int)$option == 0){
                 QuizAnswer::create([
                     'attempt_id' => $attempt->attempt_id,
                     'student_id' => Auth::user()->student->student_id,
                     'question_id' => $question,
-                    'isCorrect' => $isCorrect->isCorrect??null,
+                    'isCorrect' => $optionData->isCorrect??null,
                     'textAnswer' => $option
                 ]);
             }
@@ -274,36 +293,35 @@ class QuizController extends Controller
                     'student_id' => Auth::user()->student->student_id,
                     'question_id' => $question,
                     'option_id' => $option,
-                    'isCorrect' => $isCorrect->isCorrect,
-                    
+                    'isCorrect' => $optionData->isCorrect,
+                    'points' => $optionData->isCorrect == 0 ? 0: $questionData->points,
                 ]);
             }
             
-
             echo $question,$option . '\n';
         });
         
         $request->collect('options')->each(function($question,$option){
             $attempt = QuizAttempt::where('quiz_id', request()->route('quizid'))->where('student_id', Auth::user()->student->student_id)->get()->last();
-            $isCorrect = Option::where('option_id',$option)->get()->first();
-
+            $optionData = Option::where('option_id',$option)->get()->first();
+            $questionData = Question::where('question_id', $question)->get()->first();
             QuizAnswer::create([
                 'attempt_id' => $attempt->attempt_id,
                 'student_id' => Auth::user()->student->student_id,
                 'question_id' => $question,
                 'option_id' => $option,
-                'isCorrect' => $isCorrect->isCorrect
+                'isCorrect' => $optionData->isCorrect,
+                'points' => $optionData->isCorrect == 0 ? 0: $questionData->points,
             ]);
 
             echo $question,$option . '\n';
         });
-        // dd($input);
-        // $totalScore = QuizAnswer::where('attempt_id', $attempt->attempt_id)->where('isCorrect', 1)->get();
         $quiz = Quiz::where('quiz_id', $quizid)->get()->first();
         $totalPoints = 0;
-        $correctChoices = 0;
-        $questionCorrectAnswers = 0;
         $totalScore = 0;
+        $correctCount = 0;
+        $optionCorrect = 0;
+        $incorrectCount = 0;
         $questions = $quiz->question;
         $correctAnswers =[];
 
@@ -314,14 +332,19 @@ class QuizController extends Controller
                 }
             }
         }
-
         foreach($quiz->question as $question){
             foreach($question->option as $option){
+                if($option->isCorrect){
+                    $optionCorrect++;
+                }
                 foreach($question->answer as $answer){
                     if($option->answer){
                         if($answer->option_id == $option->option_id){
                             if($answer->isCorrect){
-                                $totalScore+=$question->points;
+                                $correctCount++;
+                            }
+                            else{
+                                $incorrectCount++;
                             }
                         }
                     }
@@ -336,6 +359,22 @@ class QuizController extends Controller
             }
             $totalPoints +=$question->points;
         }
+
+        // for checkboxes
+        if($optionCorrect > 1){
+            if($incorrectCount == 0){
+                if($correctCount ==  $optionCorrect){
+                    $totalScore+=$question->points;
+                }
+            }
+            
+        }
+        else{
+            if($incorrectCount == 0){
+                $totalScore+=$question->points;
+            }
+        }
+
         echo $totalScore;
 
         $result = QuizSummary::create([
@@ -345,6 +384,29 @@ class QuizController extends Controller
             ]);
         
         return redirect()->route('student.viewQuiz', [request()->route('courseid'), $quizid]);
+    }
+
+    
+    public function saveAnswerToSession(Request $request){
+        $selectedQuestion = Question::where('question_id',$request->questionid)->get()->first();
+        if($request->method == "delete"){
+            $request->session()->forget($request->key);
+            return Response::json($selectedQuestion);
+        }
+        else{
+            if($request->questionType == 1){
+                $request->session()->put($request->key, $request->optionid);
+            }
+            else if($request->questionType == 3){
+                $request->session()->put($request->key, $request->optionid);
+            }
+            else if($request->questionType == 2){
+                $request->session()->put($request->key, [$request->optionid, $request->answer]);
+            }
+            return Response::json($selectedQuestion);
+        }
+
+        
     }
 
     public function recalculateScore($quizid){
@@ -437,8 +499,6 @@ class QuizController extends Controller
             }
             
         }
-
-
 
         $quizAttempt = QuizAttempt::where('quiz_id', $quizid)->where('student_id', Auth::user()->student->student_id)->get()->last();
         $thisAttemptID = $quizAttempt->attempt_id;

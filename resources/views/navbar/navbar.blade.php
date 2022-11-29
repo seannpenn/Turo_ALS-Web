@@ -5,8 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"> -->
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <script src= "{{ asset('js/bootstrap.js') }}" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+
     
     <style>
       .nav-link {
@@ -39,7 +43,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <script src= "{{ asset('js/bootstrap.js') }}" ></script>
+  
   
   <style>
   .nav-link {
@@ -174,21 +178,6 @@
                 <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
               </ul>
           </li>
-
-          <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
-
-        @endif
-
-        @if(Auth::user()->userType == '0')
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{Auth::user()->username}}
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{route('teacher.profile')}}">Profile</a></li>
-            <li><a class="dropdown-item" href="{{route('user.logout')}}">Logout</a></li>
-          </ul>
-        </li>
 
         @endif
         

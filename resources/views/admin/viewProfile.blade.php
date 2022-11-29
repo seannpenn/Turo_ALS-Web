@@ -1,5 +1,5 @@
 @extends('main')
 
-@section('content-area')
-    
+@section('main-content')
+    <h1>Hello this is profile screen!!</h1>
 @stop

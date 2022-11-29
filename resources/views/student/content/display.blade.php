@@ -66,7 +66,8 @@
     }
     
     .collapsible:hover {
-        background-color: lightgrey;
+        background-color: white;
+        color: orange;
     }
     .collapsible:focus {
         border: 2px solid orange;
@@ -113,7 +114,7 @@
     }
     .topic:hover{
         cursor:pointer;
-        border: 2px solid lightgray;
+        border: 2px solid orange;
         border-radius: 5px;
     }
     .topic:focus {
@@ -138,6 +139,7 @@
     .topic-content{
         font-size: 10px;
         width: 220px;
+        height: 60px;
         border: 1px solid white;
         border-radius: 5px;
         border-bottom: 0.5px solid lightgray;
@@ -258,7 +260,8 @@ $(document).ready(function () {
                             <div class="card-body">
                                 <br>
                                 <div class="form-group">
-                                    ${data[0].html}
+                                
+                                ${data[0].html}
                                 </div>
                             </div>
                         <br><br>
@@ -307,7 +310,7 @@ $(document).ready(function () {
                     control.innerHTML = ``;
                     view.style.overflow = "scroll";
                         view.innerHTML = `
-                        <div class="container text-center" >
+                        <div class="container text-center">
                             <embed src="${asset}" height="700" width="940"/>
                         </div>
                         `;

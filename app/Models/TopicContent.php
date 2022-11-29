@@ -19,13 +19,13 @@ class TopicContent extends Model
         'type',
         'html',
         'file',
-        'link'
+        'quiz_link'
 
     ];
     public function topic(){
         return $this->belongsTo(Topic::class, 'topic_id', 'topic_id');
     }
     public function quiz(){
-        return $this->hasOne(Quiz::class, 'link', 'quiz_id');
+        return $this->hasOne(Quiz::class, 'quiz_link', 'quiz_id');
     }
 }

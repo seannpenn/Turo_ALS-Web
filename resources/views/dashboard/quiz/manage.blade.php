@@ -55,7 +55,18 @@
         <h1>Quiz List</h1>
         
         <div class="container text-center p-4">
-            
+                <div class="toast-container position-fixed top-0 start-50 translate-middle-x">
+                    <div id="liveToast" class="toast bg-warning" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                        <img src="{{ asset('images/correct.png') }}" class="rounded me-2" alt="...">
+                        <strong class="me-auto">Success</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            
+                        </div>
+                    </div>
+                </div>
             <div class="col align-self-center">
             @if($quizCollection->count() != 0)
                 <div class="d-flex flex-row mb-3">
@@ -65,16 +76,17 @@
                     <tr>
                         <th scope="col" class="text-left">Quiz Title</th>
                         <th scope="col">Status </th>
-                        <th scope="col">Actions</th>
+                        <th scope="col" class="text-center">Actions</th>
                     <tbody>
                     @foreach($quizCollection as $quiz)
                         <tr>
-                            <td width="80%" class="text-left p-3">
+                            <td width="75%" class="text-left p-3">
                                 <a href="{{ route('student.viewQuiz', [request()->route('courseid'), $quiz->quiz_id])}}">{{ $quiz->quiz_title }}</a>
                                 <br>
-                                <p style="font-size:small;">Available on Sep 7, 2022 10:30 AM until Sep 7, 2022 12:30 PM</p>
+                                <p style="font-size:small;">Available on {{\Carbon\Carbon::parse($quiz->start_date)->isoFormat('MMMM DD YYYY')}} {{$quiz->start_time}} until {{\Carbon\Carbon::parse($quiz->end_date)->isoFormat('MMMM DD YYYY')}} {{$quiz->end_time}}</p>
+
                             </td>
-                            <td>
+                            <td class="text-center">
                                 @if( $quiz->status == 'active')
                                 <div class="badge bg-success text-wrap" style="width: 100%;">
                                 {{ $quiz->status }} 
@@ -95,9 +107,11 @@
                                     <input class="form-check-input activate" value="{{$quiz->quiz_id}}"  type="checkbox" role="switch" id="flexSwitchCheckChecked"  @if($quiz->status == 'active') checked @endif>
                                 </div>
                             </td>
-                            <td>
-                                <a href="{{ route('quiz.edit',[ request()->route('courseid') ,$quiz->quiz_id]) }}" title="Edit Quiz"><button class="btn btn-warning"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
+                            <td class="text-center">
+                                <a href="{{ route('quiz.edit',[ request()->route('courseid') ,$quiz->quiz_id]) }}" title="Edit Quiz"><button class="btn btn-warning" style="background-color:lightgreen;border: 1px solid lightgreen;"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
                                 <a href="{{ route('quiz.delete', $quiz->quiz_id) }}" title="Delete Quiz" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger"><img src="{{ asset('images/delete.png') }}" alt="" ></button></a>
+                                <a href="" title="View student attempts" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger" style="background-color: orange; border: 1px solid orange;"><img src="{{ asset('images/student.png') }}" alt="" ></button></a>
+                                <a href="" title="View student attempts" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger" style="background-color: orange; border: 1px solid orange;"><img src="{{ asset('images/question.png') }}" alt="" ></button></a>
 
                             </td>
                         </tr>
@@ -115,6 +129,7 @@
     </div>  
 
     <script>
+        const toastLiveExample = document.getElementById('liveToast')
 
         $(document).ready(function(){
 
@@ -190,6 +205,7 @@
                 $(toggle[x]).change(function(e){
                     var quizId = this.value;
                     var activateQuizRoute = '/teacher/quiz/' + quizId + '/activate';
+                    const toast = new bootstrap.Toast(toastLiveExample)
                     // var activateQuizRoute = "{{route('quiz.activate', ":quizid")}}";
                     // activateQuizRoute.replace(':quizid', $quizId);
                         e.preventDefault();
@@ -206,16 +222,23 @@
                                 dataType: 'json',
                                 success: function(response){
                                     if(response.status == 'active'){
-                                        alert('Quiz is now active.');
+                                        $(".toast-body").html('Quiz is now active.');
+                                        toast.show();
                                     }
                                     else{
-                                        alert('Quiz is now inactive.');
+                                        $(".toast-body").html('Quiz is now inactive.');
+                                        toast.show();
+                                        // alert('Quiz is now inactive.');
                                     }
-                                    window.location.reload();
+                                    // window.location.reload();
                                 },
                                 error: function(error){
-                                    alert('Error activating quiz. Please set quiz settings first.');
-                                    window.location.reload();
+                                    $(".toast-body").html('Error activating quiz. Please complete setting up the quiz first.');
+                                    
+                                    
+                                    // alert('Error activating quiz. Please set quiz settings first.');
+                                    toast.show();
+                                    // window.location.reload();
                                     console.log(error);
                                 }
                         });

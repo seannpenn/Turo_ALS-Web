@@ -53,18 +53,9 @@
                                     </td>
                                     <td class="text-center">
                                         @if($quiz->quizAttempt->count() != 0)
-                                            
+                                            Done
                                             <br>
-                                            @if($quiz->quizAttempt[0]->quizSummary != null)
-                                                Done
-                                                @if($quiz->releaseGrades != 1)
-                                                    <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">view result</a>
-                                                @else
-                                                    attempt
-                                                @endif
-                                            @else
-                                                <a href="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id])}}">in progress.</a>
-                                            @endif
+                                            <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">view result</a>
                                             
                                         @else
                                             <h6>No attempt</h6>

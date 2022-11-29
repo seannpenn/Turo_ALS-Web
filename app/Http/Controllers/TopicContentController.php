@@ -22,7 +22,7 @@ class TopicContentController extends Controller
 
             if($request->type == 'html'){
                 $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
-                $course = $topic->coursecontent->course;
+                // $course = $topic->coursecontent->course;
                 TopicContent::insertGetId([
                     'topic_id' => $request['topic_id'],
                     'topic_content_title' => $request['topic_content_title'],
@@ -34,11 +34,14 @@ class TopicContentController extends Controller
 
             if($request->type == 'file'){
                 $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
-                $course = $topic->coursecontent->course->course_id;
+
                 $file = $request->file;
+
+                dd($file);
                 $originalFileName = $file->getClientOriginalName();
                 
                 Storage::putFileAs('public/files', $file, $originalFileName);
+
                 TopicContent::insertGetId([
                     'topic_id' => $request['topic_id'],
                     'topic_content_title' => $request['topic_content_title'],
@@ -55,7 +58,7 @@ class TopicContentController extends Controller
                     'topic_id' => $request['topic_id'],
                     'type' => $request->type,
                     'topic_content_title' => $request['topic_content_title'],
-                    'link' =>$request['link'],
+                    'quiz_link' =>$request['quiz_link'],
                 ]);
                 
             }
@@ -63,15 +66,20 @@ class TopicContentController extends Controller
     }
     
     public function linkContent(Request $request, $id){
-
-        if($request->type == 'quiz'){
-            TopicContent::insertGetId([
-                'topic_id' => $request['topic_id'],
-                'topic_content_title' => $request['quiz_title'],
-                'link' =>$request['link'],
-            ]);
-            return redirect()->route('course.showInfo', $course->course_id);
+        if(TopicContent::has('link',$request['link'])){
+            if($request->type == 'quiz'){
+                TopicContent::insertGetId([
+                    'topic_id' => $request['topic_id'],
+                    'topic_content_title' => $request['quiz_title'],
+                    'quiz_link' =>$request['quiz_link'],
+                ]);
+                return redirect()->route('course.showInfo', $course->course_id);
+            }
         }
+        else{
+            return redirect()->back()->withErrors(['exists' => 'Quiz is already linked in this topic']);
+        }
+
     }
 
     public function viewTopicContent($courseId, $topicContentId){
@@ -80,8 +88,8 @@ class TopicContentController extends Controller
 
         $selectedTopicContent = TopicContent::where('topic_content_id',$topicContentId)->get()->first();
         $file_path = 'storage/files/'.$selectedTopicContent->file;
-        // return view('dashboard.courses.view_topic_content')->with(compact('selectedTopicContent', 'file_path'));
-        // return view('dashboard.content.display')->with(compact('selectedTopicContent', 'file_path', 'courseCollection'));
+
+        // dd(asset($file_path));
 
         return Response::json([$selectedTopicContent, $file_path]);
     }
@@ -101,16 +109,16 @@ class TopicContentController extends Controller
             $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
             if($request->type == 'html'){
                 
-                $updateTopicContent = TopicContent::where('topic_content_id',$id);
+                $updateTopicContent = TopicContent::where('topic_content_id',$id)->get()->first();
                 $updateTopicContent->update([
                     'topic_content_title' => $request->topic_content_title,
                     'html' => $request->html,
                 ]);
-                // return redirect()->back();
-                return response()->json([
-                    "status" => true,
-                    "data" => $topic
-                ]);
+                return redirect()->back();
+                // return response()->json([
+                //     "status" => true,
+                //     "data" => $updateTopicContent
+                // ]);
             }
     }
     public function delete($id){

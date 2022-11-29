@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedInteger('option_id')->nullable();
             $table->integer('isCorrect')->nullable();
             $table->longText('textAnswer')->nullable();
-
+            $table->integer('points')->nullable();
             
             $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
             $table->foreign('attempt_id')->references('attempt_id')->on('quiz_attempt')->onDelete('cascade');
