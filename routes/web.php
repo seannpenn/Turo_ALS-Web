@@ -15,6 +15,8 @@ use App\Http\Controllers\TopicContentController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\OptionController;
 use App\Events\Questions;
+use App\Http\Controllers\AssignmentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -134,6 +136,17 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::post('/quiz/question/option/consider/{answerid}', [OptionController::class, 'considerAnswer'])->name('answer.consider');
     Route::get('/quiz/question/{questionid}/options', [OptionController::class, 'getOptions'])->name('option.getAll');
 
+    // for assignments
+    Route::post('/assignment/create', [AssignmentController::class, 'create'])->name('assignment.create');
+    Route::post('/assignment/{assignmentid}/update', [AssignmentController::class, 'update'])->name('assignment.update');
+    Route::get('/assignment/{assignmentid}/delete', [AssignmentController::class, 'delete'])->name('assignment.delete');
+    // Route::view('/testing/create/{courseid}', 'dashboard.assignment.display')->name('assignment.display');
+    Route::get('/course/{courseid}/assignments', [AssignmentController::class, 'getAllAssignments'])->name('assignment.display');
+    Route::get('/course/{courseid}/assignment/{assignmentid}', [AssignmentController::class, 'viewAssignment'])->name('assignment.view');
+    Route::post('/assignment/{assignmentid}/activate', [AssignmentController::class, 'activateorDeactivate'])->name('assignment.activate');
+    Route::get('/course/{courseid}/assignment/{assignmentid}/student/{studentid}/submission', [AssignmentController::class, 'viewSubmissionsByStudent'])->name('assignment.displaySubmissionByStudent');
+    Route::post('/assignment/{assignmentid}/mark',[AssignmentController::class, 'markAssignment'])->name('assignment.mark');
+    Route::get('/submission/{submissionid}/delete', [AssignmentController::class, 'deleteSubmission'])->name('submission.delete');
 });
 
 //for login and register routes
@@ -157,7 +170,6 @@ Route::middleware('auth')->group(function(){
     Route::view('/admin/student/profile', 'admin.viewProfile')->name('admin-student.profile');
 
 
-
     Route::get('/student/enrollment/enroll', [StudentController::class, 'enrollForm'])->name('student.enrollment');
     Route::get('/student/enrollment', [StudentController::class, 'enrollmentPage'])->name('student.enrollment_page');
     Route::post('/student/enrollment', [StudentController::class, 'enroll'])->name('student.enroll');
@@ -179,6 +191,13 @@ Route::middleware('auth')->group(function(){
     Route::get('/student/course/{courseid}/quiz/{quizid}/result', [QuizController::class,'viewResult'])->name('student.viewResult');
     Route::post('/student/course/{courseid}/quiz/{quizid}/answers', [QuizController::class,'storeAnswers'])->name('student.storeAnswers');
     Route::post('/student/course/quiz/answer/store', [QuizController::class, 'saveAnswerToSession'])->name('saveAnswerToSession');
+
+    // assignment
+    Route::get('/student/course/{courseid}/assignment/display', [AssignmentController::class, 'studentGetAllAssignment'])->name('student.assignmentDisplay');
+    Route::get('/student/course/{courseid}/assignment/{assignmentid}', [AssignmentController::class,'studentViewAssignment'])->name('student.viewAssignment');
+    Route::post('/student/assignment/{assignmentid}/submit', [AssignmentController::class,'submitAssignment'])->name('student.submitAssignment');
+    Route::get('/student/course/{courseid}/assignment/{assignmentid}/submissions', [AssignmentController::class,'viewSubmissions'])->name('student.viewSubmissions');
+
 });
 
 

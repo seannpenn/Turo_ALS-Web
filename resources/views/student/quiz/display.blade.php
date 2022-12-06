@@ -17,7 +17,7 @@
 @section('main-content')
 @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')])
     <div class="layout">
-        <h2>Quiz List</h2>
+        <h2>Quiz List</h2> {{ route('assignment.create') }}
         <div class="container text-left p-4">
             <div class="col align-self-center">
                 
@@ -32,22 +32,22 @@
                         @foreach($quizCollection as $quiz)
                                 <tr>
                                     <td width="80%" class="text-left p-3">
-                                    <div class="row" style="width: 300px;">
-                                        <div class="col-auto">
-                                            <a href="{{ route('student.viewQuiz', [request()->route('courseid'), $quiz->quiz_id])}}">{{ $quiz->quiz_title }}</a>
+                                        <div class="row" style="width: 300px;">
+                                            <div class="col-auto">
+                                                <a href="{{ route('student.viewQuiz', [request()->route('courseid'), $quiz->quiz_id])}}">{{ $quiz->quiz_title }}</a>
+                                            </div>
+                                            <div class="col-auto">
+                                                @if($quiz->status == 'active')
+                                                    <div class="badge bg-success text-wrap" style="width: 100%;">
+                                                    {{ $quiz->status }} 
+                                                    </div>
+                                                @else
+                                                    <div class="badge bg text-wrap" style="width: 100%; background-color:grey;">
+                                                    {{ $quiz->status }} 
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
-                                        <div class="col-auto">
-                                            @if($quiz->status == 'active')
-                                                <div class="badge bg-success text-wrap" style="width: 100%;">
-                                                {{ $quiz->status }} 
-                                                </div>
-                                            @else
-                                                <div class="badge bg text-wrap" style="width: 100%; background-color:grey;">
-                                                {{ $quiz->status }} 
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
                                         <p style="font-size:small;">Available on {{\Carbon\Carbon::parse($quiz->start_date)->isoFormat('MMMM DD YYYY')}} {{$quiz->start_time}} until {{\Carbon\Carbon::parse($quiz->end_date)->isoFormat('MMMM DD YYYY')}} {{$quiz->end_time}}</p>
                                         
                                     </td>
@@ -65,7 +65,6 @@
                                             @else
                                                 <a href="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id])}}">in progress.</a>
                                             @endif
-                                            
                                         @else
                                             <h6>No attempt</h6>
                                         @endif

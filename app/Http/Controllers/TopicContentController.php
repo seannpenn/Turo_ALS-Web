@@ -19,37 +19,31 @@ class TopicContentController extends Controller
     
     public function create(Request $request){
 
-
             if($request->type == 'html'){
                 $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
-                // $course = $topic->coursecontent->course;
                 TopicContent::insertGetId([
                     'topic_id' => $request['topic_id'],
                     'topic_content_title' => $request['topic_content_title'],
                     'type' =>$request['type'],
                     'html' => $request['html'],
                 ]);
-                
             }
 
             if($request->type == 'file'){
                 $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
 
                 $file = $request->file;
-
-                dd($file);
                 $originalFileName = $file->getClientOriginalName();
                 
-                Storage::putFileAs('public/files', $file, $originalFileName);
-
+                // dd(asset('topic-'. $request['topic_id']. '/'.$originalFileName));
+                Storage::putFileAs('public/files/topic-'. $request->topic_id . '/', $file, $originalFileName);
+                $file = 'storage/files/topic-'. $request->topic_id . '/' .$originalFileName;
                 TopicContent::insertGetId([
                     'topic_id' => $request['topic_id'],
                     'topic_content_title' => $request['topic_content_title'],
                     'type' =>$request['type'],
-                    'file' => $originalFileName,
+                    'file' => $file,
                 ]);
-                
-                
             }
 
             if($request->type == 'quiz'){
@@ -87,11 +81,10 @@ class TopicContentController extends Controller
         $courseCollection = Course::where('teacher_id', $teacherId->teacher_id)->get();
 
         $selectedTopicContent = TopicContent::where('topic_content_id',$topicContentId)->get()->first();
-        $file_path = 'storage/files/'.$selectedTopicContent->file;
+        $file_path = $selectedTopicContent->file;
 
-        // dd(asset($file_path));
-
-        return Response::json([$selectedTopicContent, $file_path]);
+        $file_asset = asset($selectedTopicContent->file);
+        return Response::json([$selectedTopicContent, $file_asset]);
     }
 
     public function retainTopicContent($courseId, $topicContentId){

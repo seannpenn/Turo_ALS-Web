@@ -478,10 +478,6 @@
                             
                         }
                         else{
-                            var asset = "{{ asset(":fileDirectory") }}";
-                            asset = asset.replace(':fileDirectory', data[1]);
-                            console.log(asset);
-                            console.log(data[1]);
                             control.innerHTML = `
                                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                                 <a href="/teacher/course/content/topic/content/${data[0].topic_content_id}/delete"><button type="button" id="topicUpdate" class="btn" style="background-color:orange; color: white;">Delete Topic Content</button></a>
@@ -490,7 +486,7 @@
                             view.style.overflow = "scroll";
                             view.innerHTML = `
                             <div class="container text-center" >
-                                <embed src="${asset}" height="700" width="940"/>
+                                <embed src="${data[1]}" height="700" width="940"/>
                             </div>
                             `;
                         }

@@ -40,20 +40,26 @@
                         @if($quiz->quizAttempt->count() > 0)
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="alert alert-success" role="alert">
-                                        @foreach($quiz->quizAttempt as $attempt)
-                                            @php
-                                                $totalPoints = 0;
-                                            @endphp
-                                            @foreach($quiz->question as $question)
-
+                                    @if($quiz->releaseGrades != 1)
+                                        <div class="alert alert-success" role="alert">
+                                            @foreach($quiz->quizAttempt as $attempt)
                                                 @php
-                                                    $totalPoints += $question->points
+                                                    $totalPoints = 0;
                                                 @endphp
+                                                @foreach($quiz->question as $question)
+
+                                                    @php
+                                                        $totalPoints += $question->points
+                                                    @endphp
+                                                @endforeach
+                                                Score: {{$attempt->quizSummary->total_score}} / {{$attempt->quizSummary->total_points}}
                                             @endforeach
-                                            Score: {{$attempt->quizSummary->total_score}} / {{$attempt->quizSummary->total_points}}
-                                        @endforeach
-                                    </div>
+                                        </div>
+                                    @endif
+                                    <hr>
+                                    <h5>Quiz Status: Completed.</h5>
+                                    
+
                                 </div>
                             </div>
                         @endif
@@ -61,7 +67,7 @@
                             <br>
                             @if($quiz->quizAttempt->count() >= 1)
                                 @if($quiz->releaseGrades != 1)
-                                    <h6>You are done taking the quiz. Click <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">HERE</a> to view result.</h6>
+                                    <h6>Click <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">HERE</a> to view result.</h6>
                                 @endif
                             @else
                                 @if($quiz->password == null)

@@ -68,6 +68,12 @@
   #container-outer{
     width: 1500px;
   }
+  #login-form {
+            border-radius: 20px;
+            height: 400px;
+            padding: 25px;
+            border: 1 solid;
+        }
   </style>
 
 </head>
@@ -195,6 +201,57 @@
     @elseif(Route::currentRouteName() == 'home')
     <a class="nav-link" style="color: orange;" href="{{route('s-login')}}">Login</a>
     
+    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" style="height:60px;">
+            
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <section id="login-form">
+                <br>
+                <h2>Student Login</h2>
+                <br>
+                <div class="col-auto">
+                    @if (session('error'))
+                        <span>{{ session('error') }}</span>
+                    @endif
+                </div>
+                <form action="{{ route('student.login') }}" method="post">
+                    
+                {{ csrf_field() }}
+
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput" class="form-label">Username</label>
+                        <input type="text" name="username" value="{{ old('email') }}" class="form-control" id="inputEmail3">
+                        <div class="col-auto">
+                            @foreach($errors->get('email') as $errorMessage )
+                                <span>{{ $errorMessage }}</span>
+                            @endforeach        
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput" class="form-label">Password</label>
+                        <input type="password" name="password"  class="form-control" id="inputPassword3">
+                        <div class="col-auto">
+                            @foreach($errors->get('password') as $errorMessage )
+                                <span>{{ $errorMessage }}</span>
+                            @endforeach 
+                        </div>
+                    </div>
+                  
+                    
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <button type="submit" class="btn btn-warning" type="button">Sign in</button>
+                    </div>
+                </form>
+            </section>
+          </div>
+          
+        </div>
+      </div>
+    </div> -->
     @elseif(Route::currentRouteName() == 'teacher.registration')
     <a class="nav-link" style="color: orange;" href="{{route('t-login')}}">Login</a>
     

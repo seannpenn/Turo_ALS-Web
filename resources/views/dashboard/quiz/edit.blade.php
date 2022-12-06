@@ -69,7 +69,7 @@
 @stop
 
 @section('main-content')
-@include('navbar/navbar_inside', ['courseId' => request()->route('courseid')])
+    @include('navbar/navbar_inside', ['courseId' => request()->route('courseid')])
     
     <div class="layout">
         <nav aria-label="breadcrumb">
@@ -94,7 +94,6 @@
         </div>
     </div>
 @stop
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));

@@ -358,22 +358,24 @@ class QuizController extends Controller
                 }
             }
             $totalPoints +=$question->points;
-        }
-
-        // for checkboxes
-        if($optionCorrect > 1){
-            if($incorrectCount == 0){
-                if($correctCount ==  $optionCorrect){
+            
+            if($optionCorrect > 1){
+                if($incorrectCount == 0){
+                    if($correctCount ==  $optionCorrect){
+                        $totalScore+=$question->points;
+                    }
+                }
+                
+            }
+            else{
+                if($incorrectCount == 0){
                     $totalScore+=$question->points;
                 }
             }
-            
         }
-        else{
-            if($incorrectCount == 0){
-                $totalScore+=$question->points;
-            }
-        }
+
+        // for checkboxes
+        
 
         echo $totalScore;
 

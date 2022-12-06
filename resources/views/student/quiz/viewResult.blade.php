@@ -156,7 +156,7 @@
                                                         <span class="input-group-text" style="color:green; background-color:transparent;border-style: hidden;">
                                                             <img src="{{ asset('images/correct.png') }}"  alt="" width="20" height="20" style="margin-right: 10px;">
                                                             <div class="fw-bolder">You got the correct answer.</div>
-                                                                            
+                                                                
                                                         </span>
                                                     @else
                                                         <span class="input-group-text" style="color:red; background-color:transparent;border-style: hidden;">

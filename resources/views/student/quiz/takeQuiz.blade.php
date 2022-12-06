@@ -57,10 +57,10 @@
                     @endif
                 @endforeach
             </div>
-            <form class="needs-validation" action="{{ route('student.storeAnswers', [request()->route('courseid'), request()->route('quizid')])}}" method="post" style="width: 80%; margin: 0 auto;">
+        <form class="needs-validation" action="{{ route('student.storeAnswers', [request()->route('courseid'), request()->route('quizid')])}}" method="post" style="width: 80%; margin: 0 auto;">
                 {{ csrf_field() }}
 
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade" id="quizTimeUp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -156,7 +156,7 @@
                                             </div>
                         
                                             <div class="card-body">
-                                            @foreach($question->option as $option)
+                                                @foreach($question->option as $option)
                                                     <div class="form-check">
                                                         @if($question->type != 2 && $question->type != 4)
                                                             @if($question->type == 1)
@@ -188,7 +188,6 @@
                                                     @if($question->type == 2)
                                                         @php
                                                             $sessionKey = "Attempt-".$chosenQuiz->quizAttempt[0]->attempt_id."-Question-".$question->question_id;
-                                                            
                                                         @endphp
                                                         <input class="form-control optionAnswer" type="text" name="questions[{{ $question->question_id }}]" question-index = "{{$index}}" id="optionAnswer"  style="border-top-style: hidden; border-right-style: hidden;border-left-style: hidden;" optionid = "{{ $option->option_id}}" questionid = "{{ $question->question_id }}" question-type = "{{$question->type}}" placeholder="Short answer text" class="form-control" aria-label="Question"  required
                                                         @if(Session::has($sessionKey))
@@ -222,7 +221,7 @@
                 @endforeach
                 
             </div>
-            </form>
+        </form>
         </div>
         
         </div>
@@ -230,11 +229,12 @@
     </div>
 
     <script>
-        $(window).blur(function() {
-            alert('You are accessing another page! Mr Bandalan and Mr Gadiane is watching!!');
-        });
+        // $(window).blur(function() {
+        //     alert('You are accessing another page! Mr Bandalan and Mr Gadiane is watching!!');
+        // });
 
         $(document).ready(function(){
+            
             // $time = explode(':' )
             var time = "{{$chosenQuiz->duration}}";
             
@@ -261,8 +261,8 @@
 
                 seconds--;
                 if(hoursDoubDig == 00 && minutes == 0 && seconds == 0){
-                    // $("#staticBackdrop").modal('show');
-                    clearInterval(time);
+                    // $("#quizTimeUp").modal('show');
+                    // clearInterval(time);
                     $('.time').text('00' + ':' + '00'+ ':' + '00' + ' Time is up!');
                     $('.modal-body').html(`
                     <div class="alert alert-danger d-flex align-items-center" role="alert">
@@ -277,7 +277,8 @@
                     
                     // alert('Time is up!');
                 }
-                
+                const d = new Date();
+                console.log(d.getHours() + '' + d.getMinutes() + '' + d.getSeconds());
             }, 1000);
             
 

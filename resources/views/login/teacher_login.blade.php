@@ -62,39 +62,39 @@
         <img class="icons"src="{{ asset('images/deped_logo.png') }}" alt="">
         <img class="icons"src="{{ asset('images/als.png') }}" alt="">
     </div>
-    <section id="login-form">
-        <br>
-        <h2>Teacher Login</h2>
-        <br>
-        
-        <form action="{{ route('teacher.login') }}" method="post">
-        {{ csrf_field() }}
+        <section id="login-form">
+            <br>
+            <h2>Teacher Login</h2>
+            <br>
+            
+            <form action="{{ route('teacher.login') }}" method="post">
+            {{ csrf_field() }}
 
-            <div class="mb-3">
-                <label for="formGroupExampleInput" class="form-label">Username</label>
-                <input type="text" name="username" value="{{ old('email') }}" class="form-control" id="inputEmail3">
-                <div class="col-auto">
-                    @foreach($errors->get('email') as $errorMessage )
-                        <span>{{ $errorMessage }}</span>
-                    @endforeach        
+                <div class="mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Username</label>
+                    <input type="text" name="username" value="{{ old('email') }}" class="form-control" id="inputEmail3">
+                    <div class="col-auto">
+                        @foreach($errors->get('email') as $errorMessage )
+                            <span>{{ $errorMessage }}</span>
+                        @endforeach        
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3">
-                <label for="formGroupExampleInput" class="form-label">Password</label>
-                <input type="password" name="password"  class="form-control" id="inputPassword3">
-                <div class="col-auto">
-                    @foreach($errors->get('password') as $errorMessage )
-                        <span>{{ $errorMessage }}</span>
-                    @endforeach 
+                <div class="mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Password</label>
+                    <input type="password" name="password"  class="form-control" id="inputPassword3">
+                    <div class="col-auto">
+                        @foreach($errors->get('password') as $errorMessage )
+                            <span>{{ $errorMessage }}</span>
+                        @endforeach 
+                    </div>
                 </div>
-            </div>
-           
-            <div class="d-grid gap-2 col-6 mx-auto">
-                <button type="submit" class="btn btn-warning" type="button">Sign in</button>
-            </div>
-        </form>
-        
-    </section>
+            
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button type="submit" class="btn btn-warning" type="button">Sign in</button>
+                </div>
+            </form>
+            
+        </section>
     </div>
 
 @stop

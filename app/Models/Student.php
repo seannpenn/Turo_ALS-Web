@@ -55,5 +55,8 @@ class Student extends Model
     public function quizAttemptByStudentByQuiz($studentid, $quizid){
         return QuizAttempt::where('student_id',$studentid)->where('quiz_id',$quizid)->get();
     }
-    
+
+    public function assignmenSubmissionByStudent($studentid, $quizid){
+        
+    }
 }
