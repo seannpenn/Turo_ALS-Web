@@ -48,17 +48,17 @@
                                             @if($submission->submission_type == 1)
                                                 {!! $submission->submission_text->text !!}
                                             @else
-                                                @php
-                                                    $file_type = explode(".", $submission->submission_file->path);
-                                                @endphp
+                                                @foreach($submission->submission_file as $file_path)
+                                                    @php
+                                                        $file_type = explode(".", $file_path->path);
+                                                    @endphp
 
-                                                @if($file_type[1] == 'jpg')
-                                                    <a target="_blank" href="{{ asset($submission->submission_file->path) }}">
-                                                        <img class="img-fluid submittedImage" src="{{ asset($submission->submission_file->path) }}" image-key="{{ $key }}" width="100" height="100">
-                                                    </a>
-                                                @endif
-                                                
-                                            
+                                                    @if($file_type[1] == 'jpg')
+                                                        <a target="_blank" href="{{ asset($file_path->path) }}">
+                                                            <img class="img-fluid submittedImage" src="{{ asset($file_path->path) }}" image-key="{{ $key }}" width="100" height="100">
+                                                        </a>
+                                                    @endif
+                                                @endforeach
                                             @endif
                                         </td>
                                         <td width="10%" class="text-center p-3">

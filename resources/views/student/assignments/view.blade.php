@@ -33,13 +33,15 @@
     <div class="layout">
         <div class="d-flex justify-content-between" style="line-height: 20px;">
             <p class="fs-1 fw-bold">{{ $chosenAssignment->assignment_title}}</p>
-            @if($chosenAssignment->submissions->count() != 0)
-                <button type="button" class="btn btn-primary position-relative">
-                    My other submissions
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {{ $chosenAssignment->submissions->count() }}
-                    </span>
-                </button>
+            @if($chosenAssignment->multiple_submissions == 'true')
+                <a href="/student/course/{{ request()->route('courseid') }}/assignment/{{ $chosenAssignment->assignment_id }}/submissions">
+                    <button type="button" class="btn btn-primary position-relative">
+                        view my submissions
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ $chosenAssignment->submissions->count() }}
+                        </span>
+                    </button>
+                </a>
                 {{-- <button type="button" class="btn btn-outline-primary btn-sm">My other submissions <span class="badge text-bg-secondary">{{ $chosenAssignment->submissions->count() }}</span></button> --}}
             @endif
 
@@ -55,11 +57,13 @@
             <p class="fs-6" style="margin-top: 20px;">{{ $chosenAssignment->end_date }}</p>
         </div>
         <br>
+        @if($chosenAssignment->multiple_submissions == 'true')
         <form action="{{ route('student.submitAssignment', $chosenAssignment->assignment_id) }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input type="text" name="course_id" value="{{ request()->route('courseid') }}" hidden>
             <input type="text" name="submission_type" value="{{ $chosenAssignment->submission_type }}" hidden>
             <input type="text" name="assignment_id" value="{{ $chosenAssignment->assignment_id }}" hidden>
+
             @if($chosenAssignment->submission_type == 1)
                 <div class="form-group">
                     <textarea class="ckeditor form-control" id="editor" name="text"></textarea>
@@ -67,19 +71,19 @@
             @elseif($chosenAssignment->submission_type == 2)
                 <div class="col-4">
                     <div class="input-group mb-3">
-                        <input type="file" name="file" class="form-control" id="inputGroupFile02" style="width: 5px;">
+                        <input type="file" name="file[]" class="form-control" id="inputGroupFile02" style="width: 5px;" multiple>
                         <label class="input-group-text" for="inputGroupFile02">Upload</label>
                     </div>
                 </div>
             @else
                 <div class="col-4">
                     <div class="input-group mb-3">
-                        <input type="file" class="form-control" id="inputGroupFile02" style="width: 5px;">
+                        <input type="file" name="file[]" class="form-control" id="inputGroupFile02" style="width: 5px;" multiple>
                         <label class="input-group-text" for="inputGroupFile02">Upload</label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <textarea class="ckeditor form-control" id="editor" name="text"></textarea>
+                    <textarea class="form-control" id="editor" name="text"></textarea>
                 </div>
             @endif
 
@@ -89,6 +93,18 @@
                 </div>
             </nav>
         </form>
+        @else
+            <p>Submitted. </p>
+            
+            <a href="/student/course/{{ request()->route('courseid') }}/assignment/{{ $chosenAssignment->assignment_id }}/submissions">
+                <button type="button" class="btn btn-primary position-relative">
+                    view my submissions
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ $chosenAssignment->submissions->count() }}
+                    </span>
+                </button>
+            </a>
+        @endif
     </div>
 
     

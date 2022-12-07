@@ -25,8 +25,13 @@ class Assignment extends Model
         'end_time',
         'status',
         'points',
-        'submission_type'
+        'submission_type',
+        'multiple_submissions'
     ];
+
+    public static function getAllAssignment(){
+        return self::get();
+    }
 
     public function getAssignmentByCourse($course_id)
     {

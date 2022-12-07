@@ -30,20 +30,27 @@ class TopicContentController extends Controller
             }
 
             if($request->type == 'file'){
+                $allowedfileExtension=['pdf'];
                 $topic = Topic::where('topic_id', $request->topic_id)->get()->first();
-
+                
                 $file = $request->file;
                 $originalFileName = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+
+                if($extension == 'pdf'){
+                    Storage::putFileAs('public/files/topic-'. $request->topic_id . '/', $file, $originalFileName);
+                    $file = 'storage/files/topic-'. $request->topic_id . '/' .$originalFileName;
+                    TopicContent::insertGetId([
+                        'topic_id' => $request['topic_id'],
+                        'topic_content_title' => $request['topic_content_title'],
+                        'type' =>$request['type'],
+                        'file' => $file,
+                    ]);
+                }
+                else{
+                    return redirect()->back()->withErrors(['error' => 'Format "' .$extension.'" is not supported.']);
+                }
                 
-                // dd(asset('topic-'. $request['topic_id']. '/'.$originalFileName));
-                Storage::putFileAs('public/files/topic-'. $request->topic_id . '/', $file, $originalFileName);
-                $file = 'storage/files/topic-'. $request->topic_id . '/' .$originalFileName;
-                TopicContent::insertGetId([
-                    'topic_id' => $request['topic_id'],
-                    'topic_content_title' => $request['topic_content_title'],
-                    'type' =>$request['type'],
-                    'file' => $file,
-                ]);
             }
 
             if($request->type == 'quiz'){

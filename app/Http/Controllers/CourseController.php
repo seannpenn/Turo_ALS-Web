@@ -113,10 +113,18 @@ class CourseController extends Controller
     public function studentDisplayCourse(){
         $studentId = Student::where('user_id', Auth::id())->get()->first();
         $EnrolledStudent = Enrollment::where('student_id', $studentId->student_id)->get()->first();
-        $teacher = Teacher::getTeacherByLocProg($EnrolledStudent->loc_id, $EnrolledStudent->prog_id);
+        if($EnrolledStudent){
+            $teacher = Teacher::getTeacherByLocProg($EnrolledStudent->loc_id, $EnrolledStudent->prog_id);
+            $courseCollection = $teacher->course;
+            return view('student.course.display')->with(compact('courseCollection'));
+        }
+        else{
+            // return view('student.course.display');
+            return view('student.course.display')->with('error', 'You are currently not enroll.');
+        }
+        
 
-        $courseCollection = $teacher->course;
-        return view('student.course.display')->with(compact('courseCollection'));
+        
     }
 
     public function studentDisplayModule($id){

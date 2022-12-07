@@ -141,7 +141,8 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::post('/assignment/{assignmentid}/update', [AssignmentController::class, 'update'])->name('assignment.update');
     Route::get('/assignment/{assignmentid}/delete', [AssignmentController::class, 'delete'])->name('assignment.delete');
     // Route::view('/testing/create/{courseid}', 'dashboard.assignment.display')->name('assignment.display');
-    Route::get('/course/{courseid}/assignments', [AssignmentController::class, 'getAllAssignments'])->name('assignment.display');
+    Route::get('/course/{courseid}/assignments', [AssignmentController::class, 'getAllAssignmentsByCourse'])->name('assignment.display');
+    
     Route::get('/course/{courseid}/assignment/{assignmentid}', [AssignmentController::class, 'viewAssignment'])->name('assignment.view');
     Route::post('/assignment/{assignmentid}/activate', [AssignmentController::class, 'activateorDeactivate'])->name('assignment.activate');
     Route::get('/course/{courseid}/assignment/{assignmentid}/student/{studentid}/submission', [AssignmentController::class, 'viewSubmissionsByStudent'])->name('assignment.displaySubmissionByStudent');
@@ -162,13 +163,14 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     Route::post('/teacher/register', [RegisterController::class, 'teacherRegister'])->name('teacher.register');
     Route::post('/student/register', [RegisterController::class, 'studentRegister'])->name('student.register');
 
-
+Route::get('/assignments/all', [AssignmentController::class, 'getAllAssignments'])->name('assignment.getAll');
 Route::get('/quiz/all',[QuizController::class, 'getEntireQuizzes'])->name('quiz.getAll');
+
 Route::middleware('auth')->group(function(){
     // Profile
     
     Route::view('/admin/student/profile', 'admin.viewProfile')->name('admin-student.profile');
-
+    Route::get('/student/courses', [CourseController::class, 'studentDisplayCourse'])->name('student.course');
 
     Route::get('/student/enrollment/enroll', [StudentController::class, 'enrollForm'])->name('student.enrollment');
     Route::get('/student/enrollment', [StudentController::class, 'enrollmentPage'])->name('student.enrollment_page');
@@ -182,7 +184,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/student/course/{courseid}/home', [CourseController::class,'studentDisplayModules'])->name('student.courseHome');
     Route::get('/student/course/{courseid}', [CourseController::class,'studentDisplayContent'])->name('student.contentDisplay');
     Route::get('/student/course/{courseid}/modules', [CourseController::class,'studentDisplayModule'])->name('student.student_viewmodule');
-    Route::get('/student/course/{courseid}/topiccontent/{topiccontentid}', [TopicContentController::class, 'studentViewTopicContent'])->name('student.topicContent'); //important
+    Route::get('/student/course{/courseid}/topiccontent/{topiccontentid}', [TopicContentController::class, 'studentViewTopicContent'])->name('student.topicContent'); //important
 
     // quiz
     Route::get('/student/course/{courseid}/quizzes', [QuizController::class,'getQuizzes'])->name('student.quizzes');
@@ -202,7 +204,7 @@ Route::middleware('auth')->group(function(){
 
 
 //for students course content page
-Route::get('/student/courses', [CourseController::class, 'studentDisplayCourse'])->name('student.course');
+
 
 Route::get('/student/course/{courseid}/content', [CourseController::class,'studentDisplayContent'])->name('student.student_viewcontent');
 

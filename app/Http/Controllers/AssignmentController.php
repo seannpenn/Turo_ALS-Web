@@ -11,6 +11,8 @@ use App\Models\Enrollment;
 use App\Models\Student;
 use Validator;
 use Carbon\Carbon;
+
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 class AssignmentController extends Controller
@@ -57,6 +59,7 @@ class AssignmentController extends Controller
             'end_time' => $request->end_time,
             'points' => (int)$request->points,
             'submission_type' => $request->submission_type,
+            'multiple_submissions' => $request->multiple_submissions
             
         ]);
 
@@ -69,7 +72,7 @@ class AssignmentController extends Controller
         return back();
     }
 
-    public function getAllAssignments($courseid, Request $request){
+    public function getAllAssignmentsByCourse($courseid, Request $request){
         $assignment = new Assignment();
 
         $assignmentCollection = $assignment->getAssignmentByCourse($courseid);
@@ -78,6 +81,10 @@ class AssignmentController extends Controller
         }
 
         return view('dashboard.assignment.display')->with(compact('assignmentCollection'));
+    }
+    public function getAllAssignments(){
+        $assignmentCollection = Assignment::getAllAssignment();
+            return $this->successResponse("Assignment collection retrieved successfully", $assignmentCollection);
     }
 
     public function viewAssignment($courseId, $assignmentid){
@@ -104,7 +111,7 @@ class AssignmentController extends Controller
         
         if($chosenAssignment->start_date != null && $chosenAssignment->end_date != null && 
             $chosenAssignment->start_time != null && $chosenAssignment->end_time != null &&
-            $chosenAssignment->submission_type != null && $validateNumofSubmissions == 0){
+            $chosenAssignment->submission_type != null){
 
             if($chosenAssignment->status == 'active'){
                 $chosenAssignment->update([
@@ -153,8 +160,8 @@ class AssignmentController extends Controller
 
     public function studentGetAllAssignment($courseid){
         $assignment = new Assignment();
-    
-        $assignmentCollection = $assignment->getAssignmentByCourse($courseid)->where('status', 'active');
+        $dt = Carbon::now();
+        $assignmentCollection = $assignment->getAssignmentByCourse($courseid);
     
         return view('student.assignments.display')->with(compact('assignmentCollection'));
     }
@@ -181,17 +188,34 @@ class AssignmentController extends Controller
             ]);
         }
         else{
-                $fileRequest = $request->file;
-                $originalFileName = $fileRequest->getClientOriginalName();
+            if($request->hasFile('file')){
+                $allowedfileExtension=['pdf','jpg','png','docx'];
+                $fileRequest = $request->file('file');
                 
-                // dd(asset('topic-'. $request['topic_id']. '/'.$originalFileName));
-                Storage::putFileAs('public/files/assignments/submissions/'. $submissionId . '/', $fileRequest, $originalFileName);
-                $path = 'storage/files/assignments/submissions/'. $submissionId . '/' .$originalFileName;
 
-                $submissionFile = AssignmentSubmissionFile::create([
-                    'submission_id' => $submissionId,
-                    'path' => $path,
-                ]);
+                foreach($fileRequest as $file){
+                    $originalFileName = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+
+                    $check=in_array($extension,$allowedfileExtension);
+                    
+                    if($check)
+                    {
+                        Storage::putFileAs('public/files/assignments/submissions/'. $submissionId . '/', $file, $originalFileName);
+                        $path = 'storage/files/assignments/submissions/'. $submissionId . '/' .$originalFileName;
+                        
+                        AssignmentSubmissionFile::create([
+                            'submission_id' => $submissionId,
+                            'path' => $path,
+                        ]);
+                    }
+                    else{
+                        return redirect()->back()->withErrors(['error' => 'Format "' .$extension.'" is not supported.']);
+                    }
+                }
+                    
+                
+            }
         }
         return redirect()->to("/student/course/".$request->course_id."/assignment/".$request->assignment_id."/submissions");
     }

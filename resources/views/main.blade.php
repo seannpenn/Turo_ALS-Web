@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"></script>
-    
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
     <link href ="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel='stylesheet'>
@@ -20,7 +20,7 @@
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> -->
     <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
     <!-- <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"> -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/35.3.0/classic/ckeditor.js"></script>
+    
     {{-- <script src="//cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script> --}}
     <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
@@ -88,70 +88,100 @@
 </body>
 
     <script>
+        let editor;
+            ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .then( newEditor => {
+                editor = newEditor;
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+        $(document).ready(function(){
+        
+            $(window).on('load', 
+                // getAllQuizzes()
+                // surprise(),
+                // validateAssignment()
+            );
 
-    $(document).ready(function(){
+            function surprise() {
+                (function loop() {
+                    var now = new Date();
+                        // console.log(now.getHours());
+                        // console.log(now.getMinutes());
+                    // if (now.getHours() === 15 && now.getMinutes() === 35) {
+                    //     alert('Quiz is Closed');
+                    // }
+                    $.ajax({
+                        type: "get",
+                        url: "{{route('quiz.getAll')}}",
+                        dataType: "json",
+                        success: function (response) {
 
-        $(window).on('load', 
-            // getAllQuizzes()
-            surprise()
-        );
+                            var now = new Date();
+                            for(x in response){
+                                var date = new Date(response[x].end_date);
+                                var time = "15:30:00";
+                                var trimTime = time.split(":");
+                                
+                                // console.log(date.getMonth());
+                                // console.log(date.getDay());
+                                // console.log(trimTime[0]);
 
-        function surprise() {
-            (function loop() {
-                var now = new Date();
-                    console.log(now.getFullYear());
-                    // console.log(now.getHours());
-                    // console.log(now.getMinutes());
-                // if (now.getHours() === 19 && now.getMinutes() === 37) {
-                //     alert('Quiz is Closed');
-                // }
-
-                $.ajax({
-                    type: "get",
-                    url: "{{route('quiz.getAll')}}",
-                    dataType: "json",
-                    success: function (response) {
-
-                        var now = new Date();
-                        
-                        for(x in response){
-                            var date = new Date(response[x].end_date);
-                            var time = "15:30:00";
-                            var trimTime = time.split(":");
-                            
-                            // console.log(date.getMonth());
-                            // console.log(date.getDay());
-                            // console.log(trimTime[0]);
-
-                            if (date.getMonth() === 10 && date.getDay() === 6) {
-                                if(trimTime[0] === "15" && trimTime[1] === "30"){
-                                    console.log("Quiz is now closed"); // execute inactive quiz function
+                                if (date.getMonth() === 10 && date.getDay() === 6) {
+                                    if(trimTime[0] === "15" && trimTime[1] === "30"){
+                                        console.log("Quiz is now closed"); // execute inactive quiz function
+                                    }
                                 }
                             }
+                        },
+                        error: function(response){
+                            console.log(response);
                         }
-                    },
-                    error: function(response){
-                        console.log(response);
-                    }
-                });
-                now = new Date();                  // allow for time passing
-                var delay = 60000 - (now % 60000); // exact ms to next minute interval
-                setTimeout(loop, delay);
-            })();
-        }
-    });
+                    });
+                    now = new Date();                  // allow for time passing
+                    var delay = 60000 - (now % 60000); // exact ms to next minute interval
+                    setTimeout(loop, delay);
+                })();
+            }
+            function validateAssignment() {
+                (function loop() {
+                    var now = new Date();
+                        // console.log(now.getHours());
+                        // console.log(now.getMinutes());
+                    // if (now.getHours() === 15 && now.getMinutes() === 35) {
+                    //     alert('Quiz is Closed');
+                    // }
+                    $.ajax({
+                            type: "get",
+                            url: "{{route('assignment.getAll')}}",
+                            dataType: "json",
+                        success: function (response) {
+                            console.log(response)
+                            var now = new Date();
+                            for(x in response){
+                                console.log(response[x]);
+                                var date = new Date(response[x].end_date);
+                                var time = "15:30:00";
+                                var trimTime = time.split(":");
 
-
-        let editor;
-        ClassicEditor
-        .create( document.querySelector( '#editor' ) )
-        .then( newEditor => {
-            editor = newEditor;
-        } )
-        .catch( error => {
-            console.error( error );
-        } );
-
-        
+                                if (date.getMonth() === 10 && date.getDay() === 6) {
+                                    if(trimTime[0] === "15" && trimTime[1] === "30"){
+                                        console.log("Assignment is now closed"); // execute inactive quiz function
+                                    }
+                                }
+                            }
+                        },
+                        error: function(response){
+                            console.log(response);
+                        }
+                    }, 1000);
+                    now = new Date();                  // allow for time passing
+                    var delay = 60000 - (now % 60000); // exact ms to next minute interval
+                    setTimeout(loop, 1000);
+                })();
+            }
+        });
     </script>
 </html>

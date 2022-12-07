@@ -21,7 +21,7 @@
 @section('main-content')
 @include('navbar/navbar_inside', ['courseId' => request()->route('courseid') ])
 @include('dashboard/assignment/viewSubmissionModal')
-
+@include('dashboard.assignment.markAssignment')
     <nav aria-label="breadcrumb" class="breadHeader">
         <ol class="breadcrumb" style="background-color:white;">
             <li class="breadcrumb-item "><a href="{{route('assignment.display', request()->route('courseid'))}}">Assignment list</a></li>
@@ -88,7 +88,7 @@
                                             <input class="form-control" type="number" name="points" id="points" value="{{ $chosenAssignment->points }}">
                                         </div>
                                     </div>
-                                    <br>
+                                    <hr>
                                     <div class="row g-2">
                                         <div class="col-6">
                                             <h2 class="fs-5">Start Date</h2>
@@ -110,7 +110,7 @@
                                             <input class="form-control" type="time" name="end_time" id="end_time" value="{{ $chosenAssignment->end_time }}">
                                         </div>
                                     </div>
-                                    <br>
+                                    <hr>
                                     <div class="row g-2">
                                         <div class="col-6">
                                             <h2 class="fs-5">Submission type</h2>
@@ -129,11 +129,38 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" value="3" type="radio" name="submission_type" id="submission_type">
                                                 <label class="form-check-label" for="flexRadioDefault2">
-                                                Both
+                                                Text and File
                                                 </label>
                                             </div>
                                             
                                         </div>
+                                        <div class="col-6">
+                                            <h2 class="fs-5">Assignment settings</h2>
+                                            <div class="form-check">
+                                                <input class="form-check-input" value="{{ $chosenAssignment->multiple_submissions }}" type="checkbox" name="multiple_submissions" id="multiple_submissions"
+                                                    @if($chosenAssignment->multiple_submissions == 'true')
+                                                        checked
+                                                    @endif
+                                                >
+                                                <label class="form-check-label" for="flexRadioDefault2">
+                                                Allow multiple submissions
+                                                </label>
+                                                
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" value="{{ $chosenAssignment->multiple_submissions }}" type="checkbox" name="multiple_submissions" id="multiple_submissions"
+                                                    @if($chosenAssignment->multiple_submissions == 'true')
+                                                        checked
+                                                    @endif
+                                                >
+                                                <label class="form-check-label" for="flexRadioDefault2">
+                                                Allow submissions after deadline
+                                                </label>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                        <hr>
                                     </div>
                                 </div>
                                 <br>
@@ -147,23 +174,24 @@
                     <table class="table table-bordered" style="width: 100%;">
                     
                             <th scope="col" width="90%" >Student Name</th>
-                            <th scope="col" width="10%">Action </th>
+                            <th scope="col" >Action </th>
                         <tbody class="">
                             @foreach($enrolledStudents as $key => $enrolledStudent)
+                                
                                     <tr>
-                                        <td class="text-left p-3">
+                                        <td class="text-left p-2">
                                             {{ $enrolledStudent->student->student_lname }}, {{ $enrolledStudent->student->student_fname }} {{ $enrolledStudent->student->student_mname }}
                                             <p style="font-size:small;">Submitted on May 20, 2001 5:00 PM</p>
 
                                         </td>
-                                        <td style="justify-content: center;">
+                                        <td class="p-2" style="margin: 0 auto;">
                                             <div class="d-grid gap-2 d-md-block">
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#markAssignment1">Overall Mark</button>
                                             </div>
                                         </td>
                                         
                                     </tr>
-                                    <tr>
+                                    <tr style="border-bottom: 2px solid black;">
                                         <td colspan="3" >
                                             <table class="table table-bordered ">
                                                 <thead style="border: white;">
@@ -184,10 +212,16 @@
                                                                     {{ $submission->created_at }}
                                                                 </td>
                                                                 <td>
-                                                                    <div class="d-grid gap-2 d-md-block">
-                                                                        <button type="button" class="btn btn-warning markSubmission" data-bs-toggle="modal" data-bs-target="#markAssignment{{$submission->submission_id}}">Mark</button>
-                                                                    </div>
-                                                                    @extends('dashboard.assignment.markAssignment')
+                                                                    @if($submission->total_score == 0)
+                                                                        <div class="d-grid gap-2 d-md-block">
+                                                                            <button type="button" class="btn btn-warning markSubmission" value="{{ $submission->submission_id }}" totalPoints ="{{ $submission->total_score }}" index="{{ $key }}" data-bs-toggle="modal" data-bs-target="#markAssignment">mark</button>
+                                                                        </div>
+                                                                    @else
+                                                                        <div class="d-grid gap-2 d-md-block">
+                                                                            <button type="button" class="btn btn-warning markSubmission" value="{{ $submission->submission_id }}" totalPoints ="{{ $submission->total_score }}" index="{{ $key }}" data-bs-toggle="modal" data-bs-target="#markAssignment">remark</button>
+                                                                        </div>
+                                                                    @endif
+                                                                    
                                                                 </td>
                                                                 <td width="5%">
                                                                     <a class="deleteSubmission" submissionId="{{ $submission->submission_id }}">
@@ -214,8 +248,6 @@
         </nav>
         
     </div>
-    
-    <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     <script type="text/javascript">
         const toastLiveExample = document.getElementById('liveToast')
         const submissionByStudent = document.getElementsByClassName('viewSubmission');
@@ -231,16 +263,51 @@
                 alert(submissionId);
                 window.location.href = '/teacher/submission/' + submissionId + '/delete';
             });
+            $(markSubmission[a]).click(function (e) {
+                var submissionId = this.value;
+                var total_points = this.getAttribute('totalPoints');
+                
+                $('#modalLabel').html(`Mark Submission # ` + submissionId);
+                $('#submitScore').val(submissionId);
+                $('#givenScore').val(total_points);
+                markSubmissionWithPoint();
+            });
         }
         
-
+        function markSubmissionWithPoint(){
+                $('#submitScore').click(function (e) { 
+                    e.preventDefault();
+                    var formData = {
+                        'total_score' : $('#total_score').val(),
+                    };
+                    const toast = new bootstrap.Toast(toastLiveExample);
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: "/teacher/assignment/" + this.value + "/mark",
+                        data: formData,
+                        dataType: "json",
+                        success: function (response) {
+                            $(".toast-body").html('Submission marked successfully.');
+                            toast.show();
+                            console.log(response);
+                        },
+                        error: function (response){
+                            $(".toast-body").html('Submission marked unsuccessfully.');
+                            toast.show();
+                            console.log(response);
+                        }
+                    });
+                });
+            }
         $(document).ready(function(){
-
             
             $('.saveButton').click(function (e) {
-                alert($('#points').val());
                 const editorData = editor.getData();
-                e.preventDefault();
                 var formData = {
                     'assignment_title' : $('#assignment_title').val(),
                     'assignment_description' : editorData,
@@ -250,6 +317,7 @@
                     'end_time' : $('#end_time').val(),
                     'submission_type': $("input[name='submission_type']:checked").val(),
                     'points' : $('#points').val(),
+                    'multiple_submissions' : $("input[name='multiple_submissions']:checked").val() == 'false' ? 'true' : 'false',
                 };
                 var updateAssignmentRoute = "/teacher/assignment/" + "{{request()->route('assignmentid')}}" + "/update";
                 $.ajaxSetup({
@@ -272,35 +340,7 @@
                     }
                 });
             });
-
-            $('#submitScore').click(function (e) { 
-                e.preventDefault();
-                var formData = {
-                    'total_score' : $('#total_score').val(),
-                };
-                const toast = new bootstrap.Toast(toastLiveExample);
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    }
-                });
-                $.ajax({
-                    type: "POST",
-                    url: "/teacher/assignment/" + this.value + "/mark",
-                    data: formData,
-                    dataType: "json",
-                    success: function (response) {
-                        $(".toast-body").html('Submission marked successfully.');
-                        toast.show();
-                        console.log(response);
-                    },
-                    error: function (response){
-                        $(".toast-body").html('Submission marked unsuccessfully.');
-                        toast.show();
-                        console.log(response);
-                    }
-                });
-            });
+            
             
 
             

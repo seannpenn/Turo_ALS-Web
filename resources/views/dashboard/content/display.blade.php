@@ -204,21 +204,8 @@
 @section('main-content')
     @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')  ])
         <div class="col" style=" margin: 0 auto; width: 70%; padding: 10px; border-radius: 10px;">
+            
 
-            <!-- @if($errors->any())                  
-                <div class="toast-container position-fixed top-0 start-50 translate-middle-x">
-                    <div id="liveToast" class="toast bg-warning" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="toast-header">
-                        <img src="{{ asset('images/correct.png') }}" class="rounded me-2" alt="...">
-                        <strong class="me-auto">Success</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                        <div class="toast-body">
-                        {{$errors->first()}}
-                        </div>
-                    </div>
-                </div>
-            @endif -->
             <div class="d-flex justify-content-start" style="width:1350px;">
                 <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#moduleModal" data-bs-whatever="@fat">Create Module</button>
             </div>
@@ -277,7 +264,16 @@
                 <div class="d-inline p-1 text-bg align-items-center">
                     <div class="control-area" id="control-area"></div>
                         <div class="view-topic" id="view-topic">
-
+                            <div class="container text-center" style=" margin: 250px auto;">
+                                <div class="row">
+                                    <div class="col align-self-center">
+                                        @foreach($errors->get('error') as $errorMessage )
+                                            <span><h5 style="color: red">{{ $errorMessage }}</h5></span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>

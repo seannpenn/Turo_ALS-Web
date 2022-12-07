@@ -59,40 +59,71 @@
                                 <th scope="col">Due date </th>
                             <tbody>
                             @foreach($assignmentCollection as $index => $assignment)
+                            @if($assignment->status == 'inactive' && $assignment->submissions->count() != 0 || $assignment->status == 'active')
                                 <tr>
-                                    <td width="80%" class="text-start p-3">
-                                        <div class="row" style="width: 300px;">
-                                            <div class="col-auto">
-                                                <a href="/student/course/{{ request()->route('courseid') }}/assignment/{{ $assignment->assignment_id }}">
-                                                    <p>{{ $assignment->assignment_title }}</p>
-                                                </a>
-                                            </div>
+                                    <td width="70%" class="text-start p-3">
+                                        <div class="row" >
                                             <div class="col-auto">
                                                 @if($assignment->status == 'active')
+                                                    @if($assignment->submissions->count() == 0 )
+                                                        <a href="/student/course/{{ request()->route('courseid') }}/assignment/{{ $assignment->assignment_id }}">
+                                                            <p>{{ $assignment->assignment_title }}</p>
+                                                        </a>
+                                                    @elseif ($assignment->submissions->count() != 0 && $assignment->multiple_submissions == 'true')
+                                                        <a href="/student/course/{{ request()->route('courseid') }}/assignment/{{ $assignment->assignment_id }}">
+                                                            <p>{{ $assignment->assignment_title }}</p>
+                                                        </a>
+                                                    @else
+                                                        <a href="/student/course/{{ request()->route('courseid') }}/assignment/{{ $assignment->assignment_id }}">
+                                                            <p>{{ $assignment->assignment_title }}</p>
+                                                        </a>
+                                                    @endif
+                                                @else
+                                                    <p>{{ $assignment->assignment_title }}</p>
+                                                @endif
+                    
+                                            </div>
+                                            <div class="col-auto">
+                                                @if($assignment->status == 'active' )
                                                     <div class="badge bg-success text-wrap">
                                                         {{ $assignment->status }}
                                                     </div>
+                                                @elseif($assignment->status == 'inactive' && $assignment->submissions->count() != 0)
+                                                    <div class="badge bg text-wrap" style="background-color:grey;">
+                                                        closed 
+                                                    </div>
                                                 @else
                                                     <div class="badge bg text-wrap" style="background-color:grey;">
-                                                        {{ $assignment->status }}
+                                                        {{ $assignment->status }} 
                                                     </div>
                                                 @endif
                                             </div>
+                                            <p style="font-size:small;">Available on {{\Carbon\Carbon::parse($assignment->start_date)->isoFormat('MMMM DD YYYY')}} {{$assignment->start_time}} until {{\Carbon\Carbon::parse($assignment->end_date)->isoFormat('MMMM DD YYYY')}} {{$assignment->end_time}}</p>
+                                            
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="/student/course/{{ request()->route('courseid') }}/assignment/{{ $assignment->assignment_id }}/submissions">
-                                            <p style="font-size:small; padding:10px;">{{ $assignment->submissions->count()}} submissions</p>
-                                        </a>
+                                        @if($assignment->submissions->count() == 0)
+                                            <p style="font-size:x-small; padding:10px;">No submissions</p>
+                                        @else
+                                            <a href="/student/course/{{ request()->route('courseid') }}/assignment/{{ $assignment->assignment_id }}/submissions">
+                                                <p style="font-size:x-small; padding:10px;">{{ $assignment->submissions->count()}} submissions</p>
+                                            </a>
+                                        @endif
                                     </td>
-                                    <td class="text-start p-3">
-                                        <p> / 10</p>
+                                    <td class="text-start p-3" width="10%">
+                                        @if($assignment->submissions->count() == 1)
+                                            <p>{{ $assignment->submissions[0]->total_score }} / {{ $assignment->points }}</p>
+                                        @else
+                                            <p> / 10</p>
+                                        @endif
                                         
                                     </td>
                                     <td width="15%" class="text-center p-3">
                                         <p class="fs-6">May 20, 2001</p>
                                     </td>
                                 </tr>
+                            @endif
                             @endforeach
                             </tbody>
                         </table>

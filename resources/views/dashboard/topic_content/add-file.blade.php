@@ -18,7 +18,11 @@
               <div class="mb-3">
                   <label for="topic_title" class="col-form-label">Select File to upload</label>
                   <input type="file" class="form-control" name="file" id="recipient-name" >
+                  <div class="col text-start">
+                        <span>Only file supported : "pdf"</span>
+                </div>
               </div>
+
               <div class="modal-footer">
                   <button type="reset" class="btn btn-warning">Reset</button>
                   <button type="submit" class="btn btn-primary">Create</button>

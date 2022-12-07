@@ -24,7 +24,7 @@ class AssignmentSubmission extends Model
     ];
 
     public function submission_file(){
-        return $this->hasOne(AssignmentSubmissionFile::class, 'submission_id', 'submission_id');
+        return $this->hasMany(AssignmentSubmissionFile::class, 'submission_id', 'submission_id');
     }
 
     public function submission_text(){
