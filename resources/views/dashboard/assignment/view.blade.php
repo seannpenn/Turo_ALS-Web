@@ -16,6 +16,9 @@
         font-size: 15px;
         cursor: pointer;
     }
+    .deleteSubmission:hover{
+        cursor: pointer;
+    }
 @endsection
 
 @section('main-content')
@@ -181,12 +184,10 @@
                                     <tr>
                                         <td class="text-left p-2">
                                             {{ $enrolledStudent->student->student_lname }}, {{ $enrolledStudent->student->student_fname }} {{ $enrolledStudent->student->student_mname }}
-                                            <p style="font-size:small;">Submitted on May 20, 2001 5:00 PM</p>
-
                                         </td>
                                         <td class="p-2" style="margin: 0 auto;">
                                             <div class="d-grid gap-2 d-md-block">
-                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#markAssignment1">Overall Mark</button>
+                                                <button type="button" class="btn btn-warning btn-sm " data-bs-toggle="modal" data-bs-target="#markAssignment1">Overall Mark</button>
                                             </div>
                                         </td>
                                         
@@ -204,12 +205,14 @@
                                                 <tbody class="table-group-divider submissionContent">
                                                         @foreach($chosenAssignment->submissionByStudent($enrolledStudent->student->student_id) as $key => $submission)
                                                             <tr>
-                                                                <td width="80%">
+                                                                <td width="75%" style="vertical-align: center;">
                                                                     {{ $submission->submission_id }}
-                                                                    <button type="button" value="{{ $enrolledStudent->student->student_id }}" class="btn btn-success viewSubmission" data-bs-toggle="modal" data-bs-target="#viewSubmissionModala">View submission</button>
                                                                 </td>
-                                                                <td width="15%">
+                                                                <td width="15%" style="vertical-align: center;">
                                                                     {{ $submission->created_at }}
+                                                                </td>
+                                                                <td >
+                                                                    <button type="button" value="{{ $enrolledStudent->student->student_id }}" class="btn btn-success btn-sm viewSubmission" data-bs-toggle="modal" data-bs-target="#viewSubmissionModala">View submission</button>
                                                                 </td>
                                                                 <td>
                                                                     @if($submission->total_score == 0)
@@ -224,7 +227,7 @@
                                                                     
                                                                 </td>
                                                                 <td width="5%">
-                                                                    <a class="deleteSubmission" submissionId="{{ $submission->submission_id }}">
+                                                                    <a class="deleteSubmission" submissionId="{{ $submission->submission_id }}" onclick="return confirm('Are you sure you want to delete this submission?')">
                                                                         <img src="{{ asset('images/delete.png') }}" width="20" height="20">
                                                                     </a>
                                                                 </td>
@@ -232,11 +235,13 @@
                                                         @endforeach
                                                 </tbody>
                                             </table>
+                                            
                                         </td>
                                     </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    <br><br>
                 </div>
             </div>
             

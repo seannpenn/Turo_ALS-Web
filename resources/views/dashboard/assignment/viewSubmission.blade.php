@@ -44,17 +44,19 @@
                                 @if($submission->submission_type == 1)
                                     {!! $submission->submission_text->text !!}
                                 @else
-                                    @foreach($submission->submission_file as $file_path)
-                                        @php
-                                            $file_type = explode(".", $file_path->path);
-                                        @endphp
+                                @foreach($submission->submission_file as $file_path)
+                                    @php
+                                        $file_type = explode(".", $file_path->path);
+                                    @endphp
 
-                                        @if($file_type[1] == 'jpg')
-                                            <a target="_blank" href="{{ asset($file_path->path) }}">
-                                                <img class="img-fluid submittedImage" src="{{ asset($file_path->path) }}" image-key="{{ $key }}" width="100" height="100">
-                                            </a>
-                                        @endif
-                                    @endforeach
+                                    @if($file_type[1] == 'jpg')
+                                        <a target="_blank" href="{{ asset($file_path->path) }}">
+                                            <img class="img-fluid submittedImage" src="{{ asset($file_path->path) }}" image-key="{{ $key }}" width="100" height="100">
+                                        </a>
+                                    @endif
+                                @endforeach
+                                    
+                                
                                 @endif
                             </td>
                             <td width="10%" class="text-center p-3">
