@@ -15,6 +15,7 @@ use App\Models\Topic;
 use App\Models\QuestionType;
 use App\Models\QuizAttempt;
 use App\Models\Enrollment;
+use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 class QuizController extends Controller
@@ -182,6 +183,23 @@ class QuizController extends Controller
         $quizCollection = Quiz::where('course_id', $courseid)->get();
         return Response::json($quizCollection);
     }
+    public function viewStudentAttempt($courseid, $quizid, $studentid){
+        $studentData = Student::where('student_id', $studentid)->get();
+        $quizAttempt = QuizAttempt::where('quiz_id', $quizid)->where('student_id', $studentid)->get();
+        $selectedQuiz = Quiz::where('quiz_id', $quizid)->get();
+        $correctAnswers =[];
+
+        foreach($selectedQuiz[0]->question as $question){
+            foreach($question->option as $option){
+                if($question->type == 2){
+                    $correctAnswers = explode(', ', $option->option);
+                    // echo $spliceCorrectAnswer;
+                }
+            }
+            
+        }
+        return view('dashboard.quiz.viewStudentAttempt')->with(compact('quizAttempt', 'studentData', 'selectedQuiz', 'correctAnswers'));
+    }
 
     // get quizzes for student
 
@@ -227,18 +245,18 @@ class QuizController extends Controller
             if($chosenQuiz->password == $request->quizPass){
                 $questions = $chosenQuiz->question;
 
-                $quizAttempt = QuizAttempt::where('quiz_id', $quizid)->where('student_id', Auth::user()->student->student_id)->get()->first();
-                if($quizAttempt != null){
-                    $restricted = "You have already taken this quiz.";
-                    return view('student.quiz.takeQuiz')->with(compact(['chosenQuiz', 'questions', 'restricted']))->with('message', 'You have already taken this quiz.');
-                }
-                else{
+                $quizAttempt = QuizAttempt::where('quiz_id', $quizid)->where('student_id', Auth::user()->student->student_id)->get()->last();
+                // if($quizAttempt != null){
+                //     $restricted = "You have already taken this quiz.";
+                //     return view('student.quiz.takeQuiz')->with(compact(['chosenQuiz', 'questions', 'restricted']))->with('message', 'You have already taken this quiz.');
+                // }
+                // else{
                     QuizAttempt::insertGetId([
                         'quiz_id' => $quizid,
                         'student_id' => Auth::user()->student->student_id,
                     ]);
                     return view('student.quiz.takeQuiz')->with(compact(['chosenQuiz', 'questions']))->with('message');
-                }
+                // }
             }
             else{
                 return redirect()->back()->withErrors(['wrongPassword' => 'Password is not correct.']);
@@ -247,8 +265,8 @@ class QuizController extends Controller
         else{
                 $questions = $chosenQuiz->question;
 
-                $quizAttempt = QuizAttempt::where('quiz_id', $quizid)->where('student_id', Auth::user()->student->student_id)->get()->first();
-                if($quizAttempt != null){
+                $quizAttempt = QuizAttempt::where('quiz_id', $quizid)->where('student_id', Auth::user()->student->student_id)->get();
+                if($quizAttempt->count() == $chosenQuiz->attempts){
                     $restricted = "You have already taken this quiz.";
                     return view('student.quiz.takeQuiz')->with(compact(['chosenQuiz', 'questions', 'restricted']))->with('message', 'You have already taken this quiz.');
                 }
@@ -332,46 +350,91 @@ class QuizController extends Controller
                 }
             }
         }
+        
         foreach($quiz->question as $question){
+
             foreach($question->option as $option){
                 if($option->isCorrect){
                     $optionCorrect++;
                 }
-                foreach($question->answer as $answer){
-                    if($option->answer){
-                        if($answer->option_id == $option->option_id){
+                if($question->type == 1){
+                    foreach($attempt->quizAnswer as $answer){
+                        if($answer->question_id == $option->question_id){
                             if($answer->isCorrect){
                                 $correctCount++;
                             }
-                            else{
-                                $incorrectCount++;
-                            }
                         }
+                        
                     }
-                    else{
+                }
+                else if($question->type == 3){
+                    foreach($attempt->quizAnswer as $answer){
+                        // if($answer->isCorrect){
+                        //     $correctCount++;
+                        // }
+                            if($answer->option_id == $option->option_id){
+                                if($answer->isCorrect && $option->isCorrect){
+                                    $correctCount++;
+                                }
+                                else{
+                                    $incorrectCount++;
+                                }
+                            }
+                    }
+
+                    
+                }
+                else if($question->type == 2){
+                    foreach($attempt->quizAnswer as $answer){
                         foreach($correctAnswers as $correctanswer){
-                            if($option->answerbyQuestion->textAnswer === $correctanswer){
+                            if($answer->textAnswer === $correctanswer){
                                 $totalScore+=$question->points;
                             }
                         }
                     }
                 }
+                
+                // foreach($attempt->quizAnswer as $answer){
+                //     if($option->answer){
+                //         if($answer->option_id == $option->option_id){
+                //             if($answer->isCorrect){
+                //                 $correctCount++;
+                //             }
+                //             else{
+                //                 $incorrectCount++;
+                //             }
+                //         }
+                //     }
+                //     else{
+                //         foreach($correctAnswers as $correctanswer){
+                //             if($answer->textAnswer === $correctanswer){
+                //                 $totalScore+=$question->points;
+                //             }
+                //         }
+                //     }
+                // }
             }
             $totalPoints +=$question->points;
-            
-            if($optionCorrect > 1){
-                if($incorrectCount == 0){
-                    if($correctCount ==  $optionCorrect){
-                        $totalScore+=$question->points;
-                    }
-                }
-                
-            }
-            else{
+
+            if($optionCorrect == $correctCount){
                 if($incorrectCount == 0){
                     $totalScore+=$question->points;
                 }
+                
             }
+            // if($optionCorrect > 1){
+            //     if($incorrectCount == 0){
+            //         if($correctCount ==  $optionCorrect){
+            //             $totalScore+=$question->points;
+            //         }
+            //     }
+                
+            // }
+            // else{
+            //     if($incorrectCount == 0){
+            //         $totalScore+=$question->points;
+            //     }
+            // }
         }
 
         // for checkboxes
@@ -502,10 +565,9 @@ class QuizController extends Controller
             
         }
 
-        $quizAttempt = QuizAttempt::where('quiz_id', $quizid)->where('student_id', Auth::user()->student->student_id)->get()->last();
-        $thisAttemptID = $quizAttempt->attempt_id;
-        $QuizAnswers = $quizAttempt->quizAnswer;
-        return view('student.quiz.viewResult')->with(compact(['chosenQuiz', 'questions', 'QuizAnswers', 'correctAnswers', 'thisAttemptID', 'quizAttempt']));
+        $quizAttempt = QuizAttempt::where('quiz_id', $quizid)->where('student_id', Auth::user()->student->student_id)->get();
+        
+        return view('student.quiz.viewResult')->with(compact(['chosenQuiz', 'questions', 'correctAnswers', 'quizAttempt']));
     }
 
 }

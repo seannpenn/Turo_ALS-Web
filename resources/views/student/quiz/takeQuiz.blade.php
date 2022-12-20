@@ -75,6 +75,7 @@
                         </div>
                     </div>
                 </div>
+                
             <div class="tab-content" id="v-pills-tabContent">
             
                 @foreach($questions as $index => $question)
@@ -95,9 +96,9 @@
                                                         @if($question->type != 2 && $question->type != 4)
                                                             @if($question->type == 1)
                                                                 @php
-                                                                    $sessionKey = "Attempt-".$chosenQuiz->quizAttempt[0]->attempt_id."-Question-".$question->question_id;
+                                                                    $sessionKey = "Attempt-".$chosenQuiz->quizAttempt->last()->attempt_id."-Question-".$question->question_id;
                                                                 @endphp
-                                                                <input class="form-check-input optionAnswer" type="radio" name="questions[{{ $question->question_id }}]" question-index = "{{$index}}" id="optionAnswer" questionid = "{{ $question->question_id }}" value="{{ $option->option_id }}"  required
+                                                                <input class="form-check-input optionAnswer" type="radio" question-type = "{{ $question->type }}" name="questions[{{ $question->question_id }}]" question-index = "{{$index}}" id="optionAnswer" questionid = "{{ $question->question_id }}" value="{{ $option->option_id }}"  required
                                                                     @if( Session($sessionKey)  == $option->option_id)
                                                                         checked 
                                                                     @endif
@@ -105,7 +106,7 @@
                                                                 
                                                             @elseif($question->type == 3)
                                                                 @php
-                                                                    $sessionKey = "Attempt-".$chosenQuiz->quizAttempt[0]->attempt_id."-Option-".$option->option_id;
+                                                                    $sessionKey = "Attempt-".$chosenQuiz->quizAttempt->last()->attempt_id."-Option-".$option->option_id;
                                                                     $session = Session($sessionKey);
                                                                 @endphp
                                                                 <input class="form-check-input optionAnswer"  type="checkbox" name="options[{{ $option->option_id}}]" optionid = "{{ $option->option_id}}"  question-index = "{{$index}}" id="exampleRadios2" question-type = "{{$question->type}}" value="{{$question->question_id}}" 
@@ -121,7 +122,7 @@
                                                     </div>
                                                     @if($question->type == 2)
                                                         @php
-                                                            $sessionKey = "Attempt-".$chosenQuiz->quizAttempt[0]->attempt_id."-Question-".$question->question_id;
+                                                            $sessionKey = "Attempt-".$chosenQuiz->quizAttempt->last()->attempt_id."-Question-".$question->question_id;
                                                             
                                                         @endphp
                                                         <input class="form-control optionAnswer" type="text" name="questions[{{ $question->question_id }}]" question-index = "{{$index}}" id="optionAnswer"  style="border-top-style: hidden; border-right-style: hidden;border-left-style: hidden;" optionid = "{{ $option->option_id}}" questionid = "{{ $question->question_id }}" question-type = "{{$question->type}}" placeholder="Short answer text" class="form-control" aria-label="Question"  required
@@ -161,9 +162,9 @@
                                                         @if($question->type != 2 && $question->type != 4)
                                                             @if($question->type == 1)
                                                                 @php
-                                                                    $sessionKey = "Attempt-".$chosenQuiz->quizAttempt[0]->attempt_id."-Question-".$question->question_id;
+                                                                    $sessionKey = "Attempt-".$chosenQuiz->quizAttempt->last()->attempt_id."-Question-".$question->question_id;
                                                                 @endphp
-                                                                <input class="form-check-input optionAnswer" type="radio" name="questions[{{ $question->question_id }}]" question-index = "{{$index}}" id="optionAnswer" questionid = "{{ $question->question_id }}" value="{{ $option->option_id }}"  required
+                                                                <input class="form-check-input optionAnswer" type="radio" name="questions[{{ $question->question_id }}]" question-index = "{{$index}}" id="optionAnswer" questionid = "{{ $question->question_id }}" value="{{ $option->option_id }}" question-type = "{{ $question->type }}"  required
                                                                     @if( Session($sessionKey)  == $option->option_id)
                                                                         checked 
                                                                     @endif
@@ -171,7 +172,7 @@
                                                                 
                                                             @elseif($question->type == 3)
                                                                 @php
-                                                                    $sessionKey = "Attempt-".$chosenQuiz->quizAttempt[0]->attempt_id."-Option-".$option->option_id;
+                                                                    $sessionKey = "Attempt-".$chosenQuiz->quizAttempt->last()->attempt_id."-Option-".$option->option_id;
                                                                     $session = Session($sessionKey);
                                                                 @endphp
                                                                 <input class="form-check-input optionAnswer"  type="checkbox" name="options[{{ $option->option_id}}]" optionid = "{{ $option->option_id}}"  question-index = "{{$index}}" id="exampleRadios2" question-type = "{{$question->type}}" value="{{$question->question_id}}"
@@ -187,7 +188,7 @@
                                                     </div>
                                                     @if($question->type == 2)
                                                         @php
-                                                            $sessionKey = "Attempt-".$chosenQuiz->quizAttempt[0]->attempt_id."-Question-".$question->question_id;
+                                                            $sessionKey = "Attempt-".$chosenQuiz->quizAttempt->last()->attempt_id."-Question-".$question->question_id;
                                                         @endphp
                                                         <input class="form-control optionAnswer" type="text" name="questions[{{ $question->question_id }}]" question-index = "{{$index}}" id="optionAnswer"  style="border-top-style: hidden; border-right-style: hidden;border-left-style: hidden;" optionid = "{{ $option->option_id}}" questionid = "{{ $question->question_id }}" question-type = "{{$question->type}}" placeholder="Short answer text" class="form-control" aria-label="Question"  required
                                                         @if(Session::has($sessionKey))
@@ -245,8 +246,8 @@
             var minDoubDig = 0;
             $('.time').text(hoursDoubDig + ':' + minDoubDig + ':00 time left');
             var seconds = 5;
-            console.log(hours);
-            console.log(minutes);
+            // console.log(hours);
+            // console.log(minutes);
             
             time = setInterval(() => {
                 if(minutes < 0){
@@ -278,7 +279,7 @@
                     // alert('Time is up!');
                 }
                 const d = new Date();
-                console.log(d.getHours() + '' + d.getMinutes() + '' + d.getSeconds());
+                // console.log(d.getHours() + '' + d.getMinutes() + '' + d.getSeconds());
             }, 1000);
             
 
@@ -290,11 +291,10 @@
                     var index = this.getAttribute("question-index");
                     var questionType = this.getAttribute("question-type");
                     var saveToSessionRoute = "{{ route('saveAnswerToSession') }}";
-                    if(questionType != 2){
-                        sessionStatus[index].innerHTML = `
-                            <div class="spinner-border" role="status" style="width:20px; height:20px; margin-left:10px;"></div> 
-                        `;
-                    }
+                    
+                    sessionStatus[index].innerHTML = `
+                        <div class="spinner-border" role="status" style="width:20px; height:20px; margin-left:10px;"></div> 
+                    `;
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -309,7 +309,7 @@
                             type: "POST",
                             
                             data: {
-                                key: "Attempt-{{$chosenQuiz->quizAttempt[0]->attempt_id}}-Question-"+questionid,
+                                key: "Attempt-{{$chosenQuiz->quizAttempt->last()->attempt_id}}-Question-"+questionid,
                                 questionid: questionid,
                                 optionid: optionid,
                                 questionType: questionType,
@@ -338,7 +338,7 @@
                                 url: saveToSessionRoute,
                                 type: "POST",
                                 data: {
-                                    key: "Attempt-{{$chosenQuiz->quizAttempt[0]->attempt_id}}-Option-"+optionid,
+                                    key: "Attempt-{{$chosenQuiz->quizAttempt->last()->attempt_id}}-Option-"+optionid,
                                     method: "delete",
                                     questionid: questionid,
                                 },
@@ -361,7 +361,7 @@
                                 url: saveToSessionRoute,
                                 type: "POST",
                                 data: {
-                                    key: "Attempt-{{$chosenQuiz->quizAttempt[0]->attempt_id}}-Option-"+optionid,
+                                    key: "Attempt-{{$chosenQuiz->quizAttempt->last()->attempt_id}}-Option-"+optionid,
                                     questionid: questionid,
                                     optionid: optionid,
                                     questionType: questionType,
@@ -404,7 +404,7 @@
                             url: saveToSessionRoute,
                             type: "POST",
                             data: {
-                                key: "Attempt-{{$chosenQuiz->quizAttempt[0]->attempt_id}}-Question-"+questionid,
+                                key: "Attempt-{{$chosenQuiz->quizAttempt->last()->attempt_id}}-Question-"+questionid,
                                 questionid: questionid,
                                 optionid: optionid,
                                 questionType: questionType,

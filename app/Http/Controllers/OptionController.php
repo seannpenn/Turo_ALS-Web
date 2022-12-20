@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
 use App\Models\Option;
+use App\Models\Question;
 use App\Models\QuizAnswer;
 use Response;
 class OptionController extends Controller
@@ -73,24 +74,25 @@ class OptionController extends Controller
         $selectedOption = Option::findOrFail($id);
             
         $selectedOption->delete();
-        return redirect()->back();
+        return response()->json($selectedOption);
     }
     public function deleteAll($id){
         $optionModel = new Option;
         $OptionCollection = $optionModel->getAllOption($id);
+        $question = Question:: where('question_id', $id)->get()->first();
         foreach ($OptionCollection as $option) {
             $option->delete();
         }
-        return redirect()->back();
-        // return Response::json('Deleted');
+        // return redirect()->back();
+        return response()->json($question);
     }
     public function setAnswer(Request $request, $id){
         $updateOption = Option::where('option_id',$id);
-        
+        $question = Question:: where('question_id', $updateOption->first()->question_id)->get()->first();
             $updateOption->update([
                 'isCorrect' => $request->isCorrect,
             ]);
-            return Response::json($updateOption);
+            return response()->json($question);
     }
 
     public function considerAnswer(Request $request, $id){

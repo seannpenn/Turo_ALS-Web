@@ -17,12 +17,12 @@
 @section('main-content')
 @include('navbar/navbar_inside', ['courseId' => request()->route('courseid'), 'topiccontentid' => request()->route('topiccontentid')])
     <div class="layout">
-        <h2>Quiz List</h2> {{ route('assignment.create') }}
+        <h2>Quiz List</h2>
         <div class="container text-left p-4">
             <div class="col align-self-center">
                 
                 <table class="table table-hover table table-bordered" style="width: 100%;">
-                @if($quizCollection->count() != 0)
+                @if($quizCollection->count() != 0 )
                     <tr>
                         <th scope="col" class="text-left">Quiz Title</th>
                         <th scope="col" class="text-center">Status </th>
@@ -55,21 +55,23 @@
                                         @if($quiz->quizAttempt->count() != 0)
                                             
                                             <br>
-                                            @if($quiz->quizAttempt[0]->quizSummary != null)
-                                                Done
-                                                @if($quiz->releaseGrades != 1)
-                                                    <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">view result</a>
-                                                @else
-                                                    attempt
-                                                @endif
+                                            @if($quiz->quizAttempt->count() == $quiz->attempts)
+                                                <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">
+                                                    Done
+                                                    @if($quiz->releaseGrades == 1)
+                                                        <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">view result</a>
+                                                    @else
+                                                        attempt
+                                                    @endif
+                                                </a>
                                             @else
-                                                <a href="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id])}}">in progress.</a>
+                                                <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">view attempts</a>
                                             @endif
                                         @else
                                             <h6>No attempt</h6>
                                         @endif
                                     </td>
-                                    <td class="text-center">{{$quiz->quizAttempt->count()}}/1</td>
+                                    <td class="text-center">{{$quiz->quizAttempt->count()}}/{{ $quiz->attempts }}</td>
                                 </tr>
                         @endforeach
                     </tbody>

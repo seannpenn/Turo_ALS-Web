@@ -2,6 +2,7 @@
 
 @section('css-style')
     .layout{
+        padding: 20px;
         max-width: 1200px;
         margin: 0 auto;
     }
@@ -46,7 +47,7 @@
 @include('dashboard/assignment/updateModal')
     
     <div class="layout">
-        <h1>Assignment List</h1>
+        <h2>Assignment List</h2>
         
             <div class="container text-center p-4">
                 <div class="col align-self-center">

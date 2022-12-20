@@ -111,6 +111,7 @@
                 console.error( error );
             } );
         $(document).ready(function(){
+             @yield('content-style') 
         
             $(window).on('load', 
                 // getAllQuizzes()

@@ -98,9 +98,20 @@
                                                 <h2 class="fs-5">Attempts</h2>
                                                 <div class="col-3">
                                                     <select class="form-select" aria-label="Default select example" name="attempts" id="attempts">
-                                                        <option value="1" selected>1</option>
+
+                                                            @for($i = 1; $i <= 10; $i++)
+                                                                @if ($i == $selectedQuiz[0]->attempts)
+                                                                    <option value="{{ $i }}" selected> {{ $i }} </option>
+                                                                @else
+                                                                    <option value="{{ $i }}"> {{ $i }} </option>
+                                                                @endif
+                                                            @endfor
+                                                        {{-- <option value="1" selected>1</option>
                                                         <option value="2">2</option>
                                                         <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option> --}}
                                                     </select>
                                                 </div>
                                             </div>
@@ -160,9 +171,9 @@
                             <br>
                             
         </form>
-
+    </div>
         <script>
-            const toastLiveExample = document.getElementById('liveToast')
+            // const toastLiveExample = document.getElementById('liveToast')
 
         $(document).ready(function(){
             $("#saveSettings").click(function (event) {

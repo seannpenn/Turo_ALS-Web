@@ -37,10 +37,10 @@
                         <h3>Quiz duration - {{$hours}} hour and {{$minutes}} minutes</h3>
                         <!-- <h5>{{Auth::user()->student->student_fname}} {{Auth::user()->student->student_mname}} {{Auth::user()->student->student_lname}}</h5> -->
                         
-                        @if($quiz->quizAttempt->count() > 0)
+                        @if($quiz->quizAttempt->count() == $quiz->attempts)
                             <div class="row">
                                 <div class="col-12">
-                                    @if($quiz->releaseGrades != 1)
+                                    @if($quiz->releaseGrades == 1)
                                         <div class="alert alert-success" role="alert">
                                             @foreach($quiz->quizAttempt as $attempt)
                                                 @php
@@ -58,37 +58,36 @@
                                     @endif
                                     <hr>
                                     <h5>Quiz Status: Completed.</h5>
-                                    
-
                                 </div>
                             </div>
-                        @endif
-                        <div class="text-left">
-                            <br>
-                            @if($quiz->quizAttempt->count() >= 1)
-                                @if($quiz->releaseGrades != 1)
-                                    <h6>Click <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">HERE</a> to view result.</h6>
-                                @endif
-                            @else
-                                @if($quiz->password == null)
-                                    <a href="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id])}}"><button type="button" class="btn btn-warning">Take Quiz!</button></a>
+                        @else
+                            <div class="text-left">
+                                <br>
+                                @if($quiz->quizAttempt->count() == $quiz->attempts)
+                                    @if($quiz->releaseGrades != 1)
+                                        <h6>Click <a href="{{ route('student.viewResult',[request()->route('courseid'), $quiz->quiz_id])}}">HERE</a> to view result.</h6>
+                                    @endif
                                 @else
-                                    <form class="row gx-3 gy-2 align-items-left" action="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id]) }}" method="GET">
-                                        <div class="col-sm-5">
-                                                <input type="text" class="form-control" name="quizPass" id="specificSizeInputGroupUsername" placeholder="input quiz password" required>
-                                                    @if($errors->any())
-                                                    <p class="fs-6" style="color: red;">
-                                                        {{$errors->first()}}
-                                                    </p>
-                                                    @endif
-                                        </div>
-                                        <div class="col-sm-5">
-                                            <button type="submit" class="btn btn-warning">Take Quiz!</button>
-                                        </div>
-                                    </form>
+                                    @if($quiz->password == null)
+                                        <a href="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id])}}"><button type="button" class="btn btn-warning">Take Quiz!</button></a>
+                                    @else
+                                        <form class="row gx-3 gy-2 align-items-left" action="{{ route('student.takeQuiz',[request()->route('courseid'), $quiz->quiz_id]) }}" method="GET">
+                                            <div class="col-sm-5">
+                                                    <input type="text" class="form-control" name="quizPass" id="specificSizeInputGroupUsername" placeholder="input quiz password" required>
+                                                        @if($errors->any())
+                                                        <p class="fs-6" style="color: red;">
+                                                            {{$errors->first()}}
+                                                        </p>
+                                                        @endif
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <button type="submit" class="btn btn-warning">Take Quiz!</button>
+                                            </div>
+                                        </form>
+                                    @endif
                                 @endif
-                            @endif
-                        </div>
+                            </div>
+                        @endif
                     @endforeach
                 @endif
             </div>

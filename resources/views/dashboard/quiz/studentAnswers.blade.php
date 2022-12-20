@@ -1,4 +1,42 @@
-<div class="container justify-content-center p-5">
+<div class="container" style="margin: 50px auto;">
+    <table class="table table-hover table table-bordered" style="width: 100%;">
+        <thead>
+            <th scope="col" class="text-left">Student's attempts</th>
+            <th scope="col">No. of attempts </th>
+            {{-- <th scope="col" class="text-center">Actions</th> --}}
+        </thead>
+        <tbody>
+            @foreach($students as $student)
+                <tr>
+                    <td width="75%" class="text-left p-3">
+                        @if($student->student->quizAttemptByStudentByQuiz($student->student->student_id, request()->route('quizid'))->count() == 0)
+                            {{ $student->student->student_lname }}, {{ $student->student->student_fname }} {{ $student->student->student_mname }}
+                        @else
+                            <a href="/teacher/course/{{ request()->route('courseid') }}/quiz/{{ request()->route('quizid') }}/student/{{ $student->student_id }}/attempts">
+                                {{ $student->student->student_lname }}, {{ $student->student->student_fname }} {{ $student->student->student_mname }}
+                            </a>
+                        @endif
+                        
+                    </td>
+                    <td class="text-center">
+                        @if($student->student->quizAttemptByStudentByQuiz($student->student->student_id, request()->route('quizid'))->count() == 0)
+                            No attempts yet.
+                        @else
+                            <span class="badge text-bg-success" style="width: 50px; height:20px;">
+                                {{ $student->student->quizAttemptByStudentByQuiz($student->student->student_id, request()->route('quizid'))->count() }}
+                            </span>
+                        @endif
+                        
+                    </td>
+                    {{-- <td class="text-center">
+                        <button>Action</button>
+                    </td> --}}
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+{{-- <div class="container justify-content-center p-5">
         <h2>Students done attempting the quiz</h2>
         <hr>
     @foreach($students as $student)
@@ -9,6 +47,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
+                    
                 @foreach($student->student->quizAttemptByStudentByQuiz($student->student_id, $selectedQuiz[0]->quiz_id) as $index => $attempt)
                     <div class="p-3">
                         Attempt {{$index+1}}
@@ -213,15 +252,6 @@
                                                                     Student got the wrong answer.
                                                                 </span>
                                                             @endif
-                                                            <!--  -->
-                                                            @if($question->type == 2)
-                                                                Other possible answers: 
-                                                                @foreach($correctAnswers as $correctanswer)
-                                                                    @if($question->getAnswerByQuestionStudent($question->question_id, $student->student_id)->textAnswer != $correctanswer)
-                                                                        {{$correctanswer}}, 
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
                                                         @endif
                                                     @else   
                                                         <span class="input-group-text" style="color:red; background-color:transparent;border-style: hidden;">
@@ -270,7 +300,7 @@
             @endif
         @endforeach
     </div>
-</div>
+</div> --}}
   <style>
     .students {
     cursor: pointer;

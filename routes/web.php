@@ -53,7 +53,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
 
     Route::view('/profile', 'profile.teacher_profile')->name('teacher.profile');
 
-    // For students
+    // For students enrollment
     Route::get('/students/records', [StudentController::class, 'showAllStudents'])->name('students.all');
     Route::get('student/application/{id}',[StudentController::class, 'showStudentApplication'])->name('student.application');
     Route::post('student/application/approve/{id}',[StudentController::class, 'approve'])->name('student.approve');
@@ -116,6 +116,7 @@ Route::prefix('teacher')->middleware(['auth','isTeacher'])->group(function(){
     
     
     Route::get('/course/{courseid}/quiz/get/{quizid}', [QuizController::class, 'getSelectedQuiz'])->name('quiz.get');
+    Route::get('/course/{courseid}/quiz/{quizid}/student/{studentid}/attempts', [QuizController::class, 'viewStudentAttempt'])->name('quiz.studentAttempt');
     // ^
 
     //for question

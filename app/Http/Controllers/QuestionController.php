@@ -63,19 +63,20 @@ class QuestionController extends Controller
             $updateQuestion = Question::where('question_id',$id);
             $updateQuestion->update([
                 'question' => $request->question,
-                'type' => $request->type
+                'type' => $request->type,
+                'points' => $request->points,
             ]);
-            return Response::json($request->type);
+            return response()->json($updateQuestion->get()->first());
         }
     }
-    public function updatePoint(Request $request, $id){
-        $selectedQuestion = Question::where('question_id',$id);
+    // public function updatePoint(Request $request, $id){
+    //     $selectedQuestion = Question::where('question_id',$id);
             
-        $selectedQuestion->update([
-            'points' => $request->points
-        ]);
-        return Response::json($selectedQuestion);
-    }
+    //     $selectedQuestion->update([
+    //         'points' => $request->points
+    //     ]);
+    //     return Response::json($selectedQuestion);
+    // }
 
     public function markAnswer(Request $request, $answer_id){
         $chosenAnswer = QuizAnswer::where('quiz_answer_id',$answer_id)->get()->first();
@@ -107,8 +108,8 @@ class QuestionController extends Controller
     // get single question
 
     public function getQuestion($id){
-        $selectedQuiz = Question::where('question_id', $id)->get();
-        return Response::json($selectedQuiz);
+        $selectedQuestion = Question::where('question_id', $id)->get()->first();
+        return response()->json($selectedQuestion);
     }
 
     // deleting of question
@@ -117,6 +118,6 @@ class QuestionController extends Controller
         $selectedQuestion = Question::findOrFail($id);
             
         $selectedQuestion->delete();
-        return redirect()->back();
+        return response()->json($selectedQuestion);
     }
 }

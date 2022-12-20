@@ -110,8 +110,6 @@
                             <td class="text-center">
                                 <a href="{{ route('quiz.edit',[ request()->route('courseid') ,$quiz->quiz_id]) }}" title="Edit Quiz"><button class="btn btn-warning" style="background-color:lightgreen;border: 1px solid lightgreen;"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
                                 <a href="{{ route('quiz.delete', $quiz->quiz_id) }}" title="Delete Quiz" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger"><img src="{{ asset('images/delete.png') }}" alt="" ></button></a>
-                                <a href="" title="View student attempts" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger" style="background-color: orange; border: 1px solid orange;"><img src="{{ asset('images/student.png') }}" alt="" ></button></a>
-                                <a href="" title="View student attempts" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger" style="background-color: orange; border: 1px solid orange;"><img src="{{ asset('images/question.png') }}" alt="" ></button></a>
 
                             </td>
                         </tr>
@@ -136,68 +134,6 @@
             $(window).on('load', 
                 // getAllQuizzes()
             );
-
-            // function displayQuizStatus(){
-
-            //     const toggleSwitch = document.getElementsByClassName("toogleSwitch");
-
-            //     for(y=0;y<toggleSwitch.length;y++){
-
-            //     }
-
-            // }
-            
-            
-
-            // function getAllQuizzes(){
-            //     getAllQuizzesRoute = "{{route('quiz.all', request()->route('courseid'))}}";
-            //     $.ajax({
-            //         type: "get",
-            //         url: getAllQuizzesRoute,
-            //         dataType: "json",
-            //         success: function (response) {
-            //             console.log(response);
-            //             displayAllQuizzes(response);
-            //         }
-            //     });
-            // }
-            // function displayAllQuizzes(data){
-            //     for(quiz in data){
-            //         console.log(data[quiz].quiz_title);
-            //         table = `
-            //                 <td width="80%" class="text-left p-3">
-            //                     <a href="">${data[quiz].quiz_title}</a>
-            //                     <br>
-            //                     <p style="font-size:small;">Available on Sep 7, 2022 10:30 AM until Sep 7, 2022 12:30 PM</p>
-            //                 </td>
-            //                 <td>
-            //                 `;
-            //         if(data[quiz].status == 'active'){
-            //             table +=`
-            //                     <div class="badge bg-success text-wrap" style="width: 100%;">
-            //                         ${data[quiz].status}
-            //                     </div>`;
-            //         }else{
-            //             table +=`
-            //                     <div class="badge bg-danger text-wrap" style="width: 100%;">
-            //                         ${data[quiz].status} 
-            //                     </div>
-            //                 <br>
-            //             `;
-            //         }
-            //         table+=` 
-            //                     <br>
-                                
-            //                 </td>
-            //                 <td>
-            //                     <a href="/teacher/course/{{request()->route('courseid')}}/quiz/setup/${data[quiz].quiz_id}" title="Edit Quiz"><button class="btn btn-warning"><img src="{{ asset('images/edit.png') }}" alt="" ></button></a>
-            //                     <a href="/quiz/delete/${data[quiz].quiz_id}" title="Delete Quiz" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger"><img src="{{ asset('images/delete.png') }}" alt="" ></button></a>
-
-            //                 </td>
-            //         `;
-            //         $('#quizzes').html(table);
-            //     }
-            // }
 
             const toggle = document.getElementsByClassName("activate");
             

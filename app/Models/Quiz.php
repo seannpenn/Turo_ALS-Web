@@ -58,4 +58,7 @@ class Quiz extends Model
     public function quizAttempt(){
         return $this->hasMany(QuizAttempt::class, 'quiz_id', 'quiz_id')->where('student_id', Auth::user()->student->student_id);
     }
+    public function attemptByStudent($studentId){
+        return $this->hasMany(QuizAttempt::class, 'quiz_id', 'quiz_id')->where('student_id', $studentId)->get();;
+    }
 }
